@@ -18,7 +18,7 @@ python std library
 
 
 # Use at your own Risk
-This is a Discord selfbot. I do not claim any responsiblity bans that happen from use of this program
+This is a Discord selfbot. I do not claim any responsiblity for bans that happen from use of this program
 
 # Closing Notes
 I understand that this readme is not as detailed as many would like but I'm unsure of the common issues one would have.
