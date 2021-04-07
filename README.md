@@ -10,7 +10,8 @@ If you need assistance with the use of the bot. Let me know and I will try to as
 
 
 # requirments
-discord.py \n
+discord.py
+
 python std library
 
 
@@ -23,4 +24,4 @@ I will update this readme if needed
 
 I will make Updates or try to add features that the public wants only up until it is no longer fun
 
-as for changes I will try to make I will try to add a simple way to change settings for the program so even someone with no knowledge about python can use it
+
