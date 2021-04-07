@@ -1,5 +1,5 @@
-# MudaeBot
-python bot that rolls and attempts to snipe kaks and Claims
+# MudaeAutoBot
+python bot that Auto rolls and attempts to snipe kaks and Claims in Mudae
 
 
 All this bot need to work is your "Discord" usertoken and the channel ID that you want to post in
@@ -11,6 +11,9 @@ If you need assistance with the use of the bot. Let me know and I will try to as
 # Optimize the snipes
 if you run $settings within your mudae server you can obtain the snipe protections timers if you set them accordingly
 you can usually snipe before a "Human user" can react to snipe
+
+Note: The MudaeAutoBot snipes in all servers you are in that has Mudae in them this is a feature which I enjoy
+but Currently will only actively roll on one server.
 
 # requirments
 discord.py
