@@ -1,23 +1,29 @@
 import discord
 import asyncio
 import re
+import json
 
 
+jsonf = open("Settings_Mudae.json")
+settings = json.load(jsonf)
+jsonf.close()
 
 
-token = ""
-
+#Settings
+token = settings["token"]
 mudae = 432610292342587392
-channelid = 333
+channelid = settings["channel_id"]
+claim_delay = settings["claim_delay"]
+kak_delay = settings["kak_delay"]
+roll_prefix = settings["roll_this"]
 
-claim_delay = 8
-kak_delay = 8
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min left')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
-#use_emoji = "<:keqing_love:795077041761288214>"
+#use_emoji = settings["use_emoji"]
 use_emoji = "❤️"
 
-series_list = ["Honkai Impact 3rd","Senran Kagura"]
+
+series_list = settings["series_list"]
 
 
 def get_wait(text):
@@ -39,8 +45,9 @@ class MyClient(discord.Client):
         
     async def on_ready(self):
         print('Logged on as', self.user)
-        
-        self.loop.create_task(self.bg_task())
+        if settings["rolling"] == "True":
+            self.loop.create_task(self.bg_task())
+            
 
     async def on_message(self, message):
         # don't respond to ourselves
@@ -60,7 +67,7 @@ class MyClient(discord.Client):
                 
                 for ser in series_list:
                     if ser in objects['description'] or self.user.name in message.content:               
-                        
+                        #print(objects['description'])
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
@@ -69,9 +76,9 @@ class MyClient(discord.Client):
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
                     if int(kak_value) >= 100 and "Belongs" not in objects['footer']['text'] :
-                        emoji = use_emoji
-                        await asyncio.sleep(claim_delay)
-                        await message.add_reaction(emoji)
+                        #emoji = use_emoji
+                        #await asyncio.sleep(claim_delay)
+                        #await message.add_reaction(emoji)
                         print("Possible Claim")
                         
                     
@@ -94,7 +101,7 @@ class MyClient(discord.Client):
             while wait == 0:
                 wait_for_mudae = self.loop.create_task(self.wait_for('message',timeout=10.0,check=msg_check))
                 await asyncio.sleep(2)
-                await rollingchannel.send("$wg")
+                await rollingchannel.send(roll_prefix)
                 try:
                     msg = await wait_for_mudae
                     if msg.content.startswith(f"**{self.user.name}") and "roulette" in msg.content:
