@@ -10,7 +10,7 @@ If you need assistance with the use of the bot. Let me know and I will try to as
 
 
 # requirments
-discord.py
+discord.py \n
 python std library
 
 
