@@ -76,9 +76,9 @@ class MyClient(discord.Client):
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
                     if int(kak_value) >= 100 and "Belongs" not in objects['footer']['text'] :
-                        #emoji = use_emoji
-                        #await asyncio.sleep(claim_delay)
-                        #await message.add_reaction(emoji)
+                        emoji = use_emoji
+                        await asyncio.sleep(claim_delay)
+                        await message.add_reaction(emoji)
                         print("Possible Claim")
                         
                     
