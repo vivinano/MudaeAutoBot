@@ -8,6 +8,9 @@ All this bot need to work is your "Discord" usertoken and the channel ID that yo
 This is completely automated it doesnt need to take any input after inital set up
 If you need assistance with the use of the bot. Let me know and I will try to assist
 
+# Optimize the snipes
+if you run $settings within your mudae server you can obtain the snipe protections timers if you set them accordingly
+you can usually snipe before a "Human user" can react to snipe
 
 # requirments
 discord.py
