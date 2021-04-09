@@ -75,7 +75,7 @@ class MyClient(discord.Client):
                 if "<:kakera:469835869059153940>" in objects['description'] :
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
-                    if int(kak_value) >= 100 and "Belongs" not in objects['footer']['text'] :
+                    if int(kak_value) >= 100 and "React with any emoji to claim" in objects['description'] :
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
