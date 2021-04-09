@@ -66,7 +66,7 @@ class MyClient(discord.Client):
                 
                 
                 for ser in series_list:
-                    if ser in objects['description'] or self.user.name in message.content:               
+                    if ser in objects['description'] or str(self.user.id) in message.content:               
                         #print(objects['description'])
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
