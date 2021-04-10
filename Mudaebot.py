@@ -24,7 +24,7 @@ use_emoji = "❤️"
 
 
 series_list = settings["series_list"]
-
+KakeraVari = settings["kak_list"]
 
 def get_wait(text):
     waits = wait_finder.findall(text)
@@ -85,9 +85,10 @@ class MyClient(discord.Client):
     
 
     async def on_reaction_add(self,reaction,user):
-        if(reaction.custom_emoji and "kakera" in reaction.emoji.name):
-            await asyncio.sleep(kak_delay)
-            await reaction.message.add_reaction(reaction.emoji)
+        for KakV in KakeraVari:
+            if(reaction.custom_emoji and KakV.lower() in reaction.emoji.name.lower()):
+                await asyncio.sleep(kak_delay)
+                await reaction.message.add_reaction(reaction.emoji)
             
             
             
