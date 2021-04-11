@@ -87,18 +87,17 @@ class MyClient(discord.Client):
     
 
     async def on_reaction_add(self,reaction,user):
-        for KakV in KakeraVari:
-            if(reaction.custom_emoji and KakV == reaction.emoji.name.lower()):
+        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
+            await asyncio.sleep(kak_delay)
+            await reaction.message.add_reaction(reaction.emoji)
+                
+                
+        
+        if (user.id == mudae and not reaction.custom_emoji):
+            if reaction.emoji in eventlist:
                 await asyncio.sleep(kak_delay)
                 await reaction.message.add_reaction(reaction.emoji)
-                break
                 
-        for eventsmaid in eventlist:
-            if (user.id == mudae and not reaction.custom_emoji):
-                if reaction.emoji == eventsmaid:
-                    await asyncio.sleep(kak_delay)
-                    await reaction.message.add_reaction(reaction.emoji)
-                    break
             
             
     async def bg_task(self):
