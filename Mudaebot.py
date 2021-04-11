@@ -87,7 +87,7 @@ class MyClient(discord.Client):
 
     async def on_reaction_add(self,reaction,user):
         for KakV in KakeraVari:
-            if(user.id == mudae and KakV.lower() == reaction.emoji.name.lower()):
+            if(reaction.custom_emoji and KakV.lower() == reaction.emoji.name.lower()):
                 await asyncio.sleep(kak_delay)
                 await reaction.message.add_reaction(reaction.emoji)
                 break
