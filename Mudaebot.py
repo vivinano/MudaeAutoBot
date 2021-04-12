@@ -16,6 +16,7 @@ channelid = settings["channel_id"]
 claim_delay = settings["claim_delay"]
 kak_delay = settings["kak_delay"]
 roll_prefix = settings["roll_this"]
+kak_min = settings["min_kak"]
 
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min left')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
@@ -69,7 +70,8 @@ class MyClient(discord.Client):
         
     async def on_ready(self):
         print('Logged on as', self.user)
-        self.loop.create_task(self.poke_task())
+        if settings['pkmrolling'] == "True":
+            self.loop.create_task(self.poke_task())
         if settings["rolling"] == "True":
             await asyncio.sleep(6)
             self.loop.create_task(self.bg_task())
@@ -104,7 +106,7 @@ class MyClient(discord.Client):
                 if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
-                    if int(kak_value) >= 200 and "React with any emoji to claim" in objects['description'] :
+                    if int(kak_value) >= kak_min and "React with any emoji to claim" in objects['description'] :
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
