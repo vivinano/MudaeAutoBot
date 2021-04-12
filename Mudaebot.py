@@ -142,7 +142,7 @@ class MyClient(discord.Client):
                 await rollingchannel.send(roll_prefix)
                 try:
                     msg = await wait_for_mudae
-                    if msg.content.startswith(f"**{self.user.name}") and "roulette" in msg.content:
+                    if msg.content.startswith(f"**{self.user.name}") and "**$setrolls**" in msg.content:
                         
                         wait = get_wait(msg.content)
                         
