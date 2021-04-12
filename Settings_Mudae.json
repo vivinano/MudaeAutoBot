@@ -6,20 +6,21 @@
    "use_emoji":"<:keqing_love:795077041761288214>",
    "roll_this":"$wg",
    "rolling":"True",
+   "pkmrolling":"True",
    "series_list":[
       "Honkai Impact 3rd",
       "Senran Kagura"
    ],
    "emoji_list":[
-	  "kakeraP",
-	  "kakera",
-	  "kakeraT",
-	  "kakeraG",
-	  "kakeraY",
-	  "kakeraO",
-	  "kakeraR",
-	  "kakeraW",
-	  "kakeraL" 
-   ]
+      "kakeraP",
+      "kakera",
+      "kakeraT",
+      "kakeraG",
+      "kakeraY",
+      "kakeraO",
+      "kakeraR",
+      "kakeraW",
+      "kakeraL"
+   ],
+   "min_kak":200
 }
-
