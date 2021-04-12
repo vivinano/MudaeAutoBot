@@ -166,7 +166,7 @@ class MyClient(discord.Client):
                 await pokechannel.send("$p")
                 try:
                     msgp = await wait_for_poke
-                    if msgp.content.startswith(f"Remaining") and "$p:" in msgp.content:
+                    if "$p:" in msgp.content and "min" in msgp.content:
                         pokewait = get_pwait(msgp.content)
                 except asyncio.TimeoutError:
                     print("Poke ded")
