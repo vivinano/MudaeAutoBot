@@ -106,7 +106,7 @@ class MyClient(discord.Client):
                 if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
-                    if int(kak_value) >= kak_min and "React with any emoji to claim" in objects['description'] :
+                    if int(kak_value) >= kak_min and "**$togglereact**" in objects['description']:
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
