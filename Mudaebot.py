@@ -21,6 +21,7 @@ wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min left')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
 like_finder = re.compile(r'Likes\: \#??([0-9]+)')
 claim_finder = re.compile(r'Claims\: \#??([0-9]+)')
+poke_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min')
 #use_emoji = settings["use_emoji"]
 use_emoji = "❤️"
 
@@ -31,6 +32,13 @@ eventlist = ["🕯️","😆"]
 
 def get_wait(text):
     waits = wait_finder.findall(text)
+    if len(waits):
+        hours = int(waits[0][0]) if waits[0][0] != '' else 0
+        return (hours*60+int(waits[0][1]))*60
+    return 0
+
+def get_pwait(text):
+    waits = poke_finder.findall(text)
     if len(waits):
         hours = int(waits[0][0]) if waits[0][0] != '' else 0
         return (hours*60+int(waits[0][1]))*60
@@ -63,6 +71,8 @@ class MyClient(discord.Client):
         print('Logged on as', self.user)
         if settings["rolling"] == "True":
             self.loop.create_task(self.bg_task())
+        
+        #self.loop.create_task(self.poke_task())
             
 
     async def on_message(self, message):
@@ -137,8 +147,28 @@ class MyClient(discord.Client):
                     return
             await asyncio.sleep(wait)
             wait = 0
-
+    
+    async def poke_task(self):
+        pokechannel = self.get_channel(channelid)
+        pokewait = 0
+        
+        def msg_check(message):
+            return message.author.id == mudae and message.channel.id == channelid
+        
+        while True:
+            while pokewait ==0:
+                wait_for_poke = self.loop.create_task(self.wait_for('message',timeout=10.0,check=msg_check))
+                await asyncio.sleep(2)
+                await pokechannel.send("$p")
+                try:
+                    msgp = await wait_for_poke
+                    if msgp.content.startswith(f"Remaining") and "$p:" in msgp.content:
+                        pokewait = get_pwait(msgp.content)
+                except asyncio.TimeoutError:
+                    print("Poke ded")
+                    return
+            await asyncio.sleep(pokewait)
+            pokewait = 0
                     
 client = MyClient()
 client.run(token,bot=False)
-
