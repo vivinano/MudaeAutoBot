@@ -19,6 +19,8 @@ roll_prefix = settings["roll_this"]
 
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min left')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
+like_finder = re.compile(r'Like Rank\: \#??([0-9]+)')
+claim_finder = re.compile(r'Claim Rank\: \#??([0-9]+)')
 #use_emoji = settings["use_emoji"]
 use_emoji = "❤️"
 
@@ -38,6 +40,17 @@ def get_kak(text):
     k_value = kak_finder.findall(text)
     if len(k_value):
         return k_value[0]
+    elif len(like_value) or len(claim_value):
+        LR = 0
+        CR = 0 
+        CA= 1
+        if(len(like_value)):
+            LR = like_value[0]
+        if(len(claim_value)):
+            CR = claim_value[0]
+        pkak = (int(LR) + int(CR)) /2
+        multi = 1 + (CA/5500)
+        return((25000 *(pkak+70)**-.75+20)*multi+.5)     
     return 0
 
 class MyClient(discord.Client):
@@ -126,3 +139,4 @@ class MyClient(discord.Client):
                     
 client = MyClient()
 client.run(token,bot=False)
+
