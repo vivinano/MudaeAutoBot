@@ -69,10 +69,12 @@ class MyClient(discord.Client):
         
     async def on_ready(self):
         print('Logged on as', self.user)
+        self.loop.create_task(self.poke_task())
         if settings["rolling"] == "True":
+            await asyncio.sleep(6)
             self.loop.create_task(self.bg_task())
         
-        #self.loop.create_task(self.poke_task())
+        
             
 
     async def on_message(self, message):
@@ -158,7 +160,7 @@ class MyClient(discord.Client):
         while True:
             while pokewait ==0:
                 wait_for_poke = self.loop.create_task(self.wait_for('message',timeout=10.0,check=msg_check))
-                await asyncio.sleep(2)
+                await asyncio.sleep(4)
                 await pokechannel.send("$p")
                 try:
                     msgp = await wait_for_poke
