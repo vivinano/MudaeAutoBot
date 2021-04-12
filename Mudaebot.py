@@ -19,8 +19,8 @@ roll_prefix = settings["roll_this"]
 
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min left')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
-like_finder = re.compile(r'Like Rank\: \#??([0-9]+)')
-claim_finder = re.compile(r'Claim Rank\: \#??([0-9]+)')
+like_finder = re.compile(r'Likes\: \#??([0-9]+)')
+claim_finder = re.compile(r'Claims\: \#??([0-9]+)')
 #use_emoji = settings["use_emoji"]
 use_emoji = "❤️"
 
@@ -38,6 +38,8 @@ def get_wait(text):
     
 def get_kak(text):
     k_value = kak_finder.findall(text)
+    like_value = like_finder.findall(text)
+    claim_value=claim_finder.findall(text)
     if len(k_value):
         return k_value[0]
     elif len(like_value) or len(claim_value):
@@ -87,7 +89,7 @@ class MyClient(discord.Client):
                         await message.add_reaction(emoji)
                         break
                         
-                if "<:kakera:469835869059153940>" in objects['description'] :
+                if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
                     if int(kak_value) >= 200 and "React with any emoji to claim" in objects['description'] :
