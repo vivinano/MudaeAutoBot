@@ -140,7 +140,7 @@ class MyClient(discord.Client):
                 await rollingchannel.send(roll_prefix)
                 try:
                     msg = await wait_for_mudae
-                    if msg.content.startswith(f"**{self.user.name}") and "min" in msg.content:
+                    if msg.content.startswith(f"**{self.user.name}"):
                         
                         wait = get_wait(msg.content)
                         
