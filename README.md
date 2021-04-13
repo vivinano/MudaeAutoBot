@@ -1,33 +1,55 @@
 # MudaeAutoBot
-python bot that Auto rolls and attempts to snipe kaks and Claims in Mudae
+What is Mudae Auto Bot?
 
+it is a python bot that Auto rolls and attempts to snipe kaks and Claims in Mudae
+
+How does it work?
 
 All this bot need to work is your "Discord" usertoken and the channel ID that you want to post in
 
+How Automated is it ?
 
-This is completely automated it doesnt need to take any input after inital set up
-If you need assistance with the use of the bot. Let me know and I will try to assist
+This is completely automated it doesnt need to take any input after inital set up.
+I made it simple where all the variables you need can be edited within the **setting_mudae.json** file
+Your able to run MudaeAutoBot and still be able to do normal work on your device
+
+# Features
++ Snipes and claims kak in all Discord servers you are in that has Mudae#0807
++ Kak Value sniping as long as Kak value can be determined (Like Rank , Claim Rank , ## Kakera)
++ Waifu/Husbando Rolling Features that Dynamically grab roll timers (one server only)*
++ Pokeslot Rolling Features that Dynamically grab roll timers (one server only)*
++ Selective Kakera Reaction Snipes Features
++ Emoji Reaction Snipes  **Ex:Mudae Events**
+
+(One server only currently to avoid collisions)
+(Multi Server Rolling could be a thing in the future but I want to avoid creating so many Background task)
 
 # Optimize the snipes
-if you run $settings within your mudae server you can obtain the snipe protections timers if you set them accordingly
-you can usually snipe before a "Human user" can react to snipe
+Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
+Using these values you usually snipes faster than a "Human" user can react 
 
-Note: The MudaeAutoBot snipes in all servers you are in that has Mudae in them this is a feature which I enjoy
-but Currently will only actively roll on one server.
+(Keep in mind that changing Delays effect servers across the board not just 1 Server)
 
-# requirments
-discord.py
+# Requirments
+*Python installed
 
-python std library
+--python extras--
+
++ python std library (comes with your python install)
++ discord.py 
 
 
 # Use at your own Risk
-This is a Discord selfbot. I do not claim any responsiblity for bans that happen from use of this program
+This is a Discord **selfbot**. I do not claim any responsiblity for bans that happen from use of this program
+
+Even though Discord.py is used to make normal bots and the only difference is the token used (Bot Token, User Token)
+This is still a Selfbot 
 
 # Closing Notes
-I understand that this readme is not as detailed as many would like but I'm unsure of the common issues one would have.
-I will update this readme if needed 
+I understand that this readme is not as detailed as many would like and I'm sure there are many more questions that one may have.
 
-I will make Updates or try to add features that the public wants only up until it is no longer fun
+Currently I'm still supporting this repo so feel free to **Contact Me** if you are having any Issues (Setup , Bugs , Feature suggestions)
+
+As for updates those will be added up until I no longer feel like this project is fun.
 
 
