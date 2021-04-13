@@ -87,12 +87,10 @@ class MyClient(discord.Client):
         
         if message.author.id == mudae:
             print(message.content)
-
                              
             if message.embeds != []:
                 objects = message.embeds[0].to_dict()
                 print(objects['author'])
-                
                 
                 
                 for ser in series_list:
@@ -106,7 +104,7 @@ class MyClient(discord.Client):
                 if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
                     kak_value = get_kak(objects['description'])
                     print(kak_value)
-                    if int(kak_value) >= kak_min and "**$togglereact**" in objects['description']:
+                    if int(kak_value) >= kak_min and ("**$togglereact**" in objects['description'] or objects['color'] == 16751916):
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
@@ -142,7 +140,7 @@ class MyClient(discord.Client):
                 await rollingchannel.send(roll_prefix)
                 try:
                     msg = await wait_for_mudae
-                    if msg.content.startswith(f"**{self.user.name}") and "**$setrolls**" in msg.content:
+                    if msg.content.startswith(f"**{self.user.name}") and "min" in msg.content:
                         
                         wait = get_wait(msg.content)
                         
