@@ -18,7 +18,7 @@ kak_delay = settings["kak_delay"]
 roll_prefix = settings["roll_this"]
 kak_min = settings["min_kak"]
 
-wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min left')
+wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
 like_finder = re.compile(r'Likes\: \#??([0-9]+)')
 claim_finder = re.compile(r'Claims\: \#??([0-9]+)')
