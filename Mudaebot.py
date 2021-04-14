@@ -160,7 +160,7 @@ class MyClient(discord.Client):
         while True:
             while pokewait ==0:
                 wait_for_poke = self.loop.create_task(self.wait_for('message',timeout=10.0,check=msg_check))
-                await asyncio.sleep(4)
+                await asyncio.sleep(2)
                 await pokechannel.send("$p")
                 try:
                     msgp = await wait_for_poke
