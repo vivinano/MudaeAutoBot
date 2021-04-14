@@ -22,6 +22,7 @@ Your able to run MudaeAutoBot and still be able to do normal work on your device
 + Emoji Reaction Snipes  **Ex:Mudae Events**
 
 (One server only currently to avoid collisions)
+
 (Multi Server Rolling could be a thing in the future but I want to avoid creating so many Background task)
 
 # Optimize the snipes
