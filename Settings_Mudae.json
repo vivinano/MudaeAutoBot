@@ -1,11 +1,16 @@
 {
    "token":"",
-   "channel_id":3333333,
+   "channel_id":33333333,
+   "multichannel":[
+      11111333333,
+      33333333333
+   ],
    "claim_delay":8,
    "kak_delay":8,
    "use_emoji":"<:keqing_love:795077041761288214>",
-   "roll_this":"$wg",
-   "rolling":"True",
+   "roll_this":"$m",
+   "rolling":"False",
+   "Multirollenable":"True",
    "pkmrolling":"True",
    "series_list":[
       "Honkai Impact 3rd",
@@ -22,5 +27,5 @@
       "kakeraW",
       "kakeraL"
    ],
-   "min_kak":200
+   "min_kak":500
 }
