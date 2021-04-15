@@ -16,14 +16,13 @@ Your able to run MudaeAutoBot and still be able to do normal work on your device
 # Features
 + Snipes and claims kak in all Discord servers you are in that has Mudae#0807
 + Kak Value sniping as long as Kak value can be determined (Like Rank , Claim Rank , ## Kakera)
-+ Waifu/Husbando Rolling Features that Dynamically grab roll timers (one server only)*
-+ Pokeslot Rolling Features that Dynamically grab roll timers (one server only)*
++ Waifu/Husbando Rolling Features that Dynamically grab roll timers
++ Pokeslot Rolling Features that Dynamically grab roll timers
 + Selective Kakera Reaction Snipes Features
 + Emoji Reaction Snipes  **Ex:Mudae Events**
 
-(One server only for Auotmated rolling currently to avoid collisions)
 
-(Multi Server Rolling could be a thing in the future but I want to avoid creating so many Background task)
++ MultiRolling Support was added !!!! (please note that each channel will open a Background_task and is not True Threading there will be Issues) **Go Overboard at your own risk**
 
 # Optimize the snipes
 Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
