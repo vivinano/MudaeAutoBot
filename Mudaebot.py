@@ -13,6 +13,7 @@ jsonf.close()
 token = settings["token"]
 mudae = 432610292342587392
 channelid = settings["channel_id"]
+multiids = settings["multichannel"]
 claim_delay = settings["claim_delay"]
 kak_delay = settings["kak_delay"]
 roll_prefix = settings["roll_this"]
@@ -73,8 +74,13 @@ class MyClient(discord.Client):
         if settings['pkmrolling'] == "True":
             self.loop.create_task(self.poke_task())
         if settings["rolling"] == "True":
-            await asyncio.sleep(6)
-            self.loop.create_task(self.bg_task())
+            await asyncio.sleep(8)
+            self.loop.create_task(self.bg_task(channelid))
+        if settings["rolling"] != "True" and settings["Multirollenable"] == "True":
+            await asyncio.sleep(8)
+            for multichannel in multiids:
+                self.loop.create_task(self.bg_task(multichannel))
+                await asyncio.sleep(30)
         
         
             
@@ -86,11 +92,11 @@ class MyClient(discord.Client):
 
         
         if message.author.id == mudae:
-            print(message.content)
+            #print(message.content)
                              
             if message.embeds != []:
                 objects = message.embeds[0].to_dict()
-                print(objects['author'])
+                #print(objects['author'])
                 
                 
                 for ser in series_list:
@@ -127,11 +133,11 @@ class MyClient(discord.Client):
                 
             
             
-    async def bg_task(self):
-        rollingchannel = self.get_channel(channelid)
+    async def bg_task(self,taskid):
+        rollingchannel = self.get_channel(taskid)
         wait = 0
         def msg_check(message):
-            return message.author.id == mudae and message.channel.id == channelid
+            return message.author.id == mudae and message.channel.id == taskid
         
         while True:
             while wait == 0:
@@ -145,7 +151,7 @@ class MyClient(discord.Client):
                         wait = get_wait(msg.content)
                         
                 except asyncio.TimeoutError:
-                    print(f"mudae ded.")
+                    print(f"{taskid} Rolling ded.")
                     return
             await asyncio.sleep(wait)
             wait = 0
