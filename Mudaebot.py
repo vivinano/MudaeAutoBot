@@ -139,7 +139,7 @@ class MyClient(discord.Client):
     async def on_reaction_add(self,reaction,user):
         if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
             if soulmatekak == "True":
-                if reaction.message.embeds != discord.Embed.Empty:
+                if reaction.message.embeds != []:
                     recCon = reaction.message.embeds[0].to_dict()
                     if "<:chaoskey:690110264166842421>" in recCon['description'] and recCon['color'] == eccolor :
                         await asyncio.sleep(kak_delay)
