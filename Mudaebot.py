@@ -18,6 +18,8 @@ claim_delay = settings["claim_delay"]
 kak_delay = settings["kak_delay"]
 roll_prefix = settings["roll_this"]
 kak_min = settings["min_kak"]
+soulmatekak = settings["SoulmateKakSnipeOnly"]
+eccolor = int(settings["SoulmateKakColorValue"].replace("#",""),16)
 
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min \w')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
@@ -29,6 +31,7 @@ use_emoji = "❤️"
 
 
 series_list = settings["series_list"]
+chars = [charsv.lower() for charsv in settings["namelist"]]
 KakeraVari = [kakerav.lower() for kakerav in settings["emoji_list"]]
 eventlist = ["🕯️","😆"]
 
@@ -94,35 +97,57 @@ class MyClient(discord.Client):
         if message.author.id == mudae:
             #print(message.content)
                              
-            if message.embeds != []:
+            if message.embeds != discord.Embed.Empty:
                 objects = message.embeds[0].to_dict()
-                #print(objects['author'])
+                #print(objects)
+                #print(objects['author']['name'])
                 
+                
+                if str(self.user.id) in message.content:
+                    print(f"Attempting to Claim {objects['author']['name']} Wished by {self.user.name} in ({message.channel.id}):{message.channel.name}")
+                    emoji = use_emoji
+                    await asyncio.sleep(claim_delay)
+                    await message.add_reaction(emoji)
                 
                 for ser in series_list:
-                    if ser in objects['description'] or str(self.user.id) in message.content:               
-                        #print(objects['description'])
+                    if ser in objects['description']:               
+                        print(f"Attempting to Claim {objects['author']['name']} from {ser} in ({message.channel.id}):{message.channel.name}")
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
                         break
                         
+                if objects['author']['name'].lower() in chars:
+                    print(f"Attempting to Claim {objects['author']['name']} in ({message.channel.id}):{message.channel.name}")
+                    emoji = use_emoji
+                    await asyncio.sleep(claim_delay)
+                    await message.add_reaction(emoji)
+                    
+                        
                 if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
                     kak_value = get_kak(objects['description'])
-                    print(kak_value)
+                    #print(kak_value)
                     if int(kak_value) >= kak_min and ("**$togglereact**" in objects['description'] or objects['color'] == 16751916):
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
                         await message.add_reaction(emoji)
-                        print("Possible Claim")
+                        print(f"Claming {objects['author']['name']} worth {int(kak_value)} Kakera")
                         
                     
     
 
     async def on_reaction_add(self,reaction,user):
         if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
-            await asyncio.sleep(kak_delay)
-            await reaction.message.add_reaction(reaction.emoji)
+            if soulmatekak == "True":
+                if reaction.message.embeds != discord.Embed.Empty:
+                    recCon = reaction.message.embeds[0].to_dict()
+                    if "<:chaoskey:690110264166842421>" in recCon['description'] and recCon['color'] == eccolor :
+                        await asyncio.sleep(kak_delay)
+                        await reaction.message.add_reaction(reaction.emoji)
+            else:
+                await asyncio.sleep(kak_delay)
+                print(f"{reaction.emoji.name} was detected")
+                await reaction.message.add_reaction(reaction.emoji)
                 
                 
         
