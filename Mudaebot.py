@@ -97,7 +97,7 @@ class MyClient(discord.Client):
         if message.author.id == mudae:
             #print(message.content)
                              
-            if message.embeds != discord.Embed.Empty:
+            if message.embeds != []:
                 objects = message.embeds[0].to_dict()
                 #print(objects)
                 #print(objects['author']['name'])
