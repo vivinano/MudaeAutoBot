@@ -18,7 +18,7 @@ Your able to run MudaeAutoBot and still be able to do normal work on your device
 + Kak Value sniping as long as Kak value can be determined (Like Rank , Claim Rank , ## Kakera)
 + Waifu/Husbando Rolling Features that Dynamically grab roll timers
 + Pokeslot Rolling Features that Dynamically grab roll timers
-+ Selective Kakera Reaction Snipes Features
++ Selective Kakera Reaction Snipes Features(Includes: Soulmate Kak sniping Feature)
 + Emoji Reaction Snipes  **Ex:Mudae Events**
 
 
