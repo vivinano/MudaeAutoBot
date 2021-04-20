@@ -99,8 +99,14 @@ class MyClient(discord.Client):
                              
             if message.embeds != []:
                 objects = message.embeds[0].to_dict()
-                #print(objects)
-                #print(objects['author']['name'])
+                #print(objects.keys())
+                if 'author' in objects.keys():
+                    charsname = objects['author']['name']
+                else:
+                    charsname = "jklsdajklasd no author found"
+                
+                #print(charsname)
+                
                 
                 
                 if str(self.user.id) in message.content:
@@ -117,7 +123,7 @@ class MyClient(discord.Client):
                         await message.add_reaction(emoji)
                         break
                         
-                if objects['author']['name'].lower() in chars:
+                if charsname.lower() in chars:
                     print(f"Attempting to Claim {objects['author']['name']} in ({message.channel.id}):{message.channel.name}")
                     emoji = use_emoji
                     await asyncio.sleep(claim_delay)
@@ -146,7 +152,8 @@ class MyClient(discord.Client):
                         await reaction.message.add_reaction(reaction.emoji)
             else:
                 await asyncio.sleep(kak_delay)
-                print(f"{reaction.emoji.name} was detected")
+                print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
+                await reaction.message.add_reaction(reaction.emoji)
                 await reaction.message.add_reaction(reaction.emoji)
                 
                 
@@ -176,7 +183,7 @@ class MyClient(discord.Client):
                         wait = get_wait(msg.content)
                         
                 except asyncio.TimeoutError:
-                    print(f"{taskid} Rolling ded.")
+                    print(f"The Automated rolling on channelid {taskid} is ded. Requires Restart of the program")
                     return
             await asyncio.sleep(wait)
             wait = 0
