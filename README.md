@@ -27,22 +27,22 @@ Your able to run MudaeAutoBot and still be able to do normal work on your device
 # Setting up the bot
 All settings are within the Settings_Mudae.json File
 
-1.token - **User token** basically the account you want to run this on. If you need extra assistance on how to obtain it let me know.
-2.channelid - Which channel to **Roll** in only (Might Have more uses in the future) ex. 807##########948
-3.multichannel - Which Channel(s) to **Roll** in only (Might havre more uses in future) ex.\[ 807##########948, 517########420\]
-4.claim_delay - Universal-Wide time to wait before attempting to Claim Characters ex. 5
-5.kak_delay - Universal-Wide time to wait before attempting to snipe Kakeraloot ex. 8
-6.use_emoji - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) ex.  "<:emohi_name:795############214>"
-7.roll_this - If Rolling Enabled it will roll ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg)
-8.Rolling - (True|False) **case sensetive** , Uses ChannelId
-9.Multirollenable - (True|False) **Case Sensetive** !!Rolling must be set to False if MultiRollEnable is True!!
-10. PkmRolling - (True|False) Pokeslot rolling enabled, Uses Channelid
-11. series_list - Name of series of characters you want to claim **Case Sensetive** ex \[ "Honkai Impact 3rd" , "Senran Kagura" \]
-12. name_list - Character name to claim **Exact match only** ex \["Raiden Mei", "gOkU" \]
-13. SoulmateKakSnipeOnly - (True|False) **Case Sensetive** End-game setting to snipe soulmate kakera
-14. SoulmateKakColorValue - #HexValue this is for Soulmate Kakera snipe same value as $ec in Mudae. This is to help determine which one is yours vs soulmate of others
-15. emoji_list - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
-16. min_kak - Claim Character that has a Kakera Worth > Minimum value ex. 500 
++ 1. token - **User token** basically the account you want to run this on. If you need extra assistance on how to obtain it let me know.
++ 2. channelid - Which channel to **Roll** in only (Might Have more uses in the future) ex. 807##########948
++ 3. multichannel - Which Channel(s) to **Roll** in only (Might havre more uses in future) ex.\[ 807##########948, 517########420\]
++ 4. claim_delay - Universal-Wide time to wait before attempting to Claim Characters ex. 5
++ 5. kak_delay - Universal-Wide time to wait before attempting to snipe Kakeraloot ex. 8
++ 6. use_emoji - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) ex.  "<:emohi_name:795############214>"
++ 7. roll_this - If Rolling Enabled it will roll ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg)
++ 8. Rolling - (True|False) **case sensetive** , Uses ChannelId
++ 9. Multirollenable - (True|False) **Case Sensetive** !!Rolling must be set to False if MultiRollEnable is True!!
++ 10. PkmRolling - (True|False) Pokeslot rolling enabled, Uses Channelid
++ 11. series_list - Name of series of characters you want to claim **Case Sensetive** ex \[ "Honkai Impact 3rd" , "Senran Kagura" \]
++ 12. name_list - Character name to claim **Exact match only** ex \["Raiden Mei", "gOkU" \]
++ 13. SoulmateKakSnipeOnly - (True|False) **Case Sensetive** End-game setting to snipe soulmate kakera
++ 14. SoulmateKakColorValue - #HexValue this is for Soulmate Kakera snipe same value as $ec in Mudae. This is to help determine which one is yours vs soulmate of others
++ 15. emoji_list - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
++ 16. min_kak - Claim Character that has a Kakera Worth > Minimum value ex. 500 
  
 # Optimize the snipes
 Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
