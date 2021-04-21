@@ -2,6 +2,7 @@ import discord
 import asyncio
 import re
 import json
+import time
 
 
 jsonf = open("Settings_Mudae.json")
@@ -10,6 +11,7 @@ jsonf.close()
 
 
 #Settings
+kakera_wall = {}
 token = settings["token"]
 mudae = 432610292342587392
 channelid = settings["channel_id"]
@@ -22,6 +24,7 @@ soulmatekak = settings["SoulmateKakSnipeOnly"]
 eccolor = int(settings["SoulmateKakColorValue"].replace("#",""),16)
 
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min \w')
+waitk_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min')
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
 like_finder = re.compile(r'Likes\: \#??([0-9]+)')
 claim_finder = re.compile(r'Claims\: \#??([0-9]+)')
@@ -150,12 +153,39 @@ class MyClient(discord.Client):
                     if "<:chaoskey:690110264166842421>" in recCon['description'] and recCon['color'] == eccolor :
                         await asyncio.sleep(kak_delay)
                         await reaction.message.add_reaction(reaction.emoji)
-            else:
-                await asyncio.sleep(kak_delay)
-                print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
-                await reaction.message.add_reaction(reaction.emoji)
-                await reaction.message.add_reaction(reaction.emoji)
+                        
+        if (reaction.custom.emoji and reaction.emoji.name == "KakeraP"):
+            await asyncio.sleep(1)
+            print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
+            await reaction.message.add_reaction(reaction.emoji)
+            await asyncio.sleep(1)
+            await reaction.message.remove_reaction(reaction.emoji)
+            await asyncio.sleep(kak_delay - 2)
+            await reaction.message.add_reaction(reaction.emoji)
                 
+                
+                
+        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
+
+            await asyncio.sleep(kak_delay)
+            print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
+            cooldown = kakera_wall.get(reaction.message.guild.id,0) - time.time()
+            if cooldown <= 1: 
+                await reaction.message.add_reaction(reaction.emoji)
+            else:
+                #print(f"Skipping kakera because on cooldown; {cooldown%60} minutes left")
+                return
+            def check_this(message):
+                return message.author.id == mudae and message.content.startswith(f"**{self.user.name}") and "kakera" in message.content
+            try:
+                msg = await self.wait_for('message',timeout=10.0,check=check_this)
+                time_to_wait = waitk_finder.findall(msg.content)
+                if len(time_to_wait):
+                    timegetter = (int(time_to_wait[0][0] or "0")*60+int(time_to_wait[0][1] or "0"))*60
+                    #print(timegetter)
+                    kakera_wall[reaction.message.guild.id] = timegetter + time.time()
+            except asyncio.TimeoutError:
+                pass
                 
         
         if (user.id == mudae and not reaction.custom_emoji):
