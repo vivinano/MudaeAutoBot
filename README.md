@@ -30,8 +30,8 @@ All settings are within the Settings_Mudae.json File
 + 1. token - **User token** basically the account you want to run this on. If you need extra assistance on how to obtain it let me know.
 + 2. channelid - Which channel to **Roll** in only (Might Have more uses in the future) ex. 807##########948
 + 3. multichannel - Which Channel(s) to **Roll** in only (Might havre more uses in future) ex.\[ 807##########948, 517########420\]
-+ 4. claim_delay - Universal-Wide time to wait before attempting to Claim Characters ex. 5
-+ 5. kak_delay - Universal-Wide time to wait before attempting to snipe Kakeraloot ex. 8
++ 4. claim_delay - Universal-Wide time in **secs** to wait before attempting to Claim Characters ex. 5
++ 5. kak_delay - Universal-Wide time in **secs** to wait before attempting to snipe Kakeraloot ex. 8
 + 6. use_emoji - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) ex.  "<:emohi_name:795############214>"
 + 7. roll_this - If Rolling Enabled it will roll ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg)
 + 8. Rolling - (True|False) **case sensetive** , Uses ChannelId
