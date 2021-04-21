@@ -154,7 +154,7 @@ class MyClient(discord.Client):
                         await asyncio.sleep(kak_delay)
                         await reaction.message.add_reaction(reaction.emoji)
                         
-        if (reaction.custom.emoji and reaction.emoji.name == "KakeraP"):
+        if (reaction.custom_emoji and reaction.emoji.name == "KakeraP"):
             await asyncio.sleep(1)
             print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
             await reaction.message.add_reaction(reaction.emoji)
