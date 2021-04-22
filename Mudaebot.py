@@ -146,7 +146,7 @@ class MyClient(discord.Client):
     
 
     async def on_reaction_add(self,reaction,user):
-        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari) and user.id == mudae:
+        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
             if soulmatekak == "True":
                 if reaction.message.embeds != []:
                     recCon = reaction.message.embeds[0].to_dict()
@@ -157,10 +157,10 @@ class MyClient(discord.Client):
         if (reaction.custom_emoji and reaction.emoji.name == "kakeraP"):
             await asyncio.sleep(1)
             print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
-            await reaction.message.add_reaction(reaction.emoji)
-            await asyncio.sleep(1)
-            await reaction.message.remove_reaction(reaction.emoji)
-            await asyncio.sleep(kak_delay - 2)
+            #await reaction.message.add_reaction(reaction.emoji)
+            #await asyncio.sleep(1)
+            #await reaction.message.remove_reaction(reaction.emoji,self.user.id)
+            await asyncio.sleep(kak_delay)
             await reaction.message.add_reaction(reaction.emoji)
                 
                 
@@ -168,7 +168,7 @@ class MyClient(discord.Client):
         if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari) and user.id == mudae:
 
             await asyncio.sleep(kak_delay)
-            print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
+            print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name} __{reaction.message.created_at}")
             cooldown = kakera_wall.get(reaction.message.guild.id,0) - time.time()
             if cooldown <= 1: 
                 await reaction.message.add_reaction(reaction.emoji)
