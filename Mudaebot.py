@@ -146,7 +146,7 @@ class MyClient(discord.Client):
     
 
     async def on_reaction_add(self,reaction,user):
-        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
+        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari) and user.id == mudae:
             if soulmatekak == "True":
                 if reaction.message.embeds != []:
                     recCon = reaction.message.embeds[0].to_dict()
@@ -154,7 +154,7 @@ class MyClient(discord.Client):
                         await asyncio.sleep(kak_delay)
                         await reaction.message.add_reaction(reaction.emoji)
                         
-        if (reaction.custom_emoji and reaction.emoji.name == "KakeraP"):
+        if (reaction.custom_emoji and reaction.emoji.name == "kakeraP"):
             await asyncio.sleep(1)
             print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
             await reaction.message.add_reaction(reaction.emoji)
@@ -165,7 +165,7 @@ class MyClient(discord.Client):
                 
                 
                 
-        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
+        if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari) and user.id == mudae:
 
             await asyncio.sleep(kak_delay)
             print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
@@ -173,7 +173,7 @@ class MyClient(discord.Client):
             if cooldown <= 1: 
                 await reaction.message.add_reaction(reaction.emoji)
             else:
-                #print(f"Skipping kakera because on cooldown; {cooldown%60} minutes left")
+                print(f"Skipping {reaction.emoji.name} in {reaction.message.channel.id} : {reaction.message.channel.name} because on cooldown; {cooldown/60} minutes left")
                 return
             def check_this(message):
                 return message.author.id == mudae and message.content.startswith(f"**{self.user.name}") and "kakera" in message.content
