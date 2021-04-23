@@ -154,13 +154,13 @@ class MyClient(discord.Client):
                         await asyncio.sleep(kak_delay)
                         await reaction.message.add_reaction(reaction.emoji)
                         
-        if (reaction.custom_emoji and reaction.emoji.name == "kakeraP"):
+        if (reaction.custom_emoji and reaction.emoji.name == "kakeraP") and user.id == mudae:
             await asyncio.sleep(1)
-            print(f"{reaction.emoji.name} was detected in {reaction.message.channel.id} : {reaction.message.channel.name}")
-            #await reaction.message.add_reaction(reaction.emoji)
-            #await asyncio.sleep(1)
-            #await reaction.message.remove_reaction(reaction.emoji,self.user.id)
-            await asyncio.sleep(kak_delay)
+            print(f"Free Kakera was detected in {reaction.message.channel.id} : {reaction.message.channel.name} @ {reaction.message.created_at}")
+            await reaction.message.add_reaction(reaction.emoji)
+            await asyncio.sleep(1)
+            await reaction.message.remove_reaction(reaction.emoji,self.user)
+            await asyncio.sleep(kak_delay - 2)
             await reaction.message.add_reaction(reaction.emoji)
                 
                 
