@@ -72,9 +72,7 @@ def get_kak(text):
     return 0
 
 class MyClient(discord.Client):
-
-        
-        
+       
     async def on_ready(self):
         print('Logged on as', self.user)
         if settings['pkmrolling'] == "True":
@@ -96,7 +94,6 @@ class MyClient(discord.Client):
         if message.author == self.user:
            return
 
-        
         if message.author.id == mudae:
             #print(message.content)
                              
@@ -108,9 +105,7 @@ class MyClient(discord.Client):
                 else:
                     charsname = "jklsdajklasd no author found"
                 
-                #print(charsname)
-                
-                
+                #print(objects)
                 
                 if str(self.user.id) in message.content:
                     print(f"Attempting to Claim {objects['author']['name']} Wished by {self.user.name} in ({message.channel.id}):{message.channel.name}")
@@ -131,8 +126,7 @@ class MyClient(discord.Client):
                     emoji = use_emoji
                     await asyncio.sleep(claim_delay)
                     await message.add_reaction(emoji)
-                    
-                        
+                                           
                 if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
                     kak_value = get_kak(objects['description'])
                     #print(kak_value)
@@ -152,7 +146,7 @@ class MyClient(discord.Client):
             if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari) and soulmatekak == "True":
                 if reaction.message.embeds != []:
                     recCon = reaction.message.embeds[0].to_dict()
-                    if "<:chaoskey:690110264166842421>" in recCon['description'] and recCon['color'] == eccolor :
+                    if "<:chaoskey:690110264166842421>" in recCon['description'] and recCon['color'] not in [16751916,6753288] :
                         await asyncio.sleep(kak_delay)
                         await reaction.message.add_reaction(reaction.emoji)
                             
@@ -165,8 +159,7 @@ class MyClient(discord.Client):
                 await asyncio.sleep(kak_delay - 2)
                 await reaction.message.add_reaction(reaction.emoji)
                     
-                    
-                    
+                                       
             if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari):
 
                 await asyncio.sleep(kak_delay)
@@ -194,9 +187,7 @@ class MyClient(discord.Client):
                 if reaction.emoji in eventlist:
                     await asyncio.sleep(kak_delay)
                     await reaction.message.add_reaction(reaction.emoji)
-                
-            
-            
+                          
     async def bg_task(self,taskid):
         rollingchannel = self.get_channel(taskid)
         wait = 0
