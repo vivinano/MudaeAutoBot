@@ -110,7 +110,11 @@ class MyClient(discord.Client):
                 if str(self.user.id) in message.content:
                     print(f"Attempting to Claim {objects['author']['name']} Wished by {self.user.name} in ({message.channel.id}):{message.channel.name}")
                     emoji = use_emoji
-                    await asyncio.sleep(claim_delay)
+                    await asyncio.sleep(1)
+                    await message.add_reaction(emoji)
+                    await asyncio.sleep(1)
+                    await message.remove_reaction(emoji,self.user)
+                    await asyncio.sleep(claim_delay - 2)
                     await message.add_reaction(emoji)
                 
                 for ser in series_list:
