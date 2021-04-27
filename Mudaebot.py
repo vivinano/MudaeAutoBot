@@ -96,6 +96,7 @@ class MyClient(discord.Client):
 
         if message.author.id == mudae:
             #print(message.content)
+            
                              
             if message.embeds != []:
                 objects = message.embeds[0].to_dict()
@@ -111,6 +112,8 @@ class MyClient(discord.Client):
                     print(f"Attempting to Claim {objects['author']['name']} Wished by {self.user.name} in ({message.channel.id}):{message.channel.name}")
                     emoji = use_emoji
                     await asyncio.sleep(1)
+                    if message.reactions != [] and not message.reactions[0].custom_emoji:
+                        emoji = message.reactions[0].emoji
                     await message.add_reaction(emoji)
                     await asyncio.sleep(1)
                     await message.remove_reaction(emoji,self.user)
@@ -122,6 +125,8 @@ class MyClient(discord.Client):
                         print(f"Attempting to Claim {objects['author']['name']} from {ser} in ({message.channel.id}):{message.channel.name}")
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
+                        if message.reactions != [] and not message.reactions[0].custom_emoji:
+                            emoji = message.reactions[0].emoji
                         await message.add_reaction(emoji)
                         break
                         
@@ -129,6 +134,8 @@ class MyClient(discord.Client):
                     print(f"Attempting to Claim {objects['author']['name']} in ({message.channel.id}):{message.channel.name}")
                     emoji = use_emoji
                     await asyncio.sleep(claim_delay)
+                    if message.reactions != [] and not message.reactions[0].custom_emoji: 
+                        emoji = message.reactions[0].emoji
                     await message.add_reaction(emoji)
                                            
                 if "<:kakera:469835869059153940>" in objects['description'] or ("Claims:" in objects['description'] or "Likes:" in objects['description']) :
@@ -137,6 +144,8 @@ class MyClient(discord.Client):
                     if int(kak_value) >= kak_min and ("**$togglereact**" in objects['description'] or objects['color'] == 16751916):
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
+                        if message.reactions != [] and not message.reactions[0].custom_emoji:
+                            emoji = message.reactions[0].emoji
                         await message.add_reaction(emoji)
                         print(f"Claming {objects['author']['name']} worth {int(kak_value)} Kakera")
                         
