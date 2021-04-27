@@ -36,6 +36,7 @@ use_emoji = "❤️"
 series_list = settings["series_list"]
 chars = [charsv.lower() for charsv in settings["namelist"]]
 KakeraVari = [kakerav.lower() for kakerav in settings["emoji_list"]]
+soulmatevari = [soulmv.lower() for soulmv in settings["soulemoji_list"]]
 eventlist = ["🕯️","😆"]
 
 def get_wait(text):
@@ -156,7 +157,7 @@ class MyClient(discord.Client):
     
         if user.id == mudae:
         
-            if(reaction.custom_emoji and reaction.emoji.name.lower() in KakeraVari) and soulmatekak == "True":
+            if(reaction.custom_emoji and reaction.emoji.name.lower() in soulmatevari) and soulmatekak == "True":
                 if reaction.message.embeds != []:
                     recCon = reaction.message.embeds[0].to_dict()
                     if "<:chaoskey:690110264166842421>" in recCon['description'] and recCon['color'] not in [16751916,6753288] :
