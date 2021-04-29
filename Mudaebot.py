@@ -122,7 +122,7 @@ class MyClient(discord.Client):
                     await message.add_reaction(emoji)
                 
                 for ser in series_list:
-                    if ser in objects['description']:               
+                    if ser in objects['description'] and objects['color'] == 16751916:               
                         print(f"Attempting to Claim {objects['author']['name']} from {ser} in ({message.channel.id}):{message.channel.name}")
                         emoji = use_emoji
                         await asyncio.sleep(claim_delay)
