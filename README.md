@@ -75,4 +75,6 @@ Currently I'm still supporting this repo so feel free to **Contact Me** if you a
 
 As for updates those will be added up until I no longer feel like this project is fun.
 
-
+#Buying me a coffee
+At the request of my personal friends they insisted me link a way to make money off of this project so I guess if you like the support I offer you can always buy me some food or snacks.
+https://www.paypal.com/donate?hosted_button_id=ALRBET9746T8W
