@@ -45,7 +45,8 @@ All settings are within the Settings_Mudae.json File
 + 16. min_kak - Claim Character that has a Kakera Worth > Minimum value ex. 500 
  
  
- ** In the limited version you need to set multiids for channel you want to monitor ** orginally I didn't want this set up process to be needed as it was easier for someone to set up a user token with the default settings and spin it right up but with more users requesting the limited scope I made the option avaible in a seperate code file
+ ** In the limited version you need to set multiids for channel you want to monitor ** 
+orginally I didn't want this set up process to be needed as it was easier for someone to set up a user token with the default settings and spin it right up but with more users requesting the limited scope I made the option avaible in a seperate code file
 # Optimize the snipes
 Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
 Using these values you usually snipes faster than a "Human" user can react 
