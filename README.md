@@ -2,7 +2,7 @@
 as of Right now both Sniping and rolling as they rely on messages are not working and only kakera sniping works since it is reaction based
 
    ![image](https://user-images.githubusercontent.com/33008397/116826520-5c61f380-ab62-11eb-805a-3794062ae9c4.png)
-
+https://github.com/discord/discord-api-docs/blob/master/docs/Change_Log.md#DOCS_TOPICS_THREADS  
 # MudaeAutoBot
 What is Mudae Auto Bot?
 
