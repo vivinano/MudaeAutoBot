@@ -2,6 +2,10 @@
 Since Message Content for discord.py is not working I ported the on_message portion over to "Discum" instead Rolling no longer gets dynamically generated timers but now waits for an hour or 2 regardless
 
 
+Thanks to:
+https://github.com/FatPain
+for Assisting with Discum it was definitly not something I'm use to
+
 # MudaeAutoBot
 What is Mudae Auto Bot?
 
