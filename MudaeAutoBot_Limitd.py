@@ -77,14 +77,14 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as', self.user)
         if settings['pkmrolling'] == "True":
-            self.loop.create_task(self.poke_task())
+            self.loop.create_task(self.simp_poke_task())
         if settings["rolling"] == "True":
             await asyncio.sleep(8)
-            self.loop.create_task(self.bg_task(channelid))
+            self.loop.create_task(self.simp_bg_task(channelid))
         if settings["rolling"] != "True" and settings["Multirollenable"] == "True":
             await asyncio.sleep(8)
             for multichannel in multiids:
-                self.loop.create_task(self.bg_task(multichannel))
+                self.loop.create_task(self.simp_bg_task(multichannel))
                 await asyncio.sleep(30)
         
         
@@ -95,7 +95,7 @@ class MyClient(discord.Client):
         if message.author == self.user:
            return
 
-        if message.author.id == mudae and message.channel.id in multiids:
+        if message.author.id == mudae:
             #print(message.content)
             
                              
@@ -246,6 +246,29 @@ class MyClient(discord.Client):
                     return
             await asyncio.sleep(pokewait)
             pokewait = 0
-                    
+            
+    async def simp_poke_task(self):
+        pokechannel = self.get_channel(channelid)
+        pokewait = 0
+        while True:
+            while pokewait == 0:
+                await asyncio.sleep(2)
+                await pokechannel.send("$p")
+                pokewait = ((60*60)*2)
+            await asyncio.sleep(pokewait)
+            pokewait = 0
+    async def simp_bg_task(self,taskid):
+        rollingchannel = self.get_channel(taskid)        
+        rollwait = 0
+        while True:
+            while rollwait == 0:
+                for x in range(15):
+                    await asyncio.sleep(2)
+                    await rollingchannel.send(roll_prefix)
+                rollwait = (60*60)
+            await asyncio.sleep(rollwait)
+            rollwait = 0
+            
+            
 client = MyClient()
 client.run(token,bot=False)
