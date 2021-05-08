@@ -6,6 +6,8 @@ Thanks to:
 https://github.com/FatPain
 for Assisting with Discum it was definitly not something I'm use to
 
+There will be a slow effort to move it over to full discum so its not spagetti code but for functional sake this is the "patch"
+
 # MudaeAutoBot
 What is Mudae Auto Bot?
 
