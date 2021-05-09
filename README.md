@@ -73,6 +73,9 @@ a minimum of 1 second to let mudae register that a character was rolled as is re
 --python extras--
 
 + python std library (comes with your python install)
++ discum 
+
+--legacy--
 + discord.py 
 
 
