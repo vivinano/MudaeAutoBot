@@ -1,12 +1,13 @@
 # Current issues
-Since Message Content for discord.py is not working I ported the on_message portion over to "Discum" instead Rolling no longer gets dynamically generated timers but now waits for an hour or 2 regardless
+Right now I've Migrated most of the basic functions that I've had in the old discord.py version over to discum library. I haven't tested them out completely like the Kakera sniping. Currently only rolling in 1 channel is implemented
+
+and sniping still goes to all channels and there is no limited version yet. will implement later but not a priority right now.
 
 
 Thanks to:
 https://github.com/FatPain
 for Assisting with Discum it was definitly not something I'm use to
 
-There will be a slow effort to move it over to full discum so its not spagetti code but for functional sake this is the "patch"
 
 # MudaeAutoBot
 What is Mudae Auto Bot?
