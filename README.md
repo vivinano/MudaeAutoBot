@@ -1,3 +1,4 @@
+Please Gif Star ?? Stars make me happy
 # Current issues
 Right now I've Migrated most of the basic functions that I've had in the old discord.py version over to discum library. I haven't tested them out completely like the Kakera sniping. Currently only rolling in 1 channel is implemented
 
