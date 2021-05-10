@@ -200,7 +200,7 @@ def on_message(resp):
                 if len(time_to_wait):
                     timegetter = (int(time_to_wait[0][0] or "0")*60+int(time_to_wait[0][1] or "0"))*60
                     #print(timegetter)
-                    kakera_wall[reaction.message.guild.id] = timegetter + time.time()
+                    kakera_wall[rguildid] = timegetter + time.time()
             
             if emojiid == None:
                 if emoji in eventlist:
