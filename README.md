@@ -1,8 +1,6 @@
 Please Gif Star ?? Stars make me happy
 # Current issues
-Right now I've Migrated most of the basic functions that I've had in the old discord.py version over to discum library. I haven't tested them out completely like the Kakera sniping. Currently only rolling in 1 channel is implemented
-
-and sniping still goes to all channels and there is no limited version yet. will implement later but not a priority right now.
+Limited channel is just gonna be the default method. users can remove that check if they want all servers. Current issue is that when using for prolong periods of time discum might stop causing rolling functions to break and spam server. Checking with (auto_reconnect=True) and seeing if run into this issue after a longetivity stress test 
 
 
 Thanks to:
