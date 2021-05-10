@@ -19,6 +19,7 @@ chars = [charsv.lower() for charsv in settings["namelist"]]
 kak_min = settings["min_kak"]
 claim_delay = settings["claim_delay"]
 kak_delay = settings["kak_delay"]
+roll_prefix = settings["roll_this"]
 
 
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
@@ -230,7 +231,7 @@ def waifu_roll(tide):
     while True:
         while waifuwait == 0:
             time.sleep(2)
-            bot.sendMessage(tides,"$wg")
+            bot.sendMessage(tides,roll_prefix)
             
             varwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == str(mudae),timeout=5)
             
