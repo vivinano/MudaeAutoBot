@@ -12,14 +12,13 @@ jsonf.close()
 bot = discum.Client(token=settings["token"],log={"console":False, "file":False})
 mudae = 432610292342587392
 chid = settings["channel_id"]
+mhids = [int(mh) for mh in settings["multichannel"]]
 
 series_list = settings["series_list"]
 chars = [charsv.lower() for charsv in settings["namelist"]]
 kak_min = settings["min_kak"]
 claim_delay = settings["claim_delay"]
 kak_delay = settings["kak_delay"]
-
-roll_prefix = settings["roll_this"]
 
 
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
@@ -104,7 +103,7 @@ def on_message(resp):
         channelid = m['channel_id']
         #print(f"{messageid} and {channelid}")
         
-        if int(aId) == mudae:
+        if int(aId) == mudae and int(channelid) in mhids:
             #print("Yes")
 
             if embeds != []:
@@ -178,7 +177,7 @@ def on_message(resp):
         emojiid = r["emoji"]['id']
         
         
-        if reactionid == mudae:
+        if reactionid == mudae and int(rchannelid) in mhids:
             
             if emojiid != None and emoji.lower() in KakeraVari:
                 sendEmoji = emoji + ":" +emojiid
@@ -191,8 +190,8 @@ def on_message(resp):
                 else:
                     print("Skip")
                     return 
-                kakerawallwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == str(mudae),timeout=5)
-                if kakerawallwait != None and kakerawallwait['content'].startswith(f"**{bot.gateway.session.user['username']}") and "kakera" in kakerawallwait['content']:
+                kakerawallwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == mudae and 'kakera' in r.parsed.auto()['content'] and r.parsed.auto()['content'].startswith(f"**{bot.gateway.session.user['username']}"),timeout=5)
+                if kakerawallwait != None:
                     time_to_wait = waitk_finder.findall(kakerawallwait['content'])
                 else:
                     time_to_wait = []
@@ -231,7 +230,7 @@ def waifu_roll(tide):
     while True:
         while waifuwait == 0:
             time.sleep(2)
-            bot.sendMessage(tides,roll_prefix)
+            bot.sendMessage(tides,"$wg")
             
             varwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == str(mudae),timeout=5)
             
@@ -246,5 +245,3 @@ waifus = threading.Timer(10.0,waifu_roll,args=[chid])
 p.start()
 waifus.start()  
 bot.gateway.run()
-
-
