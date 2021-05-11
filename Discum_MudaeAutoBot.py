@@ -87,13 +87,16 @@ def wait_for(bot, predicate, timeout=None):
 #wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == mudae)
 #wait_for(bot,lambda r: r.event.reaction_added and r.parsed.auto()['user_id'] == mudae)
 
-def mudae_warning(tide):
+def mudae_warning(tide,StartwithUser=True):
     # build check func
     def c(r):
         if r.event.message:
             r = r.parsed.auto()
             # must be from relevant channel id, and start with username
-            return r['author']['id'] == str(mudae) and r['channel_id'] == tide and r['content'].startswith(f"**{bot.gateway.session.user['username']}")
+            if StartwithUser == True:
+                return r['author']['id'] == str(mudae) and r['channel_id'] == tide and r['content'].startswith(f"**{bot.gateway.session.user['username']}")
+            elif StartwithUser == False:
+                return r['author']['id'] == str(mudae) and r['channel_id'] == tide
         return False
     return c
 
@@ -228,7 +231,7 @@ def poke_roll(tide):
             time.sleep(2)
             bot.sendMessage(tides,"$p")
 
-            warn_check = mudae_warning(tide)
+            warn_check = mudae_warning(tides,False)
             varwait = wait_for(bot,lambda r: warn_check(r) and "$p" in r.parsed.auto()['content'] and "min" in r.parsed.auto()['content'],timeout=5)
             
             if varwait != None:
@@ -246,7 +249,7 @@ def waifu_roll(tide):
             time.sleep(2)
             bot.sendMessage(tides,roll_prefix)
             
-            varwait = wait_for(bot,mudae_warning(tide),timeout=5)
+            varwait = wait_for(bot,mudae_warning(tides),timeout=5)
             
             if varwait != None:
                 waifuwait = get_wait(varwait['content'])
