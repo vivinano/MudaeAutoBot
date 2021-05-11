@@ -241,10 +241,10 @@ def waifu_roll(tide):
         time.sleep(waifuwait)
         waifuwait = 0
 
-if settings['pkmrolling'].lower() == "true":
+if settings['pkmrolling'].lower().strip() == "true":
     p = threading.Thread(target=poke_roll,args=(chid,))   
     p.start()
-if settings['rolling'].lower() == "true":
+if settings['rolling'].lower().strip() == "true":
     waifus = threading.Timer(10.0,waifu_roll,args=[chid])
     waifus.start()
 bot.gateway.run()
