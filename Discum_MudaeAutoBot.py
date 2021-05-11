@@ -260,4 +260,4 @@ if settings['pkmrolling'].lower().strip() == "true":
 if settings['rolling'].lower().strip() == "true":
     waifus = threading.Timer(10.0,waifu_roll,args=[chid])
     waifus.start()
-bot.gateway.run()
+bot.gateway.run(auto_reconnect=True)
