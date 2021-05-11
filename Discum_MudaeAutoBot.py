@@ -199,8 +199,10 @@ def on_message(resp):
                 else:
                     print("Skip")
                     return 
+
                 warn_check = mudae_warning(rchannelid)
                 kakerawallwait = wait_for(bot,lambda r: warn_check(r) and 'kakera' in r.parsed.auto()['content'],timeout=5)
+
                 if kakerawallwait != None:
                     time_to_wait = waitk_finder.findall(kakerawallwait['content'])
                 else:
@@ -225,7 +227,9 @@ def poke_roll(tide):
         while pwait == 0:
             time.sleep(2)
             bot.sendMessage(tides,"$p")
-            varwait = wait_for(bot,mudae_warning(tide),timeout=5)
+
+            warn_check = mudae_warning(tide)
+            varwait = wait_for(bot,lambda r: warn_check(r) and "$p" in r.parsed.auto()['content'] and "min" in r.parsed.auto()['content'],timeout=5)
             
             if varwait != None and "$p" in varwait['content'] and "min" in varwait['content']:
                 pwait = get_pwait(varwait['content'])
