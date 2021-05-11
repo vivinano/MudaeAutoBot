@@ -231,7 +231,7 @@ def poke_roll(tide):
             warn_check = mudae_warning(tide)
             varwait = wait_for(bot,lambda r: warn_check(r) and "$p" in r.parsed.auto()['content'] and "min" in r.parsed.auto()['content'],timeout=5)
             
-            if varwait != None and "$p" in varwait['content'] and "min" in varwait['content']:
+            if varwait != None:
                 pwait = get_pwait(varwait['content'])
                 print(pwait)
         time.sleep(pwait)
