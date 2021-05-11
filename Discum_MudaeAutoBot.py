@@ -87,7 +87,15 @@ def wait_for(bot, predicate, timeout=None):
 #wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == mudae)
 #wait_for(bot,lambda r: r.event.reaction_added and r.parsed.auto()['user_id'] == mudae)
 
-
+def mudae_warning(tide):
+    # build check func
+    def c(r):
+        if r.event.message:
+            r = r.parsed.auto()
+            # must be from relevant channel id, and start with username
+            return r['author']['id'] == str(mudae) and r['channel_id'] == tide and r['content'].startswith(f"**{bot.gateway.session.user['username']}")
+        return False
+    return c
 
 @bot.gateway.command
 def on_message(resp):
@@ -191,7 +199,8 @@ def on_message(resp):
                 else:
                     print("Skip")
                     return 
-                kakerawallwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == mudae and 'kakera' in r.parsed.auto()['content'] and r.parsed.auto()['content'].startswith(f"**{bot.gateway.session.user['username']}"),timeout=5)
+                warn_check = mudae_warning(rchannelid)
+                kakerawallwait = wait_for(bot,lambda r: warn_check(r) and 'kakera' in r.parsed.auto()['content'],timeout=5)
                 if kakerawallwait != None:
                     time_to_wait = waitk_finder.findall(kakerawallwait['content'])
                 else:
@@ -207,7 +216,7 @@ def on_message(resp):
                     print(f"{emoji} was detected")
                     time.sleep(kak_delay)
                     bot.addReaction(rchannelid,rmessageid,emoji)
-                    
+
 def poke_roll(tide):
     print("Pokemon")
     tides = str(tide)
@@ -216,7 +225,7 @@ def poke_roll(tide):
         while pwait == 0:
             time.sleep(2)
             bot.sendMessage(tides,"$p")
-            varwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == str(mudae),timeout=5)
+            varwait = wait_for(bot,mudae_warning(tide),timeout=5)
             
             if varwait != None and "$p" in varwait['content'] and "min" in varwait['content']:
                 pwait = get_pwait(varwait['content'])
@@ -233,9 +242,9 @@ def waifu_roll(tide):
             time.sleep(2)
             bot.sendMessage(tides,roll_prefix)
             
-            varwait = wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == str(mudae),timeout=5)
+            varwait = wait_for(bot,mudae_warning(tide),timeout=5)
             
-            if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}"):
+            if varwait != None:
                 waifuwait = get_wait(varwait['content'])
                 print(waifuwait)
         time.sleep(waifuwait)
