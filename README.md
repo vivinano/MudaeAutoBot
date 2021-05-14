@@ -1,6 +1,6 @@
 Please Gif Star ?? Stars make me happy
 # Current issues
-Limited channel is just gonna be the default method. users can remove that check if they want all servers. Current issue is that when using for prolong periods of time discum might stop causing rolling functions to break and spam server. Checking with (auto_reconnect=True) and seeing if run into this issue after a longetivity stress test 
+websocket issue closing has been resolved by discum dev. if any issues still persist bring them to my attention
 
 
 Thanks to:
