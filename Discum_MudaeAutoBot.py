@@ -3,6 +3,7 @@ import re
 import asyncio
 import json
 import time
+import logging
 import threading
 
 jsonf = open("Settings_Mudae.json")
@@ -28,6 +29,7 @@ claim_finder = re.compile(r'Claims\: \#??([0-9]+)')
 poke_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min')
 wait_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min \w')
 waitk_finder = re.compile(r'\*\*(?:([0-9+])h )?([0-9]+)\*\* min')
+ser_finder = re.compile(r'.*.')
 
 KakeraVari = [kakerav.lower() for kakerav in settings["emoji_list"]]
 eventlist = ["🕯️","😆"]
@@ -35,6 +37,13 @@ eventlist = ["🕯️","😆"]
 
 kakera_wall = {}
 
+#logging settings
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s:%(message)s')
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
 
 def get_kak(text):
     k_value = kak_finder.findall(text)
@@ -68,6 +77,9 @@ def get_pwait(text):
         hours = int(waits[0][0]) if waits[0][0] != '' else 0
         return (hours*60+int(waits[0][1]))*60
     return 0
+def get_serial(text):
+    serk = ser_finder.findall(text)
+    return serk[0]
 
 _resp = dict()
 def wait_for(bot, predicate, timeout=None):
@@ -113,7 +125,9 @@ def on_message(resp):
         embeds = m['embeds']
         messageid = m['id']
         channelid = m['channel_id']
+        guildid = m['guild_id']
         #print(f"{messageid} and {channelid}")
+        
         
         if int(aId) == mudae and int(channelid) in mhids:
             #print("Yes")
@@ -128,7 +142,7 @@ def on_message(resp):
 
                 if str(user['id']) in content:
                     
-                    print(f"Wished Sniping")
+                    logger.info(f"Wished {charname} from {get_serial(chardes)} with {get_kak(chardes)} Value in Server id:{guildid}")
                     time.sleep(claim_delay)
                     if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                         bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
@@ -137,7 +151,7 @@ def on_message(resp):
                 
                 if charname.lower() in chars:
                     
-                    print(f"{charname} appeared attempting to Snipe")
+                    logger.info(f"{charname} appeared attempting to Snipe Server id:{guildid}")
                     time.sleep(claim_delay)
                     
                     if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
@@ -149,7 +163,7 @@ def on_message(resp):
                     if ser in chardes and charcolor == 16751916:
                         
                         
-                        print(f"{charname} from {ser} appeared attempting to snipe")
+                        logger.info(f"{charname} from {ser} appeared attempting to snipe in {guildid}")
                         time.sleep(claim_delay)
                         if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
@@ -157,27 +171,23 @@ def on_message(resp):
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                             break
-                            
+
                 if "<:kakera:469835869059153940>" in chardes or ("Claims:" in chardes or "Likes:" in chardes) :
                     kak_value = get_kak(chardes)
                     if int(kak_value) >= kak_min and charcolor == 16751916:
                         
                         
-                        print(f"{charname} with a {kak_value} Kakera Value appeared")
+                        logger.info(f"{charname} with a {kak_value} Kakera Value appeared Server:{guildid}")
                         time.sleep(claim_delay)
                         if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
                         else:
                             bot.addReaction(channelid, messageid, "❤")
+                
+                if str(user['id']) not in content and charname.lower() not in chars and get_serial(chardes) not in series_list and int(get_kak(chardes)) < kak_min:
+                    logger.debug(f"Ignoring {charname} from {get_serial(chardes)} with {get_kak(chardes)} Kakera Value in Server id:{guildid}")
                     
-                # if embeds != [] and charcolor == 16751916:
-                    # time.sleep(2)
                     
-                    # #print(bot.getMessage(channelid, messageid).json()[0]["reactions"][2]["emoji"]['id'])
-                    # if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None :
-                        # bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
-                    # else:
-                        # bot.addReaction(channelid, messageid, "❤")
     if resp.event.reaction_added:
         r = resp.parsed.auto()
         #print(r)
@@ -196,11 +206,11 @@ def on_message(resp):
                 
                 cooldown = kakera_wall.get(rguildid,0) - time.time()
                 if cooldown <= 1:
-                    print(f"{emoji} was detected")
+                    logger.info(f"{emoji} was detected")
                     time.sleep(kak_delay)
                     bot.addReaction(rchannelid,rmessageid,sendEmoji)
                 else:
-                    print("Skip")
+                    logger.info(f"Skipped {emoji}")
                     return 
 
                 warn_check = mudae_warning(rchannelid)
@@ -213,7 +223,7 @@ def on_message(resp):
                 
                 if len(time_to_wait):
                     timegetter = (int(time_to_wait[0][0] or "0")*60+int(time_to_wait[0][1] or "0"))*60
-                    #print(timegetter)
+                    print(f"{timegetter} for kakera_wall was set for Server : {rguildid}")
                     kakera_wall[rguildid] = timegetter + time.time()
             
             if emojiid == None:
@@ -223,7 +233,7 @@ def on_message(resp):
                     bot.addReaction(rchannelid,rmessageid,emoji)
 
 def poke_roll(tide):
-    print("Pokemon")
+    logger.debug(f"Pokemon Rolling Started in channel {tide}")
     tides = str(tide)
     pwait = 0
     while True:
@@ -236,12 +246,12 @@ def poke_roll(tide):
             
             if varwait != None:
                 pwait = get_pwait(varwait['content'])
-                print(pwait)
+                print(f"{pwait} : pokerolling : {tide}")
         time.sleep(pwait)
         pwait = 0
 
 def waifu_roll(tide):
-    print("waifu")
+    logger.debug(f"waifu rolling Started in channel {tide}")
     tides = str(tide)
     waifuwait = 0
     while True:
@@ -253,7 +263,7 @@ def waifu_roll(tide):
             
             if varwait != None:
                 waifuwait = get_wait(varwait['content'])
-                print(waifuwait)
+                print(f"{waifuwait}: Waifu rolling : {tide}")
         time.sleep(waifuwait)
         waifuwait = 0
 
