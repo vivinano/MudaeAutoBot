@@ -198,19 +198,20 @@ def on_message(resp):
         emoji = r["emoji"]["name"]
         emojiid = r["emoji"]['id']
         
-        
         if reactionid == mudae and int(rchannelid) in mhids:
             
             if emojiid != None and emoji.lower() in KakeraVari:
                 sendEmoji = emoji + ":" +emojiid
+                react_m = bot.getMessage(rchannelid, rmessageid).json()[0]['embeds'][0]
+                
                 
                 cooldown = kakera_wall.get(rguildid,0) - time.time()
                 if cooldown <= 1:
-                    logger.info(f"{emoji} was detected")
+                    logger.info(f"{emoji} was detected on {react_m['author']['name']}:{get_serial(react_m['description'])} in Server: {rguildid}")
                     time.sleep(kak_delay)
                     bot.addReaction(rchannelid,rmessageid,sendEmoji)
                 else:
-                    logger.info(f"Skipped {emoji}")
+                    logger.info(f"Skipped {emoji} found on {react_m['author']['name']}:{get_serial(react_m['description'])} in Server: {rguildid}")
                     return 
 
                 warn_check = mudae_warning(rchannelid)
@@ -228,7 +229,7 @@ def on_message(resp):
             
             if emojiid == None:
                 if emoji in eventlist:
-                    print(f"{emoji} was detected")
+                    print(f"{emoji} was detected in Server: {rguildid}")
                     time.sleep(kak_delay)
                     bot.addReaction(rchannelid,rmessageid,emoji)
 
