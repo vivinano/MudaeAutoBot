@@ -1,62 +1,54 @@
 Please Gif Star ?? Stars make me happy
-# Current issues
-websocket issue closing has been resolved by discum dev. if any issues still persist bring them to my attention
-
-
-Thanks to:
-https://github.com/FatPain
-for Assisting with Discum it was definitly not something I'm use to
-
 
 # MudaeAutoBot
-What is Mudae Auto Bot?
-
-it is a python bot that Auto rolls and attempts to snipe kaks and Claims in Mudae
-
-How does it work?
-
-All this bot need to work is your "Discord" usertoken and the channel ID that you want to post in
-
-How Automated is it ?
-
-This is completely automated it doesnt need to take any input after inital set up.
-I made it simple where all the variables you need can be edited within the **setting_mudae.json** file
-Your able to run MudaeAutoBot and still be able to do normal work on your device
+MudaeAutoBot is a python bot that auto rolls and attempts to snipe Kakeras and Claims in Mudae
 
 # Features
-+ Snipes and claims kak in all Discord servers you are in that has Mudae#0807
-+ Kak Value sniping as long as Kak value can be determined (Like Rank , Claim Rank , ## Kakera)
-+ Waifu/Husbando Rolling Features that Dynamically grab roll timers
-+ Pokeslot Rolling Features that Dynamically grab roll timers
++ Snipes and claims Kakera in any Discord servers you're in that has Mudae#0807
++ Kakera value sniping as long as kakera value can be determined (e.g. Like Rank, Claim Rank, ## Kakera)
++ Maximizes rolls by tracking roll timers
++ Waifu/Husbando rolling
++ Pokeslot rolling
 + Selective Kakera Reaction Snipes Features(Includes: Soulmate Kak sniping Feature)
-+ Emoji Reaction Snipes  **Ex:Mudae Events**
++ Mudae emoji reaction event sniping support
 
+## How it works
+All this bot needs to work is your Discord _usertoken_ and the channel IDs that you want it to post in
 
-+ MultiRolling Support was added !!!! (please note that each channel will open a Background_task and is not True Threading there will be Issues) **Go Overboard at your own risk**
+This is intended to be completely automated; it doesn't need to take any input other than initial settings configuration.
+You'll be able to leave the window running in the background, and not need to think about it.
 
-# Setting up the bot
-All settings are within the Settings_Mudae.json File
+## Requirements
 
-+ 1. token - **User token** basically the account you want to run this on. If you need extra assistance on how to obtain it let me know.
-+ 2. channelid - Which channel to **Roll** in only (Might Have more uses in the future) ex. 807##########948
-+ 3. multichannel - Which Channel(s) to **Roll** in only (Might havre more uses in future) ex.\[ 807##########948, 517########420\]
-+ 4. claim_delay - Universal-Wide time in **secs** to wait before attempting to Claim Characters ex. 5
-+ 5. kak_delay - Universal-Wide time in **secs** to wait before attempting to snipe Kakeraloot ex. 8
-+ 6. use_emoji - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) ex.  "<:emohi_name:795############214>"
-+ 7. roll_this - If Rolling Enabled it will roll ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg)
-+ 8. Rolling - (True|False) **case sensetive** , Uses ChannelId
-+ 9. Multirollenable - (True|False) **Case Sensetive** !!Rolling must be set to False if MultiRollEnable is True!!
-+ 10. PkmRolling - (True|False) Pokeslot rolling enabled, Uses Channelid
-+ 11. series_list - Name of series of characters you want to claim **Case Sensetive** ex \[ "Honkai Impact 3rd" , "Senran Kagura" \]
-+ 12. name_list - Character name to claim **Exact match only** ex \["Raiden Mei", "gOkU" \]
-+ 13. SoulmateKakSnipeOnly - (True|False) **Case Sensetive** End-game setting to snipe soulmate kakera
-+ 14. SoulmateKakColorValue - #HexValue this is for Soulmate Kakera snipe same value as $ec in Mudae. This is to help determine which one is yours vs soulmate of others
-+ 15. emoji_list - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
-+ 16. min_kak - Claim Character that has a Kakera Worth > Minimum value ex. 500 
- 
- 
- ** In the limited version you need to set multiids for channel you want to monitor ** 
++ Python 3.7+
++ discum 1.2.1+
+
+# Configuration
+To configure the bot, you'll edit the variables in the **Settings_Mudae.json** file for your botting needs.
+
+## Bot settings
+All settings are set within the Settings_Mudae.json File
+
++ `token` - The user token for the account you want to bot on. If you need extra assistance on how to obtain it, let me know.
++ `channelid` - Which channel to **roll** in only (Might have more uses in the future) e.g. 807##########948
++ `multichannel` - Similar to `channelid`, but a *list* of multiple channel IDs e.g.\[ 807##########948, 517########420\]
+  + Requires `Multirollenable` to be True.
++ `claim_delay` - _Affects all servers_ Time in **seconds** to wait before attempting to Claim Characters e.g. 5
++ `kak_delay` - _Affects all servers_ Time in **seconds** to wait before attempting to snipe Kakeraloot e.g. 8
++ `use_emoji` - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) e.g.  "<:emoji_name:795############214>"
++ `roll_this` - ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg) If `Rolling` is enabled it will roll this specific command e.g. '$wg'
++ `Rolling` - (True|False) **Case-sensitive**, uses `channelid`
++ `Multirollenable` - (True|False) **Case-sensitive** !!`Rolling` must be set to False if MultiRollEnable is True!!
++ `PkmRolling` - (True|False) Pokeslot rolling enabled, uses `channelid`
++ `series_list` - **Case-sensitive** Name of series of characters you want to claim  e.g. \[ "Honkai Impact 3rd" , "Senran Kagura" \]
++ `name_list` - **Must be exact match** List of specific character names to claim  e.g. \["Raiden Mei", "gOkU" \]
++ `SoulmateKakSnipeOnly` - (True|False) **Case-sensitive** End-game setting to snipe soulmate kakera
++ `SoulmateKakColorValue` - #HexValue this is for Soulmate Kakera snipe same value as $ec in Mudae. This is to help determine which one is yours vs soulmate of others
++ `emoji_list` - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
++ `min_kak` - A minimum kakera value to snipe a claimable character _regardless of whether it's in the series/name lists_
+
 orginally I didn't want this set up process to be needed as it was easier for someone to set up a user token with the default settings and spin it right up but with more users requesting the limited scope I made the option avaible in a seperate code file
+
 # Optimize the snipes
 Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
 Using these values you usually snipes faster than a "Human" user can react 
@@ -66,23 +58,12 @@ a minimum of 1 second to let mudae register that a character was rolled as is re
 
 (Keep in mind that changing Delays effect servers across the board not just 1 Server)
 
-# Requirments
-*Python installed
-
---python extras--
-
-+ python std library (comes with your python install)
-+ discum 
-
---legacy--
-+ discord.py 
-
-
 # Use at your own Risk
-This is a Discord **selfbot**. I do not claim any responsiblity for bans that happen from use of this program
+This is a Discord **selfbot**. I am not responsible if you get banned using this program. 
 
-Even though Discord.py is used to make normal bots and the only difference is the token used (Bot Token, User Token)
-This is still a Selfbot 
+# Buy me a coffee
+At the request of my personal friends they insisted me link a way to make money off of this project so I guess if you like the support I offer you can always buy me some food or snacks.
+https://www.paypal.com/donate?hosted_button_id=ALRBET9746T8W
 
 # Closing Notes
 I understand that this readme is not as detailed as many would like and I'm sure there are many more questions that one may have.
@@ -91,7 +72,7 @@ Currently I'm still supporting this repo so feel free to **Contact Me** if you a
 
 As for updates those will be added up until I no longer feel like this project is fun.
 
-# Buying me a coffee
+Thanks to:
+https://github.com/FatPain
+for Assisting with Discum it was definitly not something I'm use to
 
-At the request of my personal friends they insisted me link a way to make money off of this project so I guess if you like the support I offer you can always buy me some food or snacks.
-https://www.paypal.com/donate?hosted_button_id=ALRBET9746T8W
