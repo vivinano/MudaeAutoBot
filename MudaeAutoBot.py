@@ -261,6 +261,7 @@ def snipe(recv_time,snipe_delay):
     except ValueError:
         # sleep was negative, so we're overdue!
         return
+    time.sleep(.5)
 
 @bot.gateway.command
 def on_message(resp):
