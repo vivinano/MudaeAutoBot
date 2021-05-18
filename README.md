@@ -1,5 +1,11 @@
 Please Gif Star ?? Stars make me happy
 
+# Huge update
+This section is for the users that was using this bot before this version was pushed.
+This version has alot of more features that optimizes and trys to mask that you are using a bot.
+
+There is a stable branch if you don't want to deal with the possible bugs in this version
+
 # MudaeAutoBot
 MudaeAutoBot is a python bot that auto rolls and attempts to snipe Kakeras and Claims in Mudae
 
@@ -30,9 +36,7 @@ To configure the bot, you'll edit the variables in the **Settings_Mudae.json** f
 All settings are set within the Settings_Mudae.json File
 
 + `token` - The user token for the account you want to bot on. If you need extra assistance on how to obtain it, let me know.
-+ `channelid` - Which channel to **roll** in only (Might have more uses in the future) e.g. 807##########948
-+ `multichannel` - Similar to `channelid`, but a *list* of multiple channel IDs e.g.\[ 807##########948, 517########420\]
-  + Requires `Multirollenable` to be True.
++ `channelids` - Which channels to **roll** and **monitor**  e.g. 807##########948
 + `claim_delay` - _Affects all servers_ Time in **seconds** to wait before attempting to Claim Characters e.g. 5
 + `kak_delay` - _Affects all servers_ Time in **seconds** to wait before attempting to snipe Kakeraloot e.g. 8
 + `use_emoji` - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) e.g.  "<:emoji_name:795############214>"
