@@ -125,7 +125,7 @@ def on_message(resp):
         embeds = m['embeds']
         messageid = m['id']
         channelid = m['channel_id']
-        guildid = m['guild_id']
+        guildid = m['guild_id'] if 'guild_id' in m else None
         #print(f"{messageid} and {channelid}")
         
         
