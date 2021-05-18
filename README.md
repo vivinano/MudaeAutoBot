@@ -1,4 +1,4 @@
-Please Gif Star ?? Stars make me happy
+Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
 
 # Huge update
 This section is for the users that was using this bot before this version was pushed.
