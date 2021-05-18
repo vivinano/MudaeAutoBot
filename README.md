@@ -1,4 +1,4 @@
-Please Gif Star ?? Stars make me happy. I', open to design automation for other games (doesn't have to be a discord game) just let me know
+Please Gif Star ?? Stars make me happy. I'm open to design automation for other games (doesn't have to be a discord game) just let me know
 
 # MudaeAutoBot
 MudaeAutoBot is a python bot that auto rolls and attempts to snipe Kakeras and Claims in Mudae
