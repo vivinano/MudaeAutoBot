@@ -4,7 +4,7 @@ Please Gif Star ?? Stars make me happy
 This section is for the users that was using this bot before this version was pushed.
 This version has alot of more features that optimizes and trys to mask that you are using a bot.
 
-There is a stable branch if you don't want to deal with the possible bugs in this version
+There is a `stable branch` if you don't want to deal with the possible bugs in this version
 
 # MudaeAutoBot
 MudaeAutoBot is a python bot that auto rolls and attempts to snipe Kakeras and Claims in Mudae
