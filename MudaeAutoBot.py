@@ -197,20 +197,32 @@ def get_snipe_time(channel,rolled,message):
         return 0.0
     
     global user
-    if (r < 4 or r == 5) and rolled == user['id']:
-        # Roller can insta-snipe.
+    is_roller = (rolled == user['id'])
+    if (r < 4 or r == 5) and is_roller:
+        # Roller can insta-snipe
         return 0.0
+    if r == 2 and not is_roller:
+        # Not the roller.
+        return d
     
     wished_for = mention_finder.findall(message)
-    if not len(wished_for) and (r == 3 or r == 4):
-        # Not a WISHED character, insta-snipe possible
+    
+    # Wish-based rules
+    if not len(wished_for):
+        # Not a WISHED character
+        if r > 4:
+            # Combined restriction, roller still gets first dibs
+            return 0.0 if is_roller else d
         return 0.0
+    
     if r > 2 and user['id'] in wished_for:
-        # Wisher can insta-snipe
+        # Wishers can insta-snipe
         return 0.0
-    elif r == 1 and rolled not in wished_for:
+    
+    if r == 1 and rolled not in wished_for:
         # Roller (who is not us) did not wish for char, so can insta-snipe
         return 0.0
+    
     return d
 
 def next_claim(channel):
