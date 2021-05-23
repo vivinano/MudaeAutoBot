@@ -102,9 +102,6 @@ def wait_for(bot, predicate, timeout=None):
     
     return obj
 
-#wait_for(bot,lambda r: r.event.message and r.parsed.auto()['author']['id'] == mudae)
-#wait_for(bot,lambda r: r.event.reaction_added and r.parsed.auto()['user_id'] == mudae)
-
 def mudae_warning(tide,StartwithUser=True):
     # build check func
     def c(r):
@@ -133,10 +130,12 @@ def get_server_settings(guild_id,channel_id):
     def checker(r):
         if r.event.message: 
             r = r.parsed.auto()
-            return r['channel_id'] == channel_id and r['author']['id'] == mudae and r['content'].startswith("🛠️")
+            return r['channel_id'] == channel_id and r['author']['id'] == str(mudae) and r['content'].startswith("🛠️")
         return False
     m = wait_for(bot,checker,timeout=5)
-    return m
+    if m == None:
+        return None
+    return m.get('content')
 
 def parse_settings_message(message):
     if message == None:
