@@ -6,6 +6,25 @@ import time
 import logging
 import threading
 
+from collections import OrderedDict
+
+class CacheDict(OrderedDict):
+    def __init__(self, *args, **kwds):
+        self.max = kwds.pop("max", None)
+        OrderedDict.__init__(self, *args, **kwds)
+        self._check_size_limit()
+
+    def __setitem__(self, key, value):
+        OrderedDict.__setitem__(self, key, value)
+        self._check_size_limit()
+
+    def _check_size_limit(self):
+        if self.max is not None:
+            while len(self) > self.max:
+                self.popitem(last=False)
+
+msg_buf = CacheDict(max=50)
+
 jsonf = open("Settings_Mudae.json")
 settings = json.load(jsonf)
 jsonf.close()
@@ -306,6 +325,7 @@ def on_message(resp):
             elif 'footer' in embeds[0] and 'text' in embeds[0]['footer'] and len(pagination_finder.findall(embeds[0]['footer']['text'])):
                 # Has pagination e.g. "1 / 29", which does not occur when rolling
                 return
+            msg_buf[messageid] = roller == user['id']
             print("Our user rolled" if roller == user['id'] else "Someone else rolled")
             
             if "interaction" in m:
@@ -412,6 +432,12 @@ def on_message(resp):
         
         if reactionid == mudae and int(rchannelid) in mhids:
             
+            if emojiid != None and emoji == "kakeraP" and (snipe_delay == 0 or msg_buf[rmessageid]):
+                sendEmoji = emoji + ":" +emojiid
+                react_m = bot.getMessage(rchannelid, rmessageid).json()[0]['embeds'][0]
+                time.sleep(1)
+                bot.addReaction(rchannelid,rmessageid,sendEmoji)
+                
             if emojiid != None and emoji.lower() in KakeraVari:
                 sendEmoji = emoji + ":" +emojiid
                 react_m = bot.getMessage(rchannelid, rmessageid).json()[0]['embeds'][0]
