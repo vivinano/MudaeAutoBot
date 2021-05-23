@@ -182,6 +182,9 @@ def get_snipe_time(channel,rolled,message):
         return 0.0
     
     wished_for = mention_finder.findall(message)
+    if not len(wished_for) and r == 3 or r == 4:
+        # Not a WISHED character, insta-snipe possible
+        return 0.0
     if r > 2 and user['id'] in wished_for:
         # Wisher can insta-snipe
         return 0.0
