@@ -297,6 +297,16 @@ def snipe(recv_time,snipe_delay):
             return
     time.sleep(.5)
 
+def is_rolled_char(m):
+    embeds = m.get('embeds',[])
+    if len(embeds) != 1 or "image" not in embeds[0] or "author" not in embeds[0] or list(embeds[0]["author"].keys()) != ['name']:
+        # not a marry roll.
+        return False
+    elif 'footer' in embeds[0] and 'text' in embeds[0]['footer'] and pagination_finder.findall(embeds[0]['footer']['text']):
+        # Has pagination e.g. "1 / 29", which does not occur when rolling
+        return False
+    return True
+
 @bot.gateway.command
 def on_message(resp):
     global user
@@ -334,12 +344,9 @@ def on_message(resp):
                 roller = c_settings['pending']
             c_settings['pending'] = None
             # Validate this is a rolled character.
-            if len(embeds) != 1 or "image" not in embeds[0] or "author" not in embeds[0] or list(embeds[0]["author"].keys()) != ['name']:
-                # not a marry roll.
+            if not is_rolled_char(m):
                 return
-            elif 'footer' in embeds[0] and 'text' in embeds[0]['footer'] and len(pagination_finder.findall(embeds[0]['footer']['text'])):
-                # Has pagination e.g. "1 / 29", which does not occur when rolling
-                return
+            
             msg_buf[messageid] = {'claimed':int(embeds[0].get('color',0)) not in (16751916,1360437),'rolled':roller == user['id']}
             print("Our user rolled" if roller == user['id'] else "Someone else rolled")
             if msg_buf[messageid]['claimed']:
@@ -418,11 +425,7 @@ def on_message(resp):
             return
         try:
             if r['author']['id'] == str(mudae):
-                if len(embeds) != 1 or "image" not in embeds[0] or "author" not in embeds[0] or list(embeds[0]["author"].keys()) != ['name']:
-                    # not a marry roll.
-                    return
-                elif 'footer' in embeds[0] and 'text' in embeds[0]['footer'] and len(pagination_finder.findall(embeds[0]['footer']['text'])):
-                    # Has pagination e.g. "1 / 29", which does not occur when rolling
+                if not is_rolled_char(r):
                     return
                 embed = embeds[0]
                 f = embed.get('footer')
