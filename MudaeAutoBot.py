@@ -289,13 +289,12 @@ def waifu_roll(tide):
         waifuwait = 0
 
 def snipe(recv_time,snipe_delay):
-    if snipe_delay == 0.0:
-        return
-    try:
-        time.sleep((recv_time+snipe_delay)-time.time())
-    except ValueError:
-        # sleep was negative, so we're overdue!
-        return
+    if snipe_delay != 0.0:
+        try:
+            time.sleep((recv_time+snipe_delay)-time.time())
+        except ValueError:
+            # sleep was negative, so we're overdue!
+            return
     time.sleep(.5)
 
 @bot.gateway.command
