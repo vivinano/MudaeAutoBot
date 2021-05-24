@@ -371,6 +371,8 @@ def on_message(resp):
                 if str(user['id']) in content:
                     logger.info(f"Wished {charname} from {get_serial(chardes)} with {get_kak(chardes)} Value in Server id:{guildid}")
                     snipe(recv,snipe_delay)
+                    if msg_buf[messageid]['claimed']:
+                        return
                     if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                         bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
                     else:
@@ -380,7 +382,8 @@ def on_message(resp):
                     
                     logger.info(f"{charname} appeared attempting to Snipe Server id:{guildid}")
                     snipe(recv,snipe_delay)
-                    
+                    if msg_buf[messageid]['claimed']:
+                        return
                     if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                         bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
                     else:
@@ -392,6 +395,8 @@ def on_message(resp):
                         
                         logger.info(f"{charname} from {ser} appeared attempting to snipe in {guildid}")
                         snipe(recv,snipe_delay)
+                        if msg_buf[messageid]['claimed']:
+                            return
                         if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
                             break
@@ -406,6 +411,8 @@ def on_message(resp):
                         
                         logger.info(f"{charname} with a {kak_value} Kakera Value appeared Server:{guildid}")
                         snipe(recv,snipe_delay)
+                        if msg_buf[messageid]['claimed']:
+                            return
                         if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
                         else:
@@ -418,8 +425,8 @@ def on_message(resp):
         # Handle claims
         r = resp.parsed.auto()
         rchannelid = r["channel_id"]
-        rmessageid = r["message_id"]
-        embeds = m['embeds']
+        rmessageid = r["id"]
+        embeds = r['embeds']
 
         if int(rchannelid) not in mhids:
             return
@@ -432,10 +439,10 @@ def on_message(resp):
                 if f and bot.gateway.session.user['username'] in f['text']:
                     # Successful claim, mark waifu claim window as used
                     waifu_wall[rchannelid] = next_claim(rchannelid)[0]
-                elif int(embed['color']) == 6753544:
+                elif int(embed['color']) == 6753288:
                     # Someone else has just claimed this, mark as such
                     msg_buf[rmessageid]['claimed'] = True
-        except KeyError as e:
+        except KeyError:
             pass
 
     if resp.event.reaction_added:
