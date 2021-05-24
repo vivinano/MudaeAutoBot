@@ -411,13 +411,27 @@ def on_message(resp):
         # Handle claims
         r = resp.parsed.auto()
         rchannelid = r["channel_id"]
+        rmessageid = r["message_id"]
+        embeds = m['embeds']
+
+        if int(rchannelid) not in mhids:
+            return
         try:
             if r['author']['id'] == str(mudae):
-                for embed in r['embeds']:
-                    f = embed.get('footer')
-                    if f and bot.gateway.session.user['username'] in f['text']:
-                        # Successful claim, mark waifu claim window as used
-                        waifu_wall[rchannelid] = next_claim(rchannelid)[0]
+                if len(embeds) != 1 or "image" not in embeds[0] or "author" not in embeds[0] or list(embeds[0]["author"].keys()) != ['name']:
+                    # not a marry roll.
+                    return
+                elif 'footer' in embeds[0] and 'text' in embeds[0]['footer'] and len(pagination_finder.findall(embeds[0]['footer']['text'])):
+                    # Has pagination e.g. "1 / 29", which does not occur when rolling
+                    return
+                embed = embeds[0]
+                f = embed.get('footer')
+                if f and bot.gateway.session.user['username'] in f['text']:
+                    # Successful claim, mark waifu claim window as used
+                    waifu_wall[rchannelid] = next_claim(rchannelid)[0]
+                elif int(embed['color']) == 6753544:
+                    # Someone else has just claimed this, mark as such
+                    msg_buf[rmessageid]['claimed'] = True
         except KeyError as e:
             pass
 
