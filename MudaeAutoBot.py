@@ -340,9 +340,10 @@ def on_message(resp):
             elif 'footer' in embeds[0] and 'text' in embeds[0]['footer'] and len(pagination_finder.findall(embeds[0]['footer']['text'])):
                 # Has pagination e.g. "1 / 29", which does not occur when rolling
                 return
-            msg_buf[messageid] = roller == user['id']
+            msg_buf[messageid] = {'claimed':int(embeds[0].get('color',0)) not in (16751916,1360437),'rolled':roller == user['id']}
             print("Our user rolled" if roller == user['id'] else "Someone else rolled")
-                  
+            if msg_buf[messageid]['claimed']:
+                return
             if(not sniping and roller != user['id']):
                 # Sniping disabled by user
                 return
@@ -443,7 +444,7 @@ def on_message(resp):
         
         if reactionid == mudae and int(rchannelid) in mhids:
             
-            if emojiid != None and emoji == "kakeraP" and (snipe_delay == 0 or msg_buf[rmessageid]):
+            if emojiid != None and emoji == "kakeraP" and (snipe_delay == 0 or msg_buf[rmessageid]['rolled']):
                 sendEmoji = emoji + ":" +emojiid
                 react_m = bot.getMessage(rchannelid, rmessageid).json()[0]['embeds'][0]
                 time.sleep(1)
