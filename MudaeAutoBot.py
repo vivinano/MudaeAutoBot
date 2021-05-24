@@ -44,7 +44,7 @@ sniping = settings.get("sniping_enabled",True)
 
 ready = False
 
-mention_finder = re.compile(r'\<@!(\d+)\>')
+mention_finder = re.compile(r'\<@(?:!)?(\d+)\>')
 pagination_finder = re.compile(r'\d+ / \d+')
 
 kak_finder = re.compile(r'\*\*??([0-9]+)\*\*<:kakera:469835869059153940>')
@@ -345,7 +345,13 @@ def on_message(resp):
             c_settings['pending'] = None
             # Validate this is a rolled character.
             if not is_rolled_char(m):
+                # Might be claim timer
+                if m['content'].startswith('<@' + user['id'] + '>') or m['content'].startswith('<@!' + user['id'] + '>'):
+                    # get claim time
+                    if get_pwait(m['content']):
+                        waifu_wall[channelid] = next_claim(channelid)[0]
                 return
+          
             
             msg_buf[messageid] = {'claimed':int(embeds[0].get('color',0)) not in (16751916,1360437),'rolled':roller == user['id']}
             print("Our user rolled" if roller == user['id'] else "Someone else rolled")
