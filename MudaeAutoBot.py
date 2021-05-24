@@ -327,7 +327,11 @@ def on_message(resp):
             return
         
         elif int(aId) == mudae:
-            roller = c_settings['pending']
+            if "interaction" in m:
+                # Mudae triggered via slash command
+                roller = m['interaction']['user']['id']
+            else:
+                roller = c_settings['pending']
             c_settings['pending'] = None
             # Validate this is a rolled character.
             if len(embeds) != 1 or "image" not in embeds[0] or "author" not in embeds[0] or list(embeds[0]["author"].keys()) != ['name']:
@@ -338,11 +342,7 @@ def on_message(resp):
                 return
             msg_buf[messageid] = roller == user['id']
             print("Our user rolled" if roller == user['id'] else "Someone else rolled")
-            
-            if "interaction" in m:
-                # Mudae triggered via slash command
-                roller = m['interaction']['user']['id']
-            
+                  
             if(not sniping and roller != user['id']):
                 # Sniping disabled by user
                 return
