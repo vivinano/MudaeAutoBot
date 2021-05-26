@@ -261,40 +261,63 @@ def poke_roll(tide):
         pwait = 0
 
 def waifu_roll(tide):
+    global user
     logger.debug(f"waifu rolling Started in channel {tide}")
+    
     tides = str(tide)
     waifuwait = 0
-    roll_parse = re.compile(r'\*\*(\d+)\*\* rolls').findall
-    tyco = True
+    
     if tide not in channel_settings:
         logger.error(f"Could not find channel {tide}, skipping waifu roll on this channel.")
         return
+    
     c_settings = channel_settings[tide]
-    roll_cmd = "$" + roll_prefix
-    chck_cmd = "$ru"
-    if c_settings:
-        roll_cmd = c_settings['prefix'] + roll_prefix
-        chck_cmd = c_settings['prefix'] + "ru"
+    roll_cmd = c_settings['prefix'] + roll_prefix
+    
+    warned_overroll = False
     while True:
         c_settings['rolls'] = 0
-        while waifuwait == 0:
+        rolls_left = -1
+        while waifuwait == False:
             bot.sendMessage(tides,roll_cmd)
+            rolls_left = rolls_left-1
             
             varwait = wait_for(bot,mudae_warning(tides,False),timeout=5)
             time.sleep(.5)
             
             if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}"):
-                waifuwait = next_reset(tide)-time.time()
-            elif c_settings['rolls'] >= c_settings['max_rolls'] and tyco == True:
-                bot.sendMessage(tides,chck_cmd)
-                rum = wait_for(bot,mudae_warning(tides,False),timeout=1)
-                if rum != None and int(roll_parse(rum['content'])[0]) != 0:
-                    c_settings['rolls'] = c_settings['rolls'] - (int(roll_parse(rum['content'])[0]) + 1)
-                else:
-                    waifuwait = next_reset(tide)-time.time()
+                # We over-rolled.
+                waifuwait = True
+                if c_settings['rolls'] > 2 and not warned_overroll:
+                    # We overrolled when we shouldn't have. Warn the user they can prevent this
+                    warned_overroll = True
+                    logger.warning("Please enable $rollsleft 0 feature to prevent overrolling")
+                break
+            elif varwait != None and rolls_left < 0:
+                # Check if our roll featured a warning
+                total_text = varwait.get('content','') # $rollsleft 2
+                if len(varwait['embeds']):
+                    total_text += varwait['embeds'][0].get('footer',{}).get('text','') # $rollsleft 0 (default)
+                    total_text += varwait['embeds'][0].get('description','') # $rollsleft 1
+                
+                # Check if it's our roll
+                our_roll = msg_buf.get(varwait['id'],{}).get('rolled',None)
+                p = c_settings['pending']
+                if our_roll == None and p:
+                    # on_message may have not seen our roll, so we should manually check if it was our roll
+                    our_roll = p == bot.gateway.session.user['id']
+                    
+                    
+                if our_roll and "\u26a0\ufe0f 2 ROLLS " in total_text:
+                    # Has warning for us
+                    rolls_left = 2
+            if rolls_left == 0:
+                # Ran out of rolls
+                waifuwait = True
+            
         print(f"{waifuwait}: Waifu rolling : {tide}")
-        time.sleep(waifuwait)
-        waifuwait = 0
+        time.sleep((next_reset(tide)-time.time())+1)
+        waifuwait = False
 
 def snipe(recv_time,snipe_delay):
     if snipe_delay != 0.0:
