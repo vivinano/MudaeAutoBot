@@ -285,7 +285,7 @@ def waifu_roll(tide):
             varwait = wait_for(bot,mudae_warning(tides,False),timeout=5)
             time.sleep(.5)
             
-            if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}"):
+            if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}") and "$ku" not in varwait['content']:
                 # We over-rolled.
                 waifuwait = True
                 if c_settings['rolls'] > 2 and not warned_overroll:
