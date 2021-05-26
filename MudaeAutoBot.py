@@ -264,14 +264,17 @@ def waifu_roll(tide):
     logger.debug(f"waifu rolling Started in channel {tide}")
     tides = str(tide)
     waifuwait = 0
-
+    roll_parse = re.compile(r'\*\*(\d+)\*\* rolls').findall
+    tyco = True
     if tide not in channel_settings:
         logger.error(f"Could not find channel {tide}, skipping waifu roll on this channel.")
         return
     c_settings = channel_settings[tide]
     roll_cmd = "$" + roll_prefix
+    chck_cmd = "$ru"
     if c_settings:
         roll_cmd = c_settings['prefix'] + roll_prefix
+        chck_cmd = c_settings['prefix'] + "ru"
     while True:
         c_settings['rolls'] = 0
         while waifuwait == 0:
@@ -282,8 +285,13 @@ def waifu_roll(tide):
             
             if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}"):
                 waifuwait = next_reset(tide)-time.time()
-            elif c_settings['rolls'] >= c_settings['max_rolls']:
-                waifuwait = next_reset(tide)-time.time()
+            elif c_settings['rolls'] >= c_settings['max_rolls'] and tyco == True:
+                bot.sendMessage(tides,chck_cmd)
+                rum = wait_for(bot,mudae_warning(tides,False),timeout=1)
+                if rum != None and int(roll_parse(rum['content'])[0]) != 0:
+                    c_settings['rolls'] = c_settings['rolls'] - (int(roll_parse(rum['content'])[0]) + 1)
+                else:
+                    waifuwait = next_reset(tide)-time.time()
         print(f"{waifuwait}: Waifu rolling : {tide}")
         time.sleep(waifuwait)
         waifuwait = 0
@@ -484,13 +492,12 @@ def on_message(resp):
                 sendEmoji = emoji + ":" +emojiid
                 react_m = bot.getMessage(rchannelid, rmessageid).json()[0]['embeds'][0]
                 
-                claim_window = next_claim(rchannelid)[0]
-                on_cooldown = kakera_wall.get(rchannelid,0) == claim_window
-                if not on_cooldown:
+                
+                cooldown = kakera_wall.get(rguildid,0) - time.time()
+                if cooldown <= 1:
                     logger.info(f"{emoji} was detected on {react_m['author']['name']}:{get_serial(react_m['description'])} in Server: {rguildid}")
                     time.sleep(snipe_delay)
                     bot.addReaction(rchannelid,rmessageid,sendEmoji)
-                    kakera_wall[rchannelid] = claim_window
                 else:
                     logger.info(f"Skipped {emoji} found on {react_m['author']['name']}:{get_serial(react_m['description'])} in Server: {rguildid}")
                     return 
@@ -504,7 +511,9 @@ def on_message(resp):
                     time_to_wait = []
                 
                 if len(time_to_wait):
-                    kakera_wall[rchannelid] = claim_window
+                    timegetter = (int(time_to_wait[0][0] or "0")*60+int(time_to_wait[0][1] or "0"))*60
+                    print(f"{timegetter} for kakera_wall was set for Server : {rguildid}")
+                    kakera_wall[rguildid] = timegetter + time.time()
             
             if emojiid == None:
                 if emoji in eventlist:
