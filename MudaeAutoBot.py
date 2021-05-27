@@ -409,8 +409,12 @@ def on_message(resp):
                     if msg_buf[messageid]['claimed']:
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
-                    if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
-                        bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                    if "reactions" in m_reacts:
+                        if m_reacts["reactions"][0]["emoji"]['id'] == None:
+                            bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                        elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
+                            cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
+                            bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
                         bot.addReaction(channelid, messageid, "❤")
                 
@@ -421,8 +425,12 @@ def on_message(resp):
                     if msg_buf[messageid]['claimed']:
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
-                    if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
-                        bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                    if "reactions" in m_reacts:
+                        if m_reacts["reactions"][0]["emoji"]['id'] == None:
+                            bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                        elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
+                            cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
+                            bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
                         bot.addReaction(channelid, messageid, "❤")
                 
@@ -435,15 +443,20 @@ def on_message(resp):
                         if msg_buf[messageid]['claimed']:
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
-                        if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
-                            bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
-                            break
+                        if "reactions" in m_reacts:
+                            if m_reacts["reactions"][0]["emoji"]['id'] == None:
+                                bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                                break
+                            elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
+                                cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
+                                bot.addReaction(channelid, messageid, cust_emoji_sen)
+                                break
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                             break
 
                 if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
-                    det_time = time.time()
+                    #det_time = time.time()
                     kak_value = get_kak(chardes)
                     if int(kak_value) >= kak_min and charcolor == 16751916:
                         
@@ -453,10 +466,15 @@ def on_message(resp):
                         if msg_buf[messageid]['claimed']:
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
-                        if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
-                            bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                        if "reactions" in m_reacts:
+                            if m_reacts["reactions"][0]["emoji"]['id'] == None:
+                                bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                            elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
+                                cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
+                                bot.addReaction(channelid, messageid, cust_emoji_sen)
                         else:
                             bot.addReaction(channelid, messageid, "❤")
+                            #print(f"took this much {time.time() - det_time}")
                 
                 if str(user['id']) not in content and charname.lower() not in chars and get_serial(chardes) not in series_list and int(get_kak(chardes)) < kak_min:
                     logger.debug(f"Ignoring {charname} from {get_serial(chardes)} with {get_kak(chardes)} Kakera Value in Server id:{guildid}")
