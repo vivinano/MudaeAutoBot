@@ -403,15 +403,14 @@ def on_message(resp):
                 chardes = charpop["description"]
                 charcolor = int(charpop['color'])
 
-                #print(charcolor)
-
                 if str(user['id']) in content:
                     logger.info(f"Wished {charname} from {get_serial(chardes)} with {get_kak(chardes)} Value in Server id:{guildid}")
                     snipe(recv,snipe_delay)
                     if msg_buf[messageid]['claimed']:
                         return
-                    if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
-                        bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
+                    m_reacts = bot.getMessage(channelid, messageid).json()[0]
+                    if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
+                        bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                     else:
                         bot.addReaction(channelid, messageid, "❤")
                 
@@ -421,8 +420,9 @@ def on_message(resp):
                     snipe(recv,snipe_delay)
                     if msg_buf[messageid]['claimed']:
                         return
-                    if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
-                        bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
+                    m_reacts = bot.getMessage(channelid, messageid).json()[0]
+                    if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
+                        bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                     else:
                         bot.addReaction(channelid, messageid, "❤")
                 
@@ -434,14 +434,16 @@ def on_message(resp):
                         snipe(recv,snipe_delay)
                         if msg_buf[messageid]['claimed']:
                             return
-                        if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
-                            bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
+                        m_reacts = bot.getMessage(channelid, messageid).json()[0]
+                        if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
+                            bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                             break
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                             break
 
                 if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
+                    det_time = time.time()
                     kak_value = get_kak(chardes)
                     if int(kak_value) >= kak_min and charcolor == 16751916:
                         
@@ -450,8 +452,9 @@ def on_message(resp):
                         snipe(recv,snipe_delay)
                         if msg_buf[messageid]['claimed']:
                             return
-                        if "reactions" in bot.getMessage(channelid, messageid).json()[0] and bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]['id'] == None:
-                            bot.addReaction(channelid, messageid, bot.getMessage(channelid, messageid).json()[0]["reactions"][0]["emoji"]["name"])
+                        m_reacts = bot.getMessage(channelid, messageid).json()[0]
+                        if "reactions" in m_reacts and m_reacts["reactions"][0]["emoji"]['id'] == None:
+                            bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                 
