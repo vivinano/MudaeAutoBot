@@ -145,7 +145,15 @@ def get_server_settings(guild_id,channel_id):
     
     # no setting found
     # so send settings request, and hope they have default prefix.
-    bot.sendMessage(channel_id,"$settings")
+    FsMsgs = bot.searchMessages(guild_id,channelID=[channel_id],userID=[bot.gateway.session.user['id']],textSearch=roll_prefix).json()['messages']
+    settings_hope_prefix = "$"
+    for group in FsMsgs:
+        for result in group:
+            if 'hit' in result:
+                if result['content'].endswith(roll_prefix):
+                    settings_hope_prefix = result['content'].split(roll_prefix)[0]
+    settings_sender = settings_hope_prefix + "settings"                
+    bot.sendMessage(channel_id,settings_sender)
     def checker(r):
         if r.event.message: 
             r = r.parsed.auto()
