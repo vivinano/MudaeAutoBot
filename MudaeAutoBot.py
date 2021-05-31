@@ -146,23 +146,40 @@ def get_server_settings(guild_id,channel_id):
     # no setting found
     # so send settings request, and hope they have default prefix.
     FsMsgs = bot.searchMessages(guild_id,channelID=[channel_id],userID=[bot.gateway.session.user['id']],textSearch=roll_prefix).json()['messages']
-    settings_hope_prefix = "$"
     for group in FsMsgs:
         for result in group:
             if 'hit' in result:
                 if result['content'].endswith(roll_prefix):
                     settings_hope_prefix = result['content'].split(roll_prefix)[0]
-    settings_sender = settings_hope_prefix + "settings"                
-    bot.sendMessage(channel_id,settings_sender)
-    def checker(r):
-        if r.event.message: 
-            r = r.parsed.auto()
-            return r['channel_id'] == channel_id and r['author']['id'] == str(mudae) and r['content'].startswith("🛠️")
-        return False
-    m = wait_for(bot,checker,timeout=5)
-    if m == None:
-        return None
-    return m.get('content')
+    default_settings_if_no_settings = f"""🛠️ __**Server Settings**__ 🛠️
+                 (Server not premium)
+
+                · Prefix: **{settings_hope_prefix}** ($prefix)
+                · Lang: **en** ($lang)
+                · Claim reset: every **180** min. ($setclaim)
+                · Exact minute of the reset: xx:**56** ($setinterval)
+                · Reset shifted: by +**0** min. ($shifthour)
+                · Rolls per hour: **10** ($setrolls)
+                · Time before the claim reaction expires: **30** sec. ($settimer)
+                · Spawn rarity multiplicator for already claimed characters: **2** ($setrare)
+                · Server game mode: **1** ($gamemode)
+                · This channel instance: **1** ($channelinstance)
+                · Slash commands: enabled ($toggleslash)
+
+                · Ranking: enabled ($toggleclaimrank/$togglelikerank)
+                · Ranks displayed during rolls: claims and likes ($togglerolls)
+                · Hentai series: enabled ($togglehentai)
+                · Disturbing imagery series: enabled ($toggledisturbing)
+                · Rolls sniping: **2** ($togglesnipe) => **{settings['claim_delay']}** sec.
+                · Kakera sniping: **1** ($togglekakerasnipe) => **{settings['kak_delay']}** sec.
+                · Limit of characters per harem: **8100** ($haremlimit)
+                · Custom reactions: yes ($claimreact list)
+
+                · Kakera trading: **disabled** ($togglekakeratrade)
+                · Kakera calculation: claims and likes ranks (and number of claimed characters) ($togglekakeraclaim/$togglekakeralike)
+                · Kakera value displayed during rolls: enabled ($togglekakerarolls)
+                · $kakeraloot wishprotect: enabled ($togglewishprotect)"""            
+    return default_settings_if_no_settings
 
 def parse_settings_message(message):
     if message == None:
