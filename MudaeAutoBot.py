@@ -239,7 +239,7 @@ def get_snipe_time(channel,rolled,message):
             # Combined restriction, roller still gets first dibs
             return 0.0 if is_roller else d
         return 0.0
-    
+
     if r > 2 and user['id'] in wished_for:
         # Wishers can insta-snipe
         return 0.0
