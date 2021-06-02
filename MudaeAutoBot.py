@@ -42,7 +42,7 @@ kak_min = settings["min_kak"]
 roll_prefix = settings["roll_this"]
 sniping = settings.get("sniping_enabled",True)
 
-ready = False
+ready = bot.gateway.READY
 
 mention_finder = re.compile(r'\<@(?:!)?(\d+)\>')
 pagination_finder = re.compile(r'\d+ / \d+')
@@ -135,22 +135,29 @@ def mudae_warning(tide,StartwithUser=True):
     return c
 
 def get_server_settings(guild_id,channel_id):
-    msgs = bot.searchMessages(guild_id,userID=[mudae],textSearch="($togglehentai)").json()['messages']
-
-    for group in msgs:
-        for result in group:
-            if 'hit' in result:
-                if result['content'].startswith("🛠️"):
-                    return result['content']
+    msgs = bot.searchMessages(guild_id,authorID=[mudae],textSearch="($togglehentai)",limit = 5)
+    Rmsgs = bot.filterSearchResults(msgs)
+    for group in Rmsgs:
+        if group['content'].startswith("🛠️"):
+            print(f"using $settings found during search")
+            return group['content']
+    # msgs = bot.searchMessages(guild_id,userID=[mudae],textSearch="($togglehentai)").json()['messages']
+    # for group in msgs:
+        # for result in group:
+            # if 'hit' in result:
+                # if result['content'].startswith("🛠️"):
+                    # print(result)
+                    # return result['content']
     
     # no setting found
     # so send settings request, and hope they have default prefix.
-    FsMsgs = bot.searchMessages(guild_id,channelID=[channel_id],userID=[bot.gateway.session.user['id']],textSearch=roll_prefix).json()['messages']
-    for group in FsMsgs:
-        for result in group:
-            if 'hit' in result:
-                if result['content'].endswith(roll_prefix):
-                    settings_hope_prefix = result['content'].split(roll_prefix)[0]
+    FsMsgs = bot.searchMessages(guild_id,channelID=[channel_id],authorID=[bot.gateway.session.user['id']],textSearch=roll_prefix,limit=2)
+    FsResults = bot.filterSearchResults(FsMsgs)
+    for group in FsResults:
+        if group['content'].endswith(roll_prefix):
+            settings_hope_prefix = group['content'].split(roll_prefix)[0]
+             
+    print(f"Default $settings used")
     default_settings_if_no_settings = f"""🛠️ __**Server Settings**__ 🛠️
                  (Server not premium)
 
@@ -591,8 +598,9 @@ def on_message(resp):
                     bot.addReaction(rchannelid,rmessageid,emoji)
 
     global ready
+ 
     if resp.event.ready_supplemental and not ready:
-        ready = True
+        ready = bot.gateway.READY
         user = bot.gateway.session.user
 
         guilds = bot.gateway.session.settings_ready['guilds']
