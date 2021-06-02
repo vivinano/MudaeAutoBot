@@ -135,11 +135,23 @@ def mudae_warning(tide,StartwithUser=True):
     return c
 
 def get_server_settings(guild_id,channel_id):
+    try:
+        with open(f"channeldata\\{channel_id}.txt","r") as textsettings:
+            print(f"Reading from File for channel {channel_id}")
+            return textsettings.read()
+    except IOError:
+        print(f"File Not Found using Different Method")
+        
+    
     msgs = bot.searchMessages(guild_id,authorID=[mudae],textSearch="($togglehentai)",limit = 5)
     Rmsgs = bot.filterSearchResults(msgs)
     for group in Rmsgs:
         if group['content'].startswith("🛠️"):
-            print(f"using $settings found during search")
+            print(f"Using $settings found during search for channel {channel_id}")
+            abcdef = group['content'].replace("🛠️","_")
+            pres_data = open(f"channeldata\\{channel_id}.txt","w+")
+            pres_data.write(abcdef)
+            pres_data.close()
             return group['content']
     # msgs = bot.searchMessages(guild_id,userID=[mudae],textSearch="($togglehentai)").json()['messages']
     # for group in msgs:
@@ -157,7 +169,7 @@ def get_server_settings(guild_id,channel_id):
         if group['content'].endswith(roll_prefix):
             settings_hope_prefix = group['content'].split(roll_prefix)[0]
              
-    print(f"Default $settings used")
+    print(f"Default $settings used for channel {channel_id}")
     default_settings_if_no_settings = f"""🛠️ __**Server Settings**__ 🛠️
                  (Server not premium)
 
@@ -218,7 +230,7 @@ def parse_settings_message(message):
 
     settings['pending'] = None
     settings['rolls'] = 0
-
+ 
     return settings
 
 def get_snipe_time(channel,rolled,message):
