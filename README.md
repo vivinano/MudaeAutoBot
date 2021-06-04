@@ -55,8 +55,6 @@ Using these values you usually snipes faster than a "Human" user can react
 Please when settings Delays avoid setting 0 as your delay as it might be to fast for mudae
 a minimum of 1 second to let mudae register that a character was rolled as is reacted to.
 
-(Keep in mind that changing Delays effect servers across the board not just 1 Server)
-
 # Use at your own Risk
 This is a Discord **selfbot**. I am not responsible if you get banned using this program. 
 
