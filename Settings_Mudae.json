@@ -10,7 +10,6 @@
    "use_emoji":"<:keqing_love:795077041761288214>",
    "roll_this":"wg",
    "rolling":"True",
-   "Multirollenable":"False",
    "pkmrolling":"True",
    "series_list":[
       "Honkai Impact 3rd",
@@ -19,8 +18,6 @@
    "namelist":[
       "Raiden Mei"
    ],
-   "SoulmateKakSnipeOnly":"False",
-   "SoulmateKakColorValue":"#0004ff",
    "emoji_list":[
 	  "kakera",	
       "kakeraT",
