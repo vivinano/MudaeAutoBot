@@ -42,16 +42,11 @@ All settings are set within the Settings_Mudae.json File
 + `use_emoji` - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) e.g.  "<:emoji_name:795############214>"
 + `roll_this` - ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg) If `Rolling` is enabled it will roll this specific command e.g. '$wg'
 + `Rolling` - (True|False) **Case-sensitive**, uses `channelid`
-+ `Multirollenable` - (True|False) **Case-sensitive** !!`Rolling` must be set to False if MultiRollEnable is True!!
 + `PkmRolling` - (True|False) Pokeslot rolling enabled, uses `channelid`
 + `series_list` - **Case-sensitive** Name of series of characters you want to claim  e.g. \[ "Honkai Impact 3rd" , "Senran Kagura" \]
 + `name_list` - **Must be exact match** List of specific character names to claim  e.g. \["Raiden Mei", "gOkU" \]
-+ `SoulmateKakSnipeOnly` - (True|False) **Case-sensitive** End-game setting to snipe soulmate kakera
-+ `SoulmateKakColorValue` - #HexValue this is for Soulmate Kakera snipe same value as $ec in Mudae. This is to help determine which one is yours vs soulmate of others
 + `emoji_list` - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
 + `min_kak` - A minimum kakera value to snipe a claimable character _regardless of whether it's in the series/name lists_
-
-orginally I didn't want this set up process to be needed as it was easier for someone to set up a user token with the default settings and spin it right up but with more users requesting the limited scope I made the option avaible in a seperate code file
 
 # Optimize the snipes
 Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
