@@ -429,7 +429,7 @@ def on_message(resp):
           
             
             msg_buf[messageid] = {'claimed':int(embeds[0].get('color',0)) not in (16751916,1360437),'rolled':roller == user['id']}
-            print("Our user rolled" if roller == user['id'] else "Someone else rolled")
+            print(f"Our user rolled in {channelid}" if roller == user['id'] else f"Someone else rolled in {channelid}")
             if msg_buf[messageid]['claimed']:
                 return
             if(not sniping and roller != user['id']):
