@@ -1,10 +1,10 @@
 Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
 
-# Huge update
-This section is for the users that was using this bot before this version was pushed.
-This version has alot of more features that optimizes and trys to mask that you are using a bot.
+# Regarding Issue Creation
+Lately I have been getting alot of **Issues** that is not based on problems with the bot but they regard `Python Enviroment Errors` I.E `discum module not found`/`discum not installed properly` I have attempted to help many users that have had this problem but it is very time consuming. Python Enviroment issues are not a problem with the **BOT** but how one has installed python this varies from user to user.There are archived issues where a user has had a enviroment issue and they have resolved it you can use that as a reference.
+If these resources do not help there are plently of resources online to help you resolve your `Python Enviroment` Issue
 
-There is a `stable branch` if you don't want to deal with the possible bugs in this version
+**Future Issues opened that do NOT deal with a Error with the BOT will be labeled accordingly and closed**
 
 # MudaeAutoBot
 MudaeAutoBot is a python bot that auto rolls and attempts to snipe Kakeras and Claims in Mudae
