@@ -148,7 +148,7 @@ def get_server_settings(guild_id,channel_id):
     for group in Rmsgs:
         if group['content'].startswith("🛠️"):
             print(f"Using $settings found during search for channel {channel_id}")
-            abcdef = group['content'].replace("🛠️","_")
+            abcdef = group['content'].replace("🛠️","_").replace("⭐","_")
             pres_data = open(f"channeldata\\{channel_id}.txt","w+")
             pres_data.write(abcdef)
             pres_data.close()
@@ -636,6 +636,5 @@ def empty(*args,**kwargs):
     return
 
 #bot.sendMessage = empty
-
 
 bot.gateway.run(auto_reconnect=True)
