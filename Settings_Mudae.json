@@ -34,5 +34,8 @@
       "KakeraW",
       "KakeraL"
    ],
-   "min_kak":500
+   "min_kak":500,
+   "Last_True":"True",
+   "last_claim_min": 10,
+   "min_kak_last_min": 30
 }
