@@ -58,6 +58,10 @@ ser_finder = re.compile(r'.*.')
 KakeraVari = [kakerav.lower() for kakerav in settings["emoji_list"]]
 eventlist = ["🕯️","😆"]
 
+#Last min Claims
+is_last_enable = True if settings["Last_True"] == "True" else False 
+last_claim_window = settings["last_claim_min"]
+min_kak_last = settings["min_kak_last_min"]
 
 kakera_wall = {}
 waifu_wall = {}
@@ -519,6 +523,30 @@ def on_message(resp):
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                             #print(f"took this much {time.time() - det_time}")
+                
+                if is_last_enable and next_claim(channelid)[1] - time.time() < (60 * last_claim_window):
+                    print(f"Last Minute Claim was attempted")
+                    if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
+                        #det_time = time.time()
+                        kak_value = get_kak(chardes)
+                        if int(kak_value) >= min_kak_last and charcolor == 16751916:
+                            
+                            
+                            logger.info(f"{charname} with a {kak_value} Kakera Value appeared Server:{guildid}")
+                            snipe(recv,snipe_delay)
+                            if msg_buf[messageid]['claimed']:
+                                return
+                            m_reacts = bot.getMessage(channelid, messageid).json()[0]
+                            if "reactions" in m_reacts:
+                                if m_reacts["reactions"][0]["emoji"]['id'] == None:
+                                    bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
+                                elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
+                                    cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
+                                    bot.addReaction(channelid, messageid, cust_emoji_sen)
+                            else:
+                                bot.addReaction(channelid, messageid, "❤")
+                                #print(f"took this much {time.time() - det_time}")
+                
                 
                 if str(user['id']) not in content and charname.lower() not in chars and get_serial(chardes) not in series_list and int(get_kak(chardes)) < kak_min:
                     logger.debug(f"Ignoring {charname} from {get_serial(chardes)} with {get_kak(chardes)} Kakera Value in Server id:{guildid}")
