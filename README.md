@@ -5,6 +5,11 @@ Update involves claiming during the last minutes of a claim window. 3 new variab
 Lately I have been getting alot of **Issues** that is not based on problems with the bot but they regard `Python Enviroment Errors` I.E `discum module not found`/`discum not installed properly` I have attempted to help many users that have had this problem but it is very time consuming. Python Enviroment issues are not a problem with the **BOT** but how one has installed python this varies from user to user.There are archived issues where a user has had a enviroment issue and they have resolved it you can use that as a reference.
 If these resources do not help there are plently of resources online to help you resolve your `Python Enviroment` Issue
 
+
+`FAQS`
++ CMD closes instantly - Open with IDLE and run it and i should give you the reason that it closed
++ JSON load error - https://jsonformatter.curiousconcept.com/# copy and paste your json file into the textbox and click validate
+
 **Future Issues opened that do NOT deal with a Error with the BOT will be labeled accordingly and closed**
 
 # MudaeAutoBot
