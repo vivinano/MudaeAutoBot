@@ -1,5 +1,6 @@
 Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
-
+# 6/26/21 Update
+Update involves claiming during the last minutes of a claim window. 3 new variables were introduced in the settings.json which controls enabling , last_claim window in minutes, and finally min kakera value that you want within this window. Currently only kakera value is implemented so if your server doesnt allow kakera values or ranks of any kind the last claim window function won't work and will just run normally
 # Regarding Issue Creation
 Lately I have been getting alot of **Issues** that is not based on problems with the bot but they regard `Python Enviroment Errors` I.E `discum module not found`/`discum not installed properly` I have attempted to help many users that have had this problem but it is very time consuming. Python Enviroment issues are not a problem with the **BOT** but how one has installed python this varies from user to user.There are archived issues where a user has had a enviroment issue and they have resolved it you can use that as a reference.
 If these resources do not help there are plently of resources online to help you resolve your `Python Enviroment` Issue
