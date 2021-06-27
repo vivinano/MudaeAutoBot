@@ -525,9 +525,9 @@ def on_message(resp):
                             #print(f"took this much {time.time() - det_time}")
                 
                 if is_last_enable and next_claim(channelid)[1] - time.time() < (60 * last_claim_window):
-                    print(f"Last Minute Claim was attempted")
                     if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
                         #det_time = time.time()
+                        print(f"Last Minute Claim was attempted")
                         kak_value = get_kak(chardes)
                         if int(kak_value) >= min_kak_last and charcolor == 16751916:
                             
