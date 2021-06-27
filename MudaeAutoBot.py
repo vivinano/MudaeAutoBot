@@ -59,7 +59,7 @@ KakeraVari = [kakerav.lower() for kakerav in settings["emoji_list"]]
 eventlist = ["🕯️","😆"]
 
 #Last min Claims
-is_last_enable = True if settings["Last_True"] == "True" else False 
+is_last_enable = True if settings["Last_True"].lower().strip() == "true" else False 
 last_claim_window = settings["last_claim_min"]
 min_kak_last = settings["min_kak_last_min"]
 
