@@ -9,6 +9,10 @@ If these resources do not help there are plently of resources online to help you
 `FAQS`
 + CMD closes instantly - Open with IDLE and run it and i should give you the reason that it closed
 + JSON load error - https://jsonformatter.curiousconcept.com/# copy and paste your json file into the textbox and click validate
++ Does it have `gateway` log data ? - Your using older version of Dis.c.u.m refer to their github: https://github.com/Merubokkusu/Discord-S.C.U.M
++ How is bot suppose to look like in normal state - 
+![image](https://user-images.githubusercontent.com/33008397/123542012-47927e00-d715-11eb-9bf9-26c78a9721d7.png)
+
 
 **Future Issues opened that do NOT deal with a Error with the BOT will be labeled accordingly and closed**
 
