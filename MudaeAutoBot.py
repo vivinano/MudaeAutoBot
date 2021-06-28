@@ -6,6 +6,7 @@ import json
 import time
 import logging
 import threading
+from os.path import join as pathjoin
 
 from collections import OrderedDict
 
@@ -141,7 +142,8 @@ def mudae_warning(tide,StartwithUser=True):
 
 def get_server_settings(guild_id,channel_id):
     try:
-        with open(f"channeldata\\{channel_id}.txt","r") as textsettings:
+        #with open(f"channeldata\\{channel_id}.txt","r") as textsettings:
+        with open(pathjoin('channeldata',f'{channel_id}.txt'),'r') as textsettings:
             print(f"Reading from File for channel {channel_id}")
             return textsettings.read()
     except IOError:
@@ -154,7 +156,8 @@ def get_server_settings(guild_id,channel_id):
         if group['content'].startswith("🛠️"):
             print(f"Using $settings found during search for channel {channel_id}")
             abcdef = group['content'].replace("🛠️","_").replace("⭐","_")
-            pres_data = open(f"channeldata\\{channel_id}.txt","w+")
+            #pres_data = open(f"channeldata\\{channel_id}.txt","w+")
+            pres_data = open(pathjoin('channeldata',f'{channel_id}.txt'),'w+')
             pres_data.write(abcdef)
             pres_data.close()
             return group['content']
