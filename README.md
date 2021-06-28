@@ -71,10 +71,6 @@ a minimum of 1 second to let mudae register that a character was rolled as is re
 # Use at your own Risk
 This is a Discord **selfbot**. I am not responsible if you get banned using this program. 
 
-# Buy me a coffee
-At the request of my personal friends they insisted me link a way to make money off of this project so I guess if you like the support I offer you can always buy me some food or snacks.
-https://www.paypal.com/donate?hosted_button_id=ALRBET9746T8W
-
 # Closing Notes
 I understand that this readme is not as detailed as many would like and I'm sure there are many more questions that one may have.
 
