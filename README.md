@@ -13,6 +13,7 @@ If these resources do not help there are plently of resources online to help you
 + How is bot suppose to look like in normal state - 
 ![image](https://user-images.githubusercontent.com/33008397/123542012-47927e00-d715-11eb-9bf9-26c78a9721d7.png)
 
++ Claims / Bot didn't claim X character - Please make sure you have checked if the `bot has not claimed already within the claim window` , or that `someone else did not already claim X character before the snipe protection has expired`
 
 **Future Issues opened that do NOT deal with a Error with the BOT will be labeled accordingly and closed**
 
