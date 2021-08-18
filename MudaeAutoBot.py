@@ -214,6 +214,7 @@ def parse_settings_message(message):
         return None
     val_parse = re.compile(r'\*\*(\S+)\*\*').findall
     num_parse = re.compile(r'(\d+)').findall
+    num_parsedec = re.compile(r'(\d*[.,]?\d)').findall
 
     settings_p = re.findall(r'\w+: (.*)',message)
     settings = dict()
@@ -225,8 +226,9 @@ def parse_settings_message(message):
     settings['shift'] = int(num_parse(settings_p[4])[0])
     settings['max_rolls'] = int(num_parse(settings_p[5])[0])
     settings['expiry'] = float(num_parse(settings_p[6])[0])
-    settings['claim_snipe'] = [float(v) for v in num_parse(settings_p[15])]
-    settings['kak_snipe'] = [float(v) for v in num_parse(settings_p[16])]
+    settings['claim_snipe'] = [float(v) for v in num_parsedec(settings_p[15])]
+    settings['kak_snipe'] = [float(v) for v in num_parsedec(settings_p[16])]
+    
 
     settings['claim_snipe'][0] = int(settings['claim_snipe'][0])
     # pad out claim/kak snipe for default '0 second cooldown'
