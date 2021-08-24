@@ -214,7 +214,7 @@ def parse_settings_message(message):
         return None
     val_parse = re.compile(r'\*\*(\S+)\*\*').findall
     num_parse = re.compile(r'(\d+)').findall
-    num_parsedec = re.compile(r'(\d*[.,]?\d)').findall
+    num_parsedec = re.compile(r'(\d*[.,]?\d+)').findall
 
     settings_p = re.findall(r'\w+: (.*)',message)
     settings = dict()
