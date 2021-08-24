@@ -331,6 +331,11 @@ def waifu_roll(tide):
     
     warned_overroll = False
     while True:
+        wait_for_quiet = wait_for(bot,mudae_warning(tides,False),timeout=10)
+        if wait_for_quiet != None:
+            # don't do stuff
+            continue
+    
         c_settings['rolls'] = 0
         rolls_left = -1
         while waifuwait == False:
