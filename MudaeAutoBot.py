@@ -33,6 +33,7 @@ jsonf.close()
 
 bot = discum.Client(token=settings["token"],log={"console":False, "file":False})
 mudae = 432610292342587392
+
 with open("cmds.txt","r") as f:
     mudae_cmds = [line.rstrip() for line in f]
 mhids = [int(mh) for mh in settings["channel_ids"]]
@@ -605,6 +606,9 @@ def on_message(resp):
             mhids.remove(int(rchannelid))
             logger.error(f"Could not find settings for {rchannelid}, please trigger the '$settings' command in the server and run the bot again.")
             return
+        
+        if reactionid == int(user['id']) and int(rchannelid) in mhids:
+            logger.info(f"Sniping time waited Reaction was added")
 
         snipe_delay = channel_settings[int(rchannelid)]['kak_snipe'][1]
         
