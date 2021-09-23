@@ -48,8 +48,8 @@ All settings are set within the Settings_Mudae.json File
 
 + `token` - The user token for the account you want to bot on. If you need extra assistance on how to obtain it, let me know.
 + `channelids` - Which channels to **roll** and **monitor**  e.g. 807##########948
-+ `claim_delay` - _Affects all servers_ Time in **seconds** to wait before attempting to Claim Characters e.g. 5
-+ `kak_delay` - _Affects all servers_ Time in **seconds** to wait before attempting to snipe Kakeraloot e.g. 8
++ `claim_delay` - _Affects servers w/o $setting instance_ Time in **seconds** to wait before attempting to Claim Characters e.g. 5
++ `kak_delay` - _Affects servers w/o $setting instance_ Time in **seconds** to wait before attempting to snipe Kakeraloot e.g. 8
 + `use_emoji` - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) e.g.  "<:emoji_name:795############214>"
 + `roll_this` - ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg) If `Rolling` is enabled it will roll this specific command e.g. '$wg'
 + `Rolling` - (True|False) **Case-sensitive**, uses `channelid`
