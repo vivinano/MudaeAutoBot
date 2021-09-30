@@ -6,7 +6,12 @@ import json
 import time
 import logging
 import threading
+from random import seed
+from random import random
+from random import randint
 from os.path import join as pathjoin
+
+print("Welcome... MudaeAutoBot is now starting.") 
 
 from collections import OrderedDict
 
@@ -73,7 +78,7 @@ waifu_wall = {}
 #logging settings
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s:%(message)s')
+formatter = logging.Formatter("%(asctime)s;%(levelname)s;%(message)s","[%Y/%m/%d %H:%M:%S UTC] ")#edited the date format
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
@@ -95,8 +100,19 @@ def get_kak(text):
         pkak = (int(LR) + int(CR)) /2
         multi = 1 + (CA/5500)
         return((25000 *(pkak+70)**-.75+20)*multi+.5)     
-    return 0
-    
+    return 0 
+
+def randomint():
+    valuex = randint(600, 2400)
+    return valuex
+    #generate random number for time to roll
+
+def tstamp():
+    t = time.localtime()
+    current_time = time.strftime("%m/%d %I:%M:%S UTC", t)
+    return current_time
+#added timestamp function
+
 def get_wait(text):
     waits = wait_finder.findall(text)
     if len(waits):
@@ -146,17 +162,16 @@ def get_server_settings(guild_id,channel_id):
     try:
         #with open(f"channeldata\\{channel_id}.txt","r") as textsettings:
         with open(pathjoin('channeldata',f'{channel_id}.txt'),'r') as textsettings:
-            print(f"Reading from File for channel {channel_id}")
+            print(f"[{tstamp()}] Reading from File for channel {channel_id}")
             return textsettings.read()
     except IOError:
-        print(f"File Not Found using Different Method")
-        
+        print(f"[{tstamp()}] File Not Found using Different Method")
     
     msgs = bot.searchMessages(guild_id,authorID=[mudae],textSearch="($togglehentai)",limit = 5)
     Rmsgs = bot.filterSearchResults(msgs)
     for group in Rmsgs:
         if group['content'].startswith("🛠️"):
-            print(f"Using $settings found during search for channel {channel_id}")
+            print(f"[{tstamp()}] Using $settings found during search for channel {channel_id}")
             abcdef = group['content'].replace("🛠️","_").replace("⭐","_")
             #pres_data = open(f"channeldata\\{channel_id}.txt","w+")
             pres_data = open(pathjoin('channeldata',f'{channel_id}.txt'),'w+')
@@ -179,7 +194,7 @@ def get_server_settings(guild_id,channel_id):
         if group['content'].endswith(roll_prefix):
             settings_hope_prefix = group['content'].split(roll_prefix)[0]
              
-    print(f"Default $settings used for channel {channel_id}")
+    print(f"[{tstamp()}]Default $settings used for channel {channel_id}")
     default_settings_if_no_settings = f"""🛠️ __**Server Settings**__ 🛠️
                  (Server not premium)
 
@@ -199,8 +214,8 @@ def get_server_settings(guild_id,channel_id):
                 · Ranks displayed during rolls: claims and likes ($togglerolls)
                 · Hentai series: enabled ($togglehentai)
                 · Disturbing imagery series: enabled ($toggledisturbing)
-                · Rolls sniping: **2** ($togglesnipe) => **{settings['claim_delay']}** sec.
-                · Kakera sniping: **1** ($togglekakerasnipe) => **{settings['kak_delay']}** sec.
+                · Rolls sniping: **4** ($togglesnipe) => **{settings['claim_delay']}** sec.
+                · Kakera sniping: **4** ($togglekakerasnipe) => **{settings['kak_delay']}** sec.
                 · Limit of characters per harem: **8100** ($haremlimit)
                 · Custom reactions: yes ($claimreact list)
 
@@ -236,9 +251,9 @@ def parse_settings_message(message):
     if len(settings['claim_snipe']) < 2:
         settings['claim_snipe'] += [0.0]
     if len(settings['kak_snipe']) < 2:
-        settings['kak_snipe'] += [0.0]
+        settings['kak_snipe'] += [2.5]
     settings['claim_snipe'][0] = int(settings['claim_snipe'][0])
-    settings['kak_snipe'][0] = int(settings['kak_snipe'][0])
+    settings['kak_snipe'][1] = int(settings['kak_snipe'][0])
 
     settings['pending'] = None
     settings['rolls'] = 0
@@ -309,7 +324,7 @@ def poke_roll(tide):
     pwait = 0
     while True:
         while pwait == 0:
-            time.sleep(2)
+            time.sleep(2) #edit this for pokemon delay
             bot.sendMessage(tides,c_settings['prefix']+"p")
             pwait = 2*60*60 # sleep for 2 hours
         print(f"{pwait} : pokerolling : {tide}")
@@ -319,7 +334,7 @@ def poke_roll(tide):
 def waifu_roll(tide):
     global user
     logger.debug(f"waifu rolling Started in channel {tide}")
-    
+
     tides = str(tide)
     waifuwait = 0
     
@@ -340,11 +355,13 @@ def waifu_roll(tide):
         c_settings['rolls'] = 0
         rolls_left = -1
         while waifuwait == False:
+            bot.typingAction(tides)
+            time.sleep(0.4)
             bot.sendMessage(tides,roll_cmd)
             rolls_left = rolls_left-1
             
             varwait = wait_for(bot,mudae_warning(tides,False),timeout=5)
-            time.sleep(.5)
+            time.sleep(1.0)
             
             if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}") and "$ku" not in varwait['content']:
                 # We over-rolled.
@@ -376,8 +393,9 @@ def waifu_roll(tide):
                 # Ran out of rolls
                 waifuwait = True
             
-        print(f"{waifuwait}: Waifu rolling : {tide}")
-        time.sleep((next_reset(tide)-time.time())+1)
+        print(f"[{tstamp()}] {waifuwait}: Waifu rolling : {tide}")
+        print(f"[{tstamp()}] waiting {(randomint()+next_reset(tide)-time.time()+1)} seconds to roll again")
+        time.sleep((randomint()+next_reset(tide)-time.time())+1)
         waifuwait = False
 
 def snipe(recv_time,snipe_delay):
@@ -387,7 +405,7 @@ def snipe(recv_time,snipe_delay):
         except ValueError:
             # sleep was negative, so we're overdue!
             return
-    time.sleep(.5)
+    time.sleep(3.5) #edit this for character claim react delay
 
 def is_rolled_char(m):
     embeds = m.get('embeds',[])
@@ -446,7 +464,7 @@ def on_message(resp):
           
             
             msg_buf[messageid] = {'claimed':int(embeds[0].get('color',0)) not in (16751916,1360437),'rolled':roller == user['id']}
-            print(f"Our user rolled in {channelid}" if roller == user['id'] else f"Someone else rolled in {channelid}")
+            print(f"[{tstamp()}] Our user rolled in {channelid}" if roller == user['id'] else f"[{tstamp()}] Someone else rolled in {channelid}")
             if msg_buf[messageid]['claimed']:
                 return
             if(not sniping and roller != user['id']):
@@ -477,8 +495,10 @@ def on_message(resp):
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
-                        bot.addReaction(channelid, messageid, "❤")
-                
+                        bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")#replace these emotes with your own
+                        time.sleep(2)
+                        bot.sendMessage(channelid, ":0")
+                        
                 if charname.lower() in chars:
                     
                     logger.info(f"{charname} appeared attempting to Snipe Server id:{guildid}")
@@ -493,8 +513,11 @@ def on_message(resp):
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
-                        bot.addReaction(channelid, messageid, "❤")
-                
+                        bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")#replace all these emotes with your own
+                    
+                        time.sleep(2)
+                        bot.sendMessage(channelid, ":0") 
+
                 for ser in series_list:
                     if ser in chardes and charcolor == 16751916:
                         
@@ -513,7 +536,7 @@ def on_message(resp):
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                                 break
                         else:
-                            bot.addReaction(channelid, messageid, "❤")
+                            bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")
                             break
 
                 if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
@@ -534,13 +557,13 @@ def on_message(resp):
                                 cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                         else:
-                            bot.addReaction(channelid, messageid, "❤")
+                            bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")
                             #print(f"took this much {time.time() - det_time}")
                 
                 if is_last_enable and next_claim(channelid)[1] - time.time() < (60 * last_claim_window):
                     if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
                         #det_time = time.time()
-                        print(f"Last Minute Claim was attempted")
+                        print(f"[{tstamp()}] Last Minute Claim was attempted")
                         kak_value = get_kak(chardes)
                         if int(kak_value) >= min_kak_last and charcolor == 16751916:
                             
@@ -557,7 +580,7 @@ def on_message(resp):
                                     cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                     bot.addReaction(channelid, messageid, cust_emoji_sen)
                             else:
-                                bot.addReaction(channelid, messageid, "❤")
+                                bot.addReaction(channelid, messageid, "<:MIN_kannasip:892599663130206218>")
                                 #print(f"took this much {time.time() - det_time}")
                 
                 
@@ -617,7 +640,7 @@ def on_message(resp):
             if emojiid != None and emoji == "kakeraP" and (snipe_delay == 0 or msg_buf[rmessageid]['rolled']):
                 sendEmoji = emoji + ":" +emojiid
                 react_m = bot.getMessage(rchannelid, rmessageid).json()[0]['embeds'][0]
-                time.sleep(1)
+                time.sleep(2.5) #edit this for free kak reaction delay
                 bot.addReaction(rchannelid,rmessageid,sendEmoji)
                 
             if emojiid != None and emoji.lower() in KakeraVari:
@@ -627,7 +650,7 @@ def on_message(resp):
                 cooldown = kakera_wall.get(rguildid,0) - time.time()
                 if cooldown <= 1:
                     logger.info(f"{emoji} was detected on {react_m['author']['name']}:{get_serial(react_m['description'])} in Server: {rguildid}")
-                    time.sleep(snipe_delay)
+                    time.sleep(2+snipe_delay) #edit this for normal kakera reacts delay
                     bot.addReaction(rchannelid,rmessageid,sendEmoji)
                 else:
                     logger.info(f"Skipped {emoji} found on {react_m['author']['name']}:{get_serial(react_m['description'])} in Server: {rguildid}")
@@ -675,8 +698,8 @@ def on_message(resp):
                     
             if emojiid == None:
                 if emoji in eventlist:
-                    print(f"{emoji} was detected in Server: {rguildid}")
-                    time.sleep(snipe_delay)
+                    print(f"[{tstamp()}] {emoji} was detected in Server: {rguildid}")
+                    time.sleep(1.7+snipe_delay) #edit this for event reaction time
                     bot.addReaction(rchannelid,rmessageid,emoji)
 
     global ready
