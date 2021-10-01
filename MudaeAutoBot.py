@@ -103,7 +103,7 @@ def get_kak(text):
     return 0 
 
 def randomint():
-    valuex = randint(600, 2400)
+    valuex = randint(300, 3000)
     return valuex
     #generate random number for time to roll
 
@@ -392,9 +392,10 @@ def waifu_roll(tide):
             if rolls_left == 0:
                 # Ran out of rolls
                 waifuwait = True
-            
+              
+        
         print(f"[{tstamp()}] {waifuwait}: Waifu rolling : {tide}")
-        print(f"[{tstamp()}] waiting {(randomint()+next_reset(tide)-time.time()+1)} seconds to roll again")
+        print(f"[{tstamp()}] waiting a random amount of time to roll again")
         time.sleep((randomint()+next_reset(tide)-time.time())+1)
         waifuwait = False
 
