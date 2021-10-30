@@ -7,7 +7,7 @@ import time
 import logging
 import threading
 from os.path import join as pathjoin
-
+from discum.utils.slash import SlashCommander
 from collections import OrderedDict
 
 class CacheDict(OrderedDict):
@@ -37,6 +37,8 @@ mudae = 432610292342587392
 with open("cmds.txt","r") as f:
     mudae_cmds = [line.rstrip() for line in f]
 mhids = [int(mh) for mh in settings["channel_ids"]]
+shids = [int(sh) for sh in settings["slash_ids"]]
+ghids = [int(gh) for gh in settings["slash_guild_ids"]]
 channel_settings = dict()
 
 series_list = settings["series_list"]
@@ -316,9 +318,12 @@ def poke_roll(tide):
         time.sleep(pwait) 
         pwait = 0
 
-def waifu_roll(tide):
+def waifu_roll(tide,slashed,slashguild):
     global user
-    logger.debug(f"waifu rolling Started in channel {tide}")
+    if slashed == None:
+        logger.debug(f"waifu rolling Started in channel {tide}")
+    else:
+        logger.debug(f"Slashed rolling Started in channel {tide}")
     
     tides = str(tide)
     waifuwait = 0
@@ -340,7 +345,10 @@ def waifu_roll(tide):
         c_settings['rolls'] = 0
         rolls_left = -1
         while waifuwait == False:
-            bot.sendMessage(tides,roll_cmd)
+            if slashed != None:
+                bot.triggerSlashCommand(str(mudae), channelID=tides, guildID=slashguild, data=slashed)
+            else:
+                bot.sendMessage(tides,roll_cmd)
             rolls_left = rolls_left-1
             
             varwait = wait_for(bot,mudae_warning(tides,False),timeout=5)
@@ -678,13 +686,26 @@ def on_message(resp):
                     print(f"{emoji} was detected in Server: {rguildid}")
                     time.sleep(snipe_delay)
                     bot.addReaction(rchannelid,rmessageid,emoji)
-
+                    
+    if resp.event.guild_application_commands_updated:
+        slashCmds = resp.parsed.auto()['application_commands']
+        s = SlashCommander(slashCmds, application_id=str(mudae))
+        slashget = s.get([roll_prefix])
+        
+        if settings['slash_rolling'].lower().strip() == "true":
+            for xchg in range(len(shids)):
+                slashchannel = shids[xchg]
+                slashguild = ghids[xchg]
+                slashfus = threading.Timer(10.0,waifu_roll,args=[slashchannel,slashget,slashguild])
+                slashfus.start()
+            
     global ready
  
     if resp.event.ready_supplemental and not ready:
         ready = bot.gateway.READY
         user = bot.gateway.session.user
-
+        bot.gateway.request.searchSlashCommands(str(ghids[0]), limit=100, command_ids=[])
+        
         guilds = bot.gateway.session.settings_ready['guilds']
         chs = set(str(mhid) for mhid in mhids)
         for gid, guild in guilds.items():
@@ -699,7 +720,7 @@ def on_message(resp):
             p.start()
         if settings['rolling'].lower().strip() == "true":
             for chid in mhids:
-                waifus = threading.Timer(10.0,waifu_roll,args=[chid])
+                waifus = threading.Timer(10.0,waifu_roll,args=[chid,None,None])
                 waifus.start()
 
 def empty(*args,**kwargs):
