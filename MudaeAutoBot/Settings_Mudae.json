@@ -1,0 +1,47 @@
+{
+   "token":"1",
+   "channel_ids":[
+	  111111111111111
+   ],
+   "slash_ids":[
+	  11111111111111
+   ],
+   "slash_guild_ids":[
+      111111111111111
+   ],
+   "claim_delay":8,
+   "kak_delay":9,
+   "use_emoji":"<:keqing_love:795077041761288214>",
+   "roll_this":"wg",
+   "rolling":"True",
+   "slash_rolling":"True",
+   "pkmrolling":"True",
+   "series_list":[
+      "Honkai Impact 3rd"
+   ],
+   "namelist":[
+      "Raiden Mei"
+   ],
+   "emoji_list":[
+	  "kakera",	
+      "kakeraT",
+      "kakeraG",
+      "kakeraY",
+      "kakeraO",
+      "kakeraR",
+      "kakeraW",
+      "kakeraL"
+   ],
+   "soulemoji_list":[
+      "kakeraO",
+      "kakeraR",
+      "KakeraW",
+      "KakeraL"
+   ],
+   "min_kak":500,
+   "Last_True":"True",
+   "last_claim_min": 61,
+   "min_kak_last_min": 10
+}
+
+
