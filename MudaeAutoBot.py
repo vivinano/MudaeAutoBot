@@ -577,7 +577,8 @@ def on_message(resp):
         r = resp.parsed.auto()
         rchannelid = r["channel_id"]
         rmessageid = r["id"]
-        embeds = r['embeds']
+        #embeds = r['embeds']
+        embeds = r.get('embeds',[])
 
         if int(rchannelid) not in mhids:
             return
