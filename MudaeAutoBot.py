@@ -11,6 +11,7 @@ from random import random
 from random import randint
 from os.path import join as pathjoin
 from discum.utils.slash import SlashCommander
+
 print("Welcome... MudaeAutoBot is now starting.")
 
 from collections import OrderedDict
@@ -365,8 +366,8 @@ def waifu_roll(tide):
             if slashed != None:
                 bot.triggerSlashCommand(str(mudae), channelID=tides, guildID=slashguild, data=slashed)
             else:
-				bot.typingAction(tides)
-				time.sleep(0.2)
+                bot.typingAction(tides)
+                time.sleep(0.2)
                 bot.sendMessage(tides,roll_cmd)
             rolls_left = rolls_left-1
             
