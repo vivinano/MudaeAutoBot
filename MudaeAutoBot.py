@@ -337,7 +337,8 @@ def poke_roll(tide):
 
 def waifu_roll(tide, next_claim, slashed):
     global user
-    global waifu_sleep # boolean to stop rolling when claim has been used
+    global dict_claims # dict to keep track of claim spent channels, stop rolling when claim has been used
+    dict_claims = {}
     
     if slashed == None:
         logger.debug(f"waifu rolling Started in channel {tide}")
@@ -401,14 +402,15 @@ def waifu_roll(tide, next_claim, slashed):
                 if our_roll and "\u26a0\ufe0f 2 ROLLS " in total_text:
                     # Has warning for us
                     rolls_left = 2
-            if waifu_sleep == True and settings['stop_on_claim'].lower().strip() == "true": 
-                # stop rolling when claim has been used
-                waifuwait = True
-                print(f"[{tstamp()}]{waifuwait}: Waifu rolling : {tide}")
-                print(f"[{tstamp()}] waiting for claim")
-                time.sleep((randomint()+next_claim(tide)-time.time())+1)
-                waifuwait = False
-                waifu_sleep = False
+            if tide in dict_claims and settings['stop_on_claim'].lower().strip() == "true":
+                if dict_claims[tide] == True:
+                    # stop rolling when claim has been used
+                    waifuwait = True
+                    print(f"[{tstamp()}] {waifuwait}: Waifu rolling : {tide}")
+                    print(f"[{tstamp()}] waiting for claim in {tide}")
+                    time.sleep((randomint()+next_claim(tide)-time.time())+1)
+                    del dict_claims[tide]
+                    waifuwait = False
             elif rolls_left == 0:
                 # Ran out of rolls or claim already used
                 waifuwait = True
@@ -439,7 +441,8 @@ def is_rolled_char(m):
 @bot.gateway.command
 def on_message(resp):
     global user
-    global waifu_sleep #boolean to stop rolling when claim has been used
+    global dict_claims # dict to keep track of claim spent channels, stop rolling when claim has been used
+    
     recv = time.time()
     if resp.event.message:
         m = resp.parsed.auto()
@@ -510,14 +513,12 @@ def on_message(resp):
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
                     if "reactions" in m_reacts: 
-                        waifu_sleep = True
                         if m_reacts["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                         elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
-                        waifu_sleep = True
                         bot.addReaction(channelid, messageid, "❤")
                 
                 if charname.lower() in chars:
@@ -528,14 +529,12 @@ def on_message(resp):
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
                     if "reactions" in m_reacts:
-                        waifu_sleep = True
                         if m_reacts["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                         elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
-                        waifu_sleep = True
                         bot.addReaction(channelid, messageid, "❤")
                 
                 for ser in series_list:
@@ -547,7 +546,6 @@ def on_message(resp):
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
                         if "reactions" in m_reacts:
-                            waifu_sleep = True
                             if m_reacts["reactions"][0]["emoji"]['id'] == None:
                                 bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                                 break
@@ -556,7 +554,6 @@ def on_message(resp):
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                                 break
                         else:
-                            waifu_sleep = True
                             bot.addReaction(channelid, messageid, "❤")
                             break
 
@@ -571,14 +568,12 @@ def on_message(resp):
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
                         if "reactions" in m_reacts:
-                            waifu_sleep = True
                             if m_reacts["reactions"][0]["emoji"]['id'] == None:
                                 bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                             elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                                 cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                         else:
-                            waifu_sleep = True
                             bot.addReaction(channelid, messageid, "❤")
                             #print(f"took this much {time.time() - det_time}")
                 
@@ -628,6 +623,7 @@ def on_message(resp):
                 if f and bot.gateway.session.user['username'] in f['text']:
                     # Successful claim, mark waifu claim window as used
                     waifu_wall[rchannelid] = next_claim(rchannelid)[0]
+                    dict_claims[rchannelid] = True
                 elif int(embed['color']) == 6753288:
                     # Someone else has just claimed this, mark as such
                     msg_buf[rmessageid]['claimed'] = True
