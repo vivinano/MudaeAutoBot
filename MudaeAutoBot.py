@@ -335,10 +335,12 @@ def poke_roll(tide):
         time.sleep(pwait) 
         pwait = 0
 
+global dict_claims
+dict_claims = {}
+
 def waifu_roll(tide, next_claim, slashed):
     global user
     global dict_claims # dict to keep track of claim spent channels, stop rolling when claim has been used
-    dict_claims = {}
     
     if slashed == None:
         logger.debug(f"waifu rolling Started in channel {tide}")
