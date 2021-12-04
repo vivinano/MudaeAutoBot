@@ -72,6 +72,7 @@ All settings are set within the Settings_Mudae.json File
 + `Rolling` - (True|False) **Case-sensitive**, uses `channelid`
 + `slash Rolling` - (True|False) **Case-sensitive**, uses `Slash_ids`
 + `PkmRolling` - (True|False) Pokeslot rolling enabled, uses `channelid`
++ `stop_on_claim` (True|False) When true this *might* {idk still in testing} stop the bot from rolling if you don't have claim 
 + `series_list` - **Case-sensitive** Name of series of characters you want to claim  e.g. \[ "Honkai Impact 3rd" , "Senran Kagura" \]
 + `name_list` - **Must be exact match** List of specific character names to claim  e.g. \["Raiden Mei", "gOkU" \]
 + `emoji_list` - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
