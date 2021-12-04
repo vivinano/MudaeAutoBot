@@ -1,5 +1,5 @@
 {
-   "token":"",
+   "token":"put token here",
    "channel_ids":[
 	  886986837363667014
    ],
@@ -39,7 +39,7 @@
    ],
    "min_kak":500,
    "Last_True":"False",
-   "last_claim_min": 61,
+   "last_claim_min": 60,
    "min_kak_last_min": 10
 }
 

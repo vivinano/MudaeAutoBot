@@ -1,4 +1,10 @@
 Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
+# About This Fork
++ added stop_on_claim setting (if set to true this *might* {idk still in testing} stop the bot from rolling if you don't have claim) 12/4/21
++ Added timestamps on all prints and changed time format of logger
++ Added random time to wait for rolling each hour
++ Added delays (these are set to my preferences, feel free to change them in MudaeAutoBot.py (there are comments explaining which time.sleep to change for rolling, claiming etc...) )
+
 # Regading Forking
 I have seen many users fork this repo. I do not mind forks but I really would like to state that github is a public space and that any user who forks this repo is ultimatly can be found by all the various users that frequent this repo. 
 
