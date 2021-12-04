@@ -10,8 +10,8 @@ from random import seed
 from random import random
 from random import randint
 from os.path import join as pathjoin
-
-print("Welcome... MudaeAutoBot is now starting.") 
+from discum.utils.slash import SlashCommander
+print("Welcome... MudaeAutoBot is now starting.")
 
 from collections import OrderedDict
 
@@ -42,6 +42,8 @@ mudae = 432610292342587392
 with open("cmds.txt","r") as f:
     mudae_cmds = [line.rstrip() for line in f]
 mhids = [int(mh) for mh in settings["channel_ids"]]
+shids = [int(sh) for sh in settings["slash_ids"]]
+ghids = [int(gh) for gh in settings["slash_guild_ids"]]
 channel_settings = dict()
 
 series_list = settings["series_list"]
@@ -74,6 +76,7 @@ min_kak_last = settings["min_kak_last_min"]
 
 kakera_wall = {}
 waifu_wall = {}
+waifu_sleep = False
 
 #logging settings
 logger = logging.getLogger(__name__)
@@ -333,8 +336,12 @@ def poke_roll(tide):
 
 def waifu_roll(tide):
     global user
-    logger.debug(f"waifu rolling Started in channel {tide}")
-
+    global waifu_sleep #boolean to stop rolling when claim has been used
+    if slashed == None:
+        logger.debug(f"waifu rolling Started in channel {tide}")
+    else:
+        logger.debug(f"Slashed rolling Started in channel {tide}")
+    
     tides = str(tide)
     waifuwait = 0
     
@@ -355,9 +362,12 @@ def waifu_roll(tide):
         c_settings['rolls'] = 0
         rolls_left = -1
         while waifuwait == False:
-            bot.typingAction(tides)
-            time.sleep(0.4)
-            bot.sendMessage(tides,roll_cmd)
+            if slashed != None:
+                bot.triggerSlashCommand(str(mudae), channelID=tides, guildID=slashguild, data=slashed)
+            else:
+				bot.typingAction(tides)
+				time.sleep(0.2)
+                bot.sendMessage(tides,roll_cmd)
             rolls_left = rolls_left-1
             
             varwait = wait_for(bot,mudae_warning(tides,False),timeout=5)
@@ -389,8 +399,14 @@ def waifu_roll(tide):
                 if our_roll and "\u26a0\ufe0f 2 ROLLS " in total_text:
                     # Has warning for us
                     rolls_left = 2
-            if rolls_left == 0:
-                # Ran out of rolls
+            if waifu_sleep == True and settings['stop_on_claim'].lower().strip() == "true": 
+                #stop rolling when claim has been used
+                waifuwait = True
+                print(f"{waifuwait}: Waifu rolling : {tide}")
+                time.sleep((next_claim(tide)-time.time())+1)
+                waifuwait = False
+            elif rolls_left == 0:
+                # Ran out of rolls or claim already used
                 waifuwait = True
               
         
@@ -406,7 +422,7 @@ def snipe(recv_time,snipe_delay):
         except ValueError:
             # sleep was negative, so we're overdue!
             return
-    time.sleep(3.5) #edit this for character claim react delay
+    time.sleep(.5)
 
 def is_rolled_char(m):
     embeds = m.get('embeds',[])
@@ -421,6 +437,7 @@ def is_rolled_char(m):
 @bot.gateway.command
 def on_message(resp):
     global user
+    global waifu_sleep #boolean to stop rolling when claim has been used
     recv = time.time()
     if resp.event.message:
         m = resp.parsed.auto()
@@ -484,22 +501,23 @@ def on_message(resp):
                 charcolor = int(charpop['color'])
 
                 if str(user['id']) in content:
+                    
                     logger.info(f"Wished {charname} from {get_serial(chardes)} with {get_kak(chardes)} Value in Server id:{guildid}")
                     snipe(recv,snipe_delay)
                     if msg_buf[messageid]['claimed']:
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
-                    if "reactions" in m_reacts:
+                    if "reactions" in m_reacts: 
+                        waifu_sleep = True
                         if m_reacts["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                         elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
-                        bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")#replace these emotes with your own
-                        time.sleep(2)
-                        bot.sendMessage(channelid, ":0")
-                        
+                        waifu_sleep = True
+                        bot.addReaction(channelid, messageid, "❤")
+                
                 if charname.lower() in chars:
                     
                     logger.info(f"{charname} appeared attempting to Snipe Server id:{guildid}")
@@ -508,20 +526,18 @@ def on_message(resp):
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
                     if "reactions" in m_reacts:
+                        waifu_sleep = True
                         if m_reacts["reactions"][0]["emoji"]['id'] == None:
                             bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                         elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
                     else:
-                        bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")#replace all these emotes with your own
-                    
-                        time.sleep(2)
-                        bot.sendMessage(channelid, ":0") 
-
+                        waifu_sleep = True
+                        bot.addReaction(channelid, messageid, "❤")
+                
                 for ser in series_list:
                     if ser in chardes and charcolor == 16751916:
-                        
                         
                         logger.info(f"{charname} from {ser} appeared attempting to snipe in {guildid}")
                         snipe(recv,snipe_delay)
@@ -529,6 +545,7 @@ def on_message(resp):
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
                         if "reactions" in m_reacts:
+                            waifu_sleep = True
                             if m_reacts["reactions"][0]["emoji"]['id'] == None:
                                 bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                                 break
@@ -537,7 +554,8 @@ def on_message(resp):
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                                 break
                         else:
-                            bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")
+                            waifu_sleep = True
+                            bot.addReaction(channelid, messageid, "❤")
                             break
 
                 if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
@@ -545,20 +563,21 @@ def on_message(resp):
                     kak_value = get_kak(chardes)
                     if int(kak_value) >= kak_min and charcolor == 16751916:
                         
-                        
                         logger.info(f"{charname} with a {kak_value} Kakera Value appeared Server:{guildid}")
                         snipe(recv,snipe_delay)
                         if msg_buf[messageid]['claimed']:
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
                         if "reactions" in m_reacts:
+                            waifu_sleep = True
                             if m_reacts["reactions"][0]["emoji"]['id'] == None:
                                 bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
                             elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                                 cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                         else:
-                            bot.addReaction(channelid, messageid, "<:MIN_kannasmile:892221775088328734>")
+                            waifu_sleep = True
+                            bot.addReaction(channelid, messageid, "❤")
                             #print(f"took this much {time.time() - det_time}")
                 
                 if is_last_enable and next_claim(channelid)[1] - time.time() < (60 * last_claim_window):
@@ -581,7 +600,7 @@ def on_message(resp):
                                     cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                     bot.addReaction(channelid, messageid, cust_emoji_sen)
                             else:
-                                bot.addReaction(channelid, messageid, "<:MIN_kannasip:892599663130206218>")
+                                bot.addReaction(channelid, messageid, "❤")
                                 #print(f"took this much {time.time() - det_time}")
                 
                 
@@ -593,7 +612,8 @@ def on_message(resp):
         r = resp.parsed.auto()
         rchannelid = r["channel_id"]
         rmessageid = r["id"]
-        embeds = r['embeds']
+        #embeds = r['embeds']
+        embeds = r.get('embeds',[])
 
         if int(rchannelid) not in mhids:
             return
@@ -702,13 +722,26 @@ def on_message(resp):
                     print(f"[{tstamp()}] {emoji} was detected in Server: {rguildid}")
                     time.sleep(1.7+snipe_delay) #edit this for event reaction time
                     bot.addReaction(rchannelid,rmessageid,emoji)
-
+                    
+    if resp.event.guild_application_commands_updated:
+        slashCmds = resp.parsed.auto()['application_commands']
+        s = SlashCommander(slashCmds, application_id=str(mudae))
+        slashget = s.get([roll_prefix])
+        
+        if settings['slash_rolling'].lower().strip() == "true":
+            for xchg in range(len(shids)):
+                slashchannel = shids[xchg]
+                slashguild = ghids[xchg]
+                slashfus = threading.Timer(10.0,waifu_roll,args=[slashchannel,slashget,slashguild])
+                slashfus.start()
+            
     global ready
  
     if resp.event.ready_supplemental and not ready:
         ready = bot.gateway.READY
         user = bot.gateway.session.user
-
+        bot.gateway.request.searchSlashCommands(str(ghids[0]), limit=100, command_ids=[])
+        
         guilds = bot.gateway.session.settings_ready['guilds']
         chs = set(str(mhid) for mhid in mhids)
         for gid, guild in guilds.items():
@@ -723,7 +756,7 @@ def on_message(resp):
             p.start()
         if settings['rolling'].lower().strip() == "true":
             for chid in mhids:
-                waifus = threading.Timer(10.0,waifu_roll,args=[chid])
+                waifus = threading.Timer(10.0,waifu_roll,args=[chid,None,None])
                 waifus.start()
 
 def empty(*args,**kwargs):

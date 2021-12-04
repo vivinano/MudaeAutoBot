@@ -1,16 +1,15 @@
 Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
-# About This Fork
+# Regading Forking
+I have seen many users fork this repo. I do not mind forks but I really would like to state that github is a public space and that any user who forks this repo is ultimatly can be found by all the various users that frequent this repo. 
 
-I am not very experienced with coding so there are issues with this code, if you encounter fatal issues then go try the main repository https://github.com/vivinano/MudaeAutoBot.
+!!!!!!! IF YOU FORK THIS REPO PLEASE DO NOT PUSH A COMMIT WITH YOUR DISCORD USER TOKEN !!!!!!
 
-+Added timestamps on all prints and changed time format of logger
+I personally have tried to email users that I have found that posted their token
+ >>> If you have posted your token Please delete said fork and just refork this repo github has a histroy of commits and I can find your token if its posted so again I would like to state
 
-+Added random time to wait for rolling each hour
+!!!!!!! IF YOU FORK THIS REPO PLEASE DO NOT PUSH A COMMIT WITH YOUR DISCORD USER TOKEN !!!!!!
 
-+Added delays (these are set to my preferences, feel free to change them in MudaeAutoBot.py (there are comments explaining which time.sleep) )
 
-# 6/26/21 Update
-Update involves claiming during the last minutes of a claim window. 3 new variables were introduced in the settings.json which controls enabling , last_claim window in minutes, and finally min kakera value that you want within this window. Currently only kakera value is implemented so if your server doesnt allow kakera values or ranks of any kind the last claim window function won't work and will just run normally
 # Regarding Issue Creation
 Lately I have been getting alot of **Issues** that is not based on problems with the bot but they regard `Python Enviroment Errors` I.E `discum module not found`/`discum not installed properly` I have attempted to help many users that have had this problem but it is very time consuming. Python Enviroment issues are not a problem with the **BOT** but how one has installed python this varies from user to user.There are archived issues where a user has had a enviroment issue and they have resolved it you can use that as a reference.
 If these resources do not help there are plently of resources online to help you resolve your `Python Enviroment` Issue
@@ -48,7 +47,7 @@ You'll be able to leave the window running in the background, and not need to th
 ## Requirements
 
 + Python 3.7+
-+ discum 1.3+ (visit https://github.com/Merubokkusu/Discord-S.C.U.M#Installation)
++ discum 1.3+
 
 # Configuration
 To configure the bot, you'll edit the variables in the **Settings_Mudae.json** file for your botting needs.
@@ -58,19 +57,22 @@ All settings are set within the Settings_Mudae.json File
 
 + `token` - The user token for the account you want to bot on. If you need extra assistance on how to obtain it, let me know.
 + `channelids` - Which channels to **roll** and **monitor**  e.g. 807##########948
-+ `claim_delay` - Affects servers w/o $setting instance_ Time in **seconds** to wait before attempting to Claim Characters e.g. 5
-+ `kak_delay` - Affects servers w/o $setting instance_ Time in **seconds** to wait before attempting to snipe Kakeraloot e.g. 8
++ `slash_ids` - Which channels to **Slash roll** e.g. 807##########948 (Please Match Slash_id with slash_guild_id)
++ `slash_guild_ids` - Which Guild to **Slash roll** e.g. 807##########948 (Please Match Guild id with Slash_id)
++ `claim_delay` - _Affects servers w/o $setting instance_ Time in **seconds** to wait before attempting to Claim Characters e.g. 5
++ `kak_delay` - _Affects servers w/o $setting instance_ Time in **seconds** to wait before attempting to snipe Kakeraloot e.g. 8
 + `use_emoji` - This setting only works if you change the Mudaebot.py code by uncommenting out the line (Custom emojis only) e.g.  "<:emoji_name:795############214>"
 + `roll_this` - ($m|$ma|$mg|$w|$wg|$wa|$h|$ha|$hg) If `Rolling` is enabled it will roll this specific command e.g. '$wg'
 + `Rolling` - (True|False) **Case-sensitive**, uses `channelid`
++ `slash Rolling` - (True|False) **Case-sensitive**, uses `Slash_ids`
 + `PkmRolling` - (True|False) Pokeslot rolling enabled, uses `channelid`
 + `series_list` - **Case-sensitive** Name of series of characters you want to claim  e.g. \[ "Honkai Impact 3rd" , "Senran Kagura" \]
 + `name_list` - **Must be exact match** List of specific character names to claim  e.g. \["Raiden Mei", "gOkU" \]
 + `emoji_list` - This is the kakera that will be snipes \[ "KakeraY" , "KakeraO" \] << This example means only snipe Yellow and orange Kakera
 + `min_kak` - A minimum kakera value to snipe a claimable character _regardless of whether it's in the series/name lists_
-+ `Last_True` -  (True|False) enable Last Minute Claim windows (currently broken)
-+ `last_claim_min` - (1-180) the window the window is open for e.g. 10 means last 10 minutes (currently broken)
-+ `min_kak_last_min` - same as min kak but only within the last minute claim window (currently broken)
++ `Last_True` -  (True|False) enable Last Minute Claim windows
++ `last_claim_min` - (1-180) the window the window is open for e.g. 10 means last 10 minutes
++ `min_kak_last_min` - same as min kak but only within the last minute claim window
 
 # Optimize the snipes
 Typing $settings in your server with mudae should give you the snipe and kaksnipping timers.
