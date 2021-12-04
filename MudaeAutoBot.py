@@ -335,9 +335,10 @@ def poke_roll(tide):
         time.sleep(pwait) 
         pwait = 0
 
-def waifu_roll(tide):
+def waifu_roll(tide, next_claim, slashed):
     global user
     global waifu_sleep #boolean to stop rolling when claim has been used
+    
     if slashed == None:
         logger.debug(f"waifu rolling Started in channel {tide}")
     else:
@@ -404,17 +405,16 @@ def waifu_roll(tide):
                 #stop rolling when claim has been used
                 waifuwait = True
                 print(f"{waifuwait}: Waifu rolling : {tide}")
+                print(f"[{tstamp()}] waiting for claim")
                 time.sleep((next_claim(tide)-time.time())+1)
                 waifuwait = False
             elif rolls_left == 0:
                 # Ran out of rolls or claim already used
                 waifuwait = True
-              
-        
-        print(f"[{tstamp()}] {waifuwait}: Waifu rolling : {tide}")
-        print(f"[{tstamp()}] waiting a random amount of time to roll again")
-        time.sleep((randomint()+next_reset(tide)-time.time())+1)
-        waifuwait = False
+                print(f"[{tstamp()}] {waifuwait}: Waifu rolling : {tide}")
+                print(f"[{tstamp()}] waiting a random amount of time to roll again")
+                time.sleep((randomint()+next_reset(tide)-time.time())+1)
+                waifuwait = False
 
 def snipe(recv_time,snipe_delay):
     if snipe_delay != 0.0:
