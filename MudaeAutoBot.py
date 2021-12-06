@@ -363,6 +363,8 @@ def waifu_roll(tide, next_claim, slashed):
         if wait_for_quiet != None:
             # don't do stuff
             continue
+            
+       
     
         c_settings['rolls'] = 0
         rolls_left = -1
@@ -375,8 +377,11 @@ def waifu_roll(tide, next_claim, slashed):
                 bot.sendMessage(tides,roll_cmd)
             rolls_left = rolls_left-1
             
-            varwait = wait_for(bot,mudae_warning(tides,False),timeout=5)
+            wait_claim = wait_for(bot,mudae_warning(tides,False),timeout=5)
+            varwait = wait_for(bot,mudae_warning(tides,False),timeout=10
             time.sleep(1.0)
+            if wait_claim != None and wait_claim['content'].startswith(f"💖") and f"**{bot.session.user['username']}" in wait_claim['content']:
+                waifuwait = True
             
             if varwait != None and varwait['content'].startswith(f"**{bot.gateway.session.user['username']}") and "$ku" not in varwait['content']:
                 # We over-rolled.
