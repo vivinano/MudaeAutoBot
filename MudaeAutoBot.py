@@ -8,6 +8,7 @@ import logging
 import threading
 from os.path import join as pathjoin
 from discum.utils.slash import SlashCommander
+from discum.utils.button import Buttoner
 from collections import OrderedDict
 
 class CacheDict(OrderedDict):
@@ -419,8 +420,25 @@ def on_message(resp):
         embeds = m['embeds']
         messageid = m['id']
         channelid = m['channel_id']
+        
         guildid = m['guild_id'] if 'guild_id' in m else None
-
+        butts = Buttoner(m["components"])
+        
+        #print(dir(butts))
+        
+        
+        
+        # if butts.components != [] :
+            # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
+            # bot.click(
+            # aId,
+            # channelID=m["channel_id"],
+            # guildID=m.get("guild_id"),
+            # messageID=m["id"],
+            # messageFlags=m["flags"],
+            # data=butts.getButton(emojiName=buttMoji),
+            # )
+            
         if int(channelid) not in mhids:
             # Not a channel we work in.
             return
@@ -484,6 +502,17 @@ def on_message(resp):
                         elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
+                    elif butts.components != [] :
+                        buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
+                        if "kakera" not in buttMoji:
+                            bot.click(
+                                        aId,
+                                        channelID=m["channel_id"],
+                                        guildID=m.get("guild_id"),
+                                        messageID=m["id"],
+                                        messageFlags=m["flags"],
+                                        data=butts.getButton(emojiName=buttMoji),
+                                        )  
                     else:
                         bot.addReaction(channelid, messageid, "❤")
                 
@@ -500,6 +529,17 @@ def on_message(resp):
                         elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                             cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                             bot.addReaction(channelid, messageid, cust_emoji_sen)
+                    elif butts.components != [] :
+                        buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
+                        if "kakera" not in buttMoji:
+                            bot.click(
+                                        aId,
+                                        channelID=m["channel_id"],
+                                        guildID=m.get("guild_id"),
+                                        messageID=m["id"],
+                                        messageFlags=m["flags"],
+                                        data=butts.getButton(emojiName=buttMoji),
+                                        )  
                     else:
                         bot.addReaction(channelid, messageid, "❤")
                 
@@ -520,6 +560,19 @@ def on_message(resp):
                                 cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
                                 break
+                        elif butts.components != [] :
+                            buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
+                            if "kakera" not in buttMoji:
+                                    bot.click(
+                                        aId,
+                                        channelID=m["channel_id"],
+                                        guildID=m.get("guild_id"),
+                                        messageID=m["id"],
+                                        messageFlags=m["flags"],
+                                        data=butts.getButton(emojiName=buttMoji),
+                                        ) 
+                            break
+        
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                             break
@@ -541,6 +594,17 @@ def on_message(resp):
                             elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                                 cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                 bot.addReaction(channelid, messageid, cust_emoji_sen)
+                        elif butts.components != [] :
+                            buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
+                            if "kakera" not in buttMoji:
+                                    bot.click(
+                                        aId,
+                                        channelID=m["channel_id"],
+                                        guildID=m.get("guild_id"),
+                                        messageID=m["id"],
+                                        messageFlags=m["flags"],
+                                        data=butts.getButton(emojiName=buttMoji),
+                                        )  
                         else:
                             bot.addReaction(channelid, messageid, "❤")
                             #print(f"took this much {time.time() - det_time}")
@@ -564,6 +628,17 @@ def on_message(resp):
                                 elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
                                     cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
                                     bot.addReaction(channelid, messageid, cust_emoji_sen)
+                            elif butts.components != [] :
+                                buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
+                                if "kakera" not in buttMoji:
+                                    bot.click(
+                                        aId,
+                                        channelID=m["channel_id"],
+                                        guildID=m.get("guild_id"),
+                                        messageID=m["id"],
+                                        messageFlags=m["flags"],
+                                        data=butts.getButton(emojiName=buttMoji),
+                                        )  
                             else:
                                 bot.addReaction(channelid, messageid, "❤")
                                 #print(f"took this much {time.time() - det_time}")
