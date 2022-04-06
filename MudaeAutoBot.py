@@ -546,25 +546,6 @@ def on_message(resp):
                         return
                     m_reacts = bot.getMessage(channelid, messageid).json()[0]
                     snipe_intent(m,m_reacts,butts)
-                    # if "reactions" in m_reacts:
-                        # if m_reacts["reactions"][0]["emoji"]['id'] == None:
-                            # bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
-                        # elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
-                            # cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
-                            # bot.addReaction(channelid, messageid, cust_emoji_sen)
-                    # elif butts.components != [] :
-                        # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
-                        # if "kakera" not in buttMoji:
-                            # bot.click(
-                                        # aId,
-                                        # channelID=m["channel_id"],
-                                        # guildID=m.get("guild_id"),
-                                        # messageID=m["id"],
-                                        # messageFlags=m["flags"],
-                                        # data=butts.getButton(emojiName=buttMoji),
-                                        # )  
-                    # else:
-                        # bot.addReaction(channelid, messageid, "❤")
                 
                 for ser in series_list:
                     if ser in chardes and charcolor == 16751916:
@@ -612,26 +593,7 @@ def on_message(resp):
                             return
                         m_reacts = bot.getMessage(channelid, messageid).json()[0]
                         snipe_intent(m,m_reacts,butts)
-                        # if "reactions" in m_reacts:
-                            # if m_reacts["reactions"][0]["emoji"]['id'] == None:
-                                # bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
-                            # elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
-                                # cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
-                                # bot.addReaction(channelid, messageid, cust_emoji_sen)
-                        # elif butts.components != [] :
-                            # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
-                            # if "kakera" not in buttMoji:
-                                    # bot.click(
-                                        # aId,
-                                        # channelID=m["channel_id"],
-                                        # guildID=m.get("guild_id"),
-                                        # messageID=m["id"],
-                                        # messageFlags=m["flags"],
-                                        # data=butts.getButton(emojiName=buttMoji),
-                                        # )  
-                        # else:
-                            # bot.addReaction(channelid, messageid, "❤")
-                            # #print(f"took this much {time.time() - det_time}")
+                        #print(f"took this much {time.time() - det_time}")
                 
                 if is_last_enable and next_claim(channelid)[1] - time.time() < (60 * last_claim_window):
                     if "<:kakera:469835869059153940>" in chardes or "Claims:" in chardes or "Likes:" in chardes:
@@ -647,26 +609,7 @@ def on_message(resp):
                                 return
                             m_reacts = bot.getMessage(channelid, messageid).json()[0]
                             snipe_intent(m,m_reacts,butts)
-                            # if "reactions" in m_reacts:
-                                # if m_reacts["reactions"][0]["emoji"]['id'] == None:
-                                    # bot.addReaction(channelid, messageid, m_reacts["reactions"][0]["emoji"]["name"])
-                                # elif m_reacts["reactions"][0]["emoji"]['id'] != None and "kakera" not in m_reacts["reactions"][0]["emoji"]["name"]:
-                                    # cust_emoji_sen = m_reacts["reactions"][0]["emoji"]["name"] + ":" + m_reacts["reactions"][0]["emoji"]['id']
-                                    # bot.addReaction(channelid, messageid, cust_emoji_sen)
-                            # elif butts.components != [] :
-                                # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
-                                # if "kakera" not in buttMoji:
-                                    # bot.click(
-                                        # aId,
-                                        # channelID=m["channel_id"],
-                                        # guildID=m.get("guild_id"),
-                                        # messageID=m["id"],
-                                        # messageFlags=m["flags"],
-                                        # data=butts.getButton(emojiName=buttMoji),
-                                        # )  
-                            # else:
-                                # bot.addReaction(channelid, messageid, "❤")
-                                # #print(f"took this much {time.time() - det_time}")
+                            #print(f"took this much {time.time() - det_time}")
                 
                 
                 if str(user['id']) not in content and charname.lower() not in chars and get_serial(chardes) not in series_list and int(get_kak(chardes)) < kak_min:
