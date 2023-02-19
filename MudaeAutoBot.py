@@ -445,10 +445,7 @@ def on_message(resp):
         guildid = m['guild_id'] if 'guild_id' in m else None
         butts = Buttoner(m["components"])
         
-        #print(dir(butts))
-        
-        if "@" in content:
-            print("There was a possible wish detected")
+        #print(dir(butts))        
         
         # if butts.components != [] :
             # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
