@@ -176,7 +176,7 @@ def get_server_settings(guild_id,channel_id):
     
     # no setting found
     # so send settings request, and hope they have default prefix.
-    FsMsgs = bot.searchMessages(guild_id,channelID=[channel_id],authorID=[bot.gateway.session.user['id']],textSearch=roll_prefix,limit=2)
+    FsMsgs = bot.searchMessages(guild_id,channelID=[channel_id],authorID=[bot.gateway.session.user['id']],textSearch=roll_prefix,includeNsfw=True,limit=2)
     FsResults = bot.filterSearchResults(FsMsgs)
     for group in FsResults:
         if group['content'].endswith(roll_prefix):
@@ -447,7 +447,8 @@ def on_message(resp):
         
         #print(dir(butts))
         
-        
+        if "@" in content:
+            print("There was a possible wish detected")
         
         # if butts.components != [] :
             # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
@@ -614,7 +615,9 @@ def on_message(resp):
                 
                 if str(user['id']) not in content and charname.lower() not in chars and get_serial(chardes) not in series_list and int(get_kak(chardes)) < kak_min:
                     logger.debug(f"Ignoring {charname} from {get_serial(chardes)} with {get_kak(chardes)} Kakera Value in Server id:{guildid}")
-                    
+            if butts.components != []:
+                print("Kakera Code goes here")
+                
     if resp.event.message_updated:
         # Handle claims
         r = resp.parsed.auto()
