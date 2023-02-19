@@ -318,7 +318,24 @@ def poke_roll(tide):
         print(f"{pwait} : pokerolling : {tide}")
         time.sleep(pwait) 
         pwait = 0
-
+        
+def daily_roll(tide):
+    logger.debug(f"Daily Rolling Started in channel {tide}. (If you would like this in a different channel, please configure the desired channel ID as the first in your list)")
+    tides = str(tide)
+    if tide not in channel_settings:
+        logger.error(f"Could not find channel {tide}, will not roll Daily")
+        return
+    c_settings = channel_settings[tide]
+    dwait = 0
+    while True:
+        while dwait == 0:
+            time.sleep(2)
+            bot.sendMessage(tides,c_settings['prefix']+"daily")
+            dwait = 20*60*60 # sleep for 2 hours
+        print(f"{dwait} : daily_rolling : {tide}")
+        time.sleep(dwait) 
+        dwait = 0
+        
 def waifu_roll(tide,slashed,slashguild):
     global user
     if slashed == None:
@@ -445,7 +462,10 @@ def on_message(resp):
         guildid = m['guild_id'] if 'guild_id' in m else None
         butts = Buttoner(m["components"])
         
-        #print(dir(butts))        
+        #print(dir(butts))
+        
+        # if "@" in content:
+            # print("There was a possible wish detected")
         
         # if butts.components != [] :
             # buttMoji = butts.components[0]["components"][0]["emoji"]["name"]
@@ -767,6 +787,9 @@ def on_message(resp):
         if settings['pkmrolling'].lower().strip() == "true":
             p = threading.Thread(target=poke_roll,args=[mhids[0]])
             p.start()
+            time.sleep(3)
+            d = threading.Thread(target=daily_roll,args=[mhids[0]])
+            d.start()
         if settings['rolling'].lower().strip() == "true":
             for chid in mhids:
                 waifus = threading.Timer(10.0,waifu_roll,args=[chid,None,None])
