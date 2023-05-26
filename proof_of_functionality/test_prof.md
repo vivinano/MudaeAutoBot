@@ -9,6 +9,11 @@ waifu roll
 
 ![image](https://github.com/vivinano/MudaeAutoBot/assets/33008397/23a55548-5880-44d4-aba9-a859b077ce15)
 
+roll timer waiting
+
+![image](https://github.com/vivinano/MudaeAutoBot/assets/33008397/586ef4b4-8ca3-49b7-a280-43378435a8b2)
+
+
 
 # 2/20/2023
 
