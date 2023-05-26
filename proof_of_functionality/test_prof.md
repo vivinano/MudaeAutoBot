@@ -7,6 +7,8 @@ waifu roll
 
 ![image](https://github.com/vivinano/MudaeAutoBot/assets/33008397/0ffb7aa1-9a4f-4089-a1c8-d9d007004528)
 
+![image](https://github.com/vivinano/MudaeAutoBot/assets/33008397/23a55548-5880-44d4-aba9-a859b077ce15)
+
 
 # 2/20/2023
 
