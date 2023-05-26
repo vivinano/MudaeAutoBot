@@ -1,3 +1,11 @@
+# 5/26/2023
+pokeroll and daily roll
+![image](https://github.com/vivinano/MudaeAutoBot/assets/33008397/2f2665b7-fa4e-4a7e-8517-e61860388c08)
+
+waifu roll
+![image](https://github.com/vivinano/MudaeAutoBot/assets/33008397/0ffb7aa1-9a4f-4089-a1c8-d9d007004528)
+
+
 # 2/20/2023
 
 waifu claim
