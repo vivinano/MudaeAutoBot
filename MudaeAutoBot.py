@@ -772,7 +772,15 @@ def on_message(resp):
  
     if resp.event.ready_supplemental and not ready:
         ready = bot.gateway.READY
-        user = bot.gateway.session.user
+        try:
+            user = bot.gateway.session.user
+        except KeyError:
+            try:
+                with open(pathjoin('user','user.txt'),'r') as userssettings:
+                    print(f"Reading from UserFile")
+                    user = userssettings.read()
+            except IOError:
+                print(f"File Not Found using Different Method")
         bot.gateway.request.searchSlashCommands(str(ghids[0]), limit=100, command_ids=[])
         
         guilds = bot.gateway.session.settings_ready['guilds']
