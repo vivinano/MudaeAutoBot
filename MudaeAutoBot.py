@@ -633,7 +633,17 @@ def on_message(resp):
                 if str(user['id']) not in content and charname.lower() not in chars and get_serial(chardes) not in series_list and int(get_kak(chardes)) < kak_min:
                     logger.debug(f"Ignoring {charname} from {get_serial(chardes)} with {get_kak(chardes)} Kakera Value in Server id:{guildid}")
             if butts.components != []:
-                print("Kakera Code goes here")
+                buttsonly = butts.components[0]["components"][0]["emoji"]["name"]
+                #print(buttsonly.lower())
+                if buttsonly.lower() in KakeraVari:
+                    bot.click(
+                    aId,
+                    channelID=channelid,
+                    guildID=guildid,
+                    messageID=messageid,
+                    messageFlags=m["flags"],
+                    data=butts.getButton(emojiName=buttonly),
+                    )  
                 
     if resp.event.message_updated:
         # Handle claims
