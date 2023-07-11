@@ -639,7 +639,7 @@ def on_message(resp):
                     bot.click(
                     aId,
                     channelID=channelid,
-                    guildID=guildid,
+                    guildID=m.get("guild_id"),
                     messageID=messageid,
                     messageFlags=m["flags"],
                     data=butts.getButton(emojiName=buttonly),
