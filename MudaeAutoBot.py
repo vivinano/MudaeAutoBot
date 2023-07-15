@@ -635,7 +635,7 @@ def on_message(resp):
             if butts.components != []:
                 buttsonly = butts.components[0]["components"][0]["emoji"]["name"]
                 #print(buttsonly.lower())
-                if buttsonly.lower() in KakeraVari:
+                if buttsonly in KakeraVari:
                     bot.click(
                     aId,
                     channelID=channelid,
@@ -793,7 +793,17 @@ def on_message(resp):
                 print(f"File Not Found using Different Method")
         bot.gateway.request.searchSlashCommands(str(ghids[0]), limit=100, command_ids=[])
         
-        guilds = bot.gateway.session.settings_ready['guilds']
+        try:
+            guilds = bot.gateway.session.settings_ready['guilds']
+        except KeyError:
+            print("It seems like you were unable to get all the guilds you are in please obtain your users settings")
+            try:
+                with open(pathjoin('user','guild.txt'),'r') as guildersettings:
+                    print("reading from Guild file")
+                    guilds = guildersettings.read()
+            except IOError:
+                print("Please get a dump of all your guilds and put it in the userfolder")
+                
         chs = set(str(mhid) for mhid in mhids)
         for gid, guild in guilds.items():
             for matched_channel in (set(guild['channels'].keys()) & chs):
