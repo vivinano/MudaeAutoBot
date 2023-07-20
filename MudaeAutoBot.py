@@ -230,8 +230,8 @@ def parse_settings_message(message):
     settings['shift'] = int(num_parse(settings_p[4])[0])
     settings['max_rolls'] = int(num_parse(settings_p[5])[0])
     settings['expiry'] = float(num_parse(settings_p[6])[0])
-    settings['claim_snipe'] = [float(v) for v in num_parsedec(settings_p[16])]
-    settings['kak_snipe'] = [float(v) for v in num_parsedec(settings_p[17])]
+    settings['claim_snipe'] = [float(v) for v in num_parsedec(settings_p[17])]
+    settings['kak_snipe'] = [float(v) for v in num_parsedec(settings_p[18])]
     
 
     settings['claim_snipe'][0] = int(settings['claim_snipe'][0])
