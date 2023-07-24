@@ -3,20 +3,20 @@ Please Gif Star ?? Stars make me happy.  I'm open to design automation for other
 I have ran several test of bot for long amounts of time and it has ran several rolls and claims without stopping if you are submitting a issue of bot not working plesae explain and show some amount of basic troubleshooting. everytime i have to launch a test of the bot staying it requires a minimum of like 8 hours just to confirm if it works as intended or not. Future issues posted without basic troubleshooting will be closed as this is getting out of hand. 
 
 I will be add a test folder within the repo so that I can provide you guys with images that show that it is working on my end
-# Regading Forking
-I have seen many users fork this repo. I do not mind forks but I really would like to state that github is a public space and that any user who forks this repo is ultimatly can be found by all the various users that frequent this repo. 
+# Regarding Forking
+I have seen many users fork this repo. I do not mind forks but I really would like to state that github is a public space and that any user who forks this repo is ultimately can be found by all the various users that frequent this repo. 
 
 !!!!!!! IF YOU FORK THIS REPO PLEASE DO NOT PUSH A COMMIT WITH YOUR DISCORD USER TOKEN !!!!!!
 
 I personally have tried to email users that I have found that posted their token
- >>> If you have posted your token Please delete said fork and just refork this repo github has a histroy of commits and I can find your token if its posted so again I would like to state
+ >>> If you have posted your token Please delete said fork and just refork this repo github has a history of commits and I can find your token if its posted so again I would like to state
 
 !!!!!!! IF YOU FORK THIS REPO PLEASE DO NOT PUSH A COMMIT WITH YOUR DISCORD USER TOKEN !!!!!!
 
 
 # Regarding Issue Creation
-Lately I have been getting alot of **Issues** that is not based on problems with the bot but they regard `Python Enviroment Errors` I.E `discum module not found`/`discum not installed properly` I have attempted to help many users that have had this problem but it is very time consuming. Python Enviroment issues are not a problem with the **BOT** but how one has installed python this varies from user to user.There are archived issues where a user has had a enviroment issue and they have resolved it you can use that as a reference.
-If these resources do not help there are plently of resources online to help you resolve your `Python Enviroment` Issue
+Lately I have been getting alot of **Issues** that is not based on problems with the bot but they regard `Python Environment Errors` I.E `discum module not found`/`discum not installed properly` I have attempted to help many users that have had this problem but it is very time consuming. Python Environment issues are not a problem with the **BOT** but how one has installed python this varies from user to user.There are archived issues where a user has had a environment issue and they have resolved it you can use that as a reference.
+If these resources do not help there are plenty of resources online to help you resolve your `Python Environment` Issue
 
 
 `FAQS`
@@ -97,5 +97,5 @@ As for updates those will be added up until I no longer feel like this project i
 
 Thanks to:
 https://github.com/FatPain
-for Assisting with Discum it was definitly not something I'm use to
+for Assisting with Discum it was definitely not something I'm used to.
 
