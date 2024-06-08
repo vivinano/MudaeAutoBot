@@ -1,28 +1,28 @@
 {
-   "token":"1",
+   "token":"NzM0MjU3ODU1MDM2Nzg0NzUw.Gf_XfC.mWyQCs5e4x1nrnXM7ZgwYcehJ2boKXlk4zGnmI",
    "channel_ids":[
-	  111111111111111
+	  1193979749756850257
    ],
    "slash_ids":[
-	  11111111111111
+	  1193979749756850257
    ],
    "slash_guild_ids":[
-      111111111111111
+      1193979749756850257
    ],
-   "claim_delay":8,
-   "kak_delay":9,
+   "claim_delay":1,
+   "kak_delay":1,
    "use_emoji":"<:keqing_love:795077041761288214>",
-   "roll_this":"wg",
+   "roll_this":"wa",
    "rolling":"True",
    "slash_rolling":"True",
    "pkmrolling":"True",
    "series_list":[
-      "Honkai Impact 3rd"
+      "Attack on Titan"
    ],
    "namelist":[
-      "Raiden Mei"
+      "Zero Two","Mai Sakurajima","Hatsune Miku"," Albedo","Violet Evergarden","Emilia","2B","Chika Fujiwara","Akeno Himejima","Misa Amane"
    ],
-   "emoji_list":[
+   "emoji_list
 	  "kakera",	
       "kakeraT",
       "kakeraG",
@@ -40,7 +40,7 @@
    ],
    "min_kak":500,
    "Last_True":"True",
-   "last_claim_min": 61,
+   "last_claim_min": 60,
    "min_kak_last_min": 10
 }
 
