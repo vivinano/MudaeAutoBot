@@ -170,7 +170,7 @@ class MyClient(discord.Client):
                         logger.info(f" Skipped {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
                     
                     def kak_check(m):
-                        return m.author.id == mudae and m.guild.id == message.guild.id
+                        return m.author.id == mudae
                         
                     wait_for_kak = self.loop.create_task(self.wait_for('message',timeout=10.0,check=kak_check))
                     try:
@@ -182,13 +182,14 @@ class MyClient(discord.Client):
                         else:
                             time_to_kak = []
                         print(time_to_kak)
-                        if len(time_to_kak):
-                            timegetk = (int(time_to_kak[0][0] or "0")*60+int(time_to_kak[0][1] or "0"))*60
-                            logger.info(f"{timegetk} set for server {message.guild.id}")
-                            kakera_wall[message.guild.id] = timegetk + time.time()
+
                     except asyncio.TimeoutError:
-                        print("timeout")
-                        return
+                        time_to_kak = []
+                    
+                    if len(time_to_kak):
+                        timegetk = (int(time_to_kak[0][0] or "0")*60+int(time_to_kak[0][1] or "0"))*60
+                        logger.info(f"{timegetk} set for server {message.guild.id}")
+                        kakera_wall[message.guild.id] = timegetk + time.time()
 
 client = MyClient()
 client.run(settings['token'])
