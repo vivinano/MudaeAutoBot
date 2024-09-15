@@ -1,5 +1,5 @@
 Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
-# Regards to Report of Bot not Working 
+# Regards to the Bot (back to coding from sq1)
 I'm working on porting the the code to discord.py self currently this one has very few features. super basic only here to use the discord.py self library with button clicks 
 
 It is able to roll but you have to manually change the channel Id in the code only single channel for now
