@@ -84,6 +84,13 @@ def get_wait(text):
         hours = int(waits[0][0]) if waits[0][0] != '' else 0
         return (hours*60+int(waits[0][1]))*60
     return 0
+def get_pwait(text):
+    waits = poke_finder.findall(text)
+    if len(waits):
+        hours = int(waits[0][0]) if waits[0][0] != '' else 0
+        return (hours*60+int(waits[0][1]))*60
+    return 0
+
 
 class MyClient(discord.Client):
 
@@ -110,7 +117,8 @@ class MyClient(discord.Client):
                     return
             await asyncio.sleep(wait)
             wait = 0
-            
+
+    
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
         #self.loop.create_task(self.bg_task(807061315792928948))
@@ -124,6 +132,7 @@ class MyClient(discord.Client):
         #Interact with Mudae only
         if message.author.id == mudae:
             print("Mudae posted")
+            #print(message.guild.id)
 
             if message.embeds != []:
                 objects = message.embeds[0].to_dict()
@@ -138,7 +147,7 @@ class MyClient(discord.Client):
                     if ser in objects['description'] and objects['color'] == 16751916:               
                         print(f"Attempting to Claim {objects['author']['name']} from {ser} in ({message.channel.id}):{message.channel.name}")
                         emoji = use_emoji
-                        await asyncio.sleep(2)
+                        await asyncio.sleep(5)
                         if message.components == []:
                             if message.reactions != [] and not message.reactions[0].custom_emoji:
                                 emoji = message.reactions[0].emoji
@@ -151,7 +160,35 @@ class MyClient(discord.Client):
                             
                 #Kakera Sniping            
                 if message.components != [] and "kakera" in message.components[0].children[0].emoji.name:
-                    await message.components[0].children[0].click()
+                   
+                    cooldown = kakera_wall.get(message.guild.id,0) - time.time()
+                    if cooldown <= 1:
+                        logger.info(f" {message.components[0].children[0].emoji.name} found in: {message.guild.id}")
+                        await asyncio.sleep(5)
+                        await message.components[0].children[0].click()
+                    else:
+                        logger.info(f" Skipped {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
+                    
+                    def kak_check(m):
+                        return m.author.id == mudae and m.guild.id == message.guild.id
+                        
+                    wait_for_kak = self.loop.create_task(self.wait_for('message',timeout=10.0,check=kak_check))
+                    try:
+                        msgk = await wait_for_kak
+                        print(msgk)
+                    
+                        if msgk.content.startswith(f"**{self.user.name}"):
+                            time_to_kak = waitk_finder.findall(msgk.content)
+                        else:
+                            time_to_kak = []
+                        print(time_to_kak)
+                        if len(time_to_kak):
+                            timegetk = (int(time_to_kak[0][0] or "0")*60+int(time_to_kak[0][1] or "0"))*60
+                            logger.info(f"{timegetk} set for server {message.guild.id}")
+                            kakera_wall[message.guild.id] = timegetk + time.time()
+                    except asyncio.TimeoutError:
+                        print("timeout")
+                        return
 
 client = MyClient()
 client.run(settings['token'])
