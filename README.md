@@ -1,10 +1,11 @@
 Please Gif Star ?? Stars make me happy.  I'm open to design automation for other games (doesn't have to be a discord game) just let me know
 # Regards to Report of Bot not Working 
-I have ran several test of bot for long amounts of time and it has ran several rolls and claims without stopping if you are submitting a issue of bot not working plesae explain and show some amount of basic troubleshooting. everytime i have to launch a test of the bot staying it requires a minimum of like 8 hours just to confirm if it works as intended or not. Future issues posted without basic troubleshooting will be closed as this is getting out of hand. 
+I'm working on porting the the code to discord.py self currently this one has very few features. super basic only here to use the discord.py self library with button clicks 
 
-I will be add a test folder within the repo so that I can provide you guys with images that show that it is working on my end
-# Regading Forking
-I have seen many users fork this repo. I do not mind forks but I really would like to state that github is a public space and that any user who forks this repo is ultimatly can be found by all the various users that frequent this repo. 
+It is able to roll but you have to manually change the channel Id in the code only single channel for now
+but kakera sniping it added again but also not fine tuned it will just grab whatever kakera is around 
+
+Have to do testing and slowly update the project
 
 !!!!!!! IF YOU FORK THIS REPO PLEASE DO NOT PUSH A COMMIT WITH YOUR DISCORD USER TOKEN !!!!!!
 
