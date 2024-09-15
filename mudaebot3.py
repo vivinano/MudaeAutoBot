@@ -157,9 +157,25 @@ class MyClient(discord.Client):
                             await message.components[0].children[0].click()
                             break
                             
+                if charname.lower() in chars:
+                    logger.info(f"Character Claim {charname}")
+                    emoji = use_emoji
+                    await asyncio.sleep(5)
+                    if message.components == []:
+                        if message.reactions != [] and not message.reactions[0].custom_emoji:
+                            emoji = message.reactions[0].emoji
+                            await message.add_reaction(emoji)
+                        else:
+                            await message.components[0].children[0].click()
+                    
                             
                 #Kakera Sniping            
                 if message.components != [] and "kakera" in message.components[0].children[0].emoji.name:
+                   
+                    if "kakeraP" in message.components[0].children[0].emoji.name:
+                        await asyncio.sleep(5)
+                        await message.components[0].children[0].click()
+                    
                    
                     cooldown = kakera_wall.get(message.guild.id,0) - time.time()
                     if cooldown <= 1:
@@ -170,7 +186,7 @@ class MyClient(discord.Client):
                         logger.info(f" Skipped {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
                     
                     def kak_check(m):
-                        return m.author.id == mudae
+                        return m.author.id == mudae and m.guild.id == message.guild.id
                         
                     wait_for_kak = self.loop.create_task(self.wait_for('message',timeout=10.0,check=kak_check))
                     try:
