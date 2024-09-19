@@ -90,6 +90,86 @@ def get_pwait(text):
         hours = int(waits[0][0]) if waits[0][0] != '' else 0
         return (hours*60+int(waits[0][1]))*60
     return 0
+    
+def parse_settings_message(message):
+    if message == None:
+        return None
+    val_parse = re.compile(r'\*\*(\S+)\*\*').findall
+    num_parse = re.compile(r'(\d+)').findall
+    num_parsedec = re.compile(r'(\d*[.,]?\d+)').findall
+
+    settings_p = re.findall(r'\w+: (.*)',message)
+    settings = dict()
+
+    settings['prefix'] = val_parse(settings_p[0])[0]
+    settings['prefix_len'] = len(settings['prefix'])
+    settings['claim_reset'] = int(num_parse(settings_p[2])[0]) # in minutes
+    settings['reset_min'] = int(num_parse(settings_p[3])[0])
+    settings['shift'] = int(num_parse(settings_p[4])[0])
+    settings['max_rolls'] = int(num_parse(settings_p[5])[0])
+    settings['expiry'] = float(num_parse(settings_p[6])[0])
+    settings['claim_snipe'] = [float(v) for v in num_parsedec(settings_p[17])]
+    settings['kak_snipe'] = [float(v) for v in num_parsedec(settings_p[18])]
+    
+
+    settings['claim_snipe'][0] = int(settings['claim_snipe'][0])
+    # pad out claim/kak snipe for default '0 second cooldown'
+    if len(settings['claim_snipe']) < 2:
+        settings['claim_snipe'] += [0.0]
+    if len(settings['kak_snipe']) < 2:
+        settings['kak_snipe'] += [0.0]
+    settings['claim_snipe'][0] = int(settings['claim_snipe'][0])
+    settings['kak_snipe'][0] = int(settings['kak_snipe'][0])
+
+    settings['pending'] = None
+    settings['rolls'] = 0
+ 
+    return settings
+    
+def get_snipe_time(channel,rolled,message,botter):
+    # Returns delay for when you are able to snipe a given roll
+    r,d = channel_settings[channel]['claim_snipe']
+    if r == 0:
+        # Anarchy FTW!
+        return 0.0
+    
+    global user
+    is_roller = (rolled == botter.user.id)
+    if (r < 4 or r == 5) and is_roller:
+        # Roller can insta-snipe
+        return 0.0
+    if r == 2 and not is_roller:
+        # Not the roller.
+        return d
+    
+    wished_for = mention_finder.findall(message)
+    
+    # Wish-based rules
+    if not len(wished_for):
+        # Not a WISHED character
+        if r > 4:
+            # Combined restriction, roller still gets first dibs
+            return 0.0 if is_roller else d
+        return 0.0
+
+    if r > 2 and user['id'] in wished_for:
+        # Wishers can insta-snipe
+        return 0.0
+    
+    if r == 1 and rolled not in wished_for:
+        # Roller (who is not us) did not wish for char, so can insta-snipe
+        return 0.0
+    
+    return d
+    
+def snipe(recv_time,snipe_delay):
+    if snipe_delay != 0.0:
+        try:
+            time.sleep((recv_time+snipe_delay)-time.time())
+        except ValueError:
+            # sleep was negative, so we're overdue!
+            return
+    time.sleep(.5)
 
 
 class MyClient(discord.Client):
@@ -97,6 +177,8 @@ class MyClient(discord.Client):
     async def bg_task(self,taskid):
         rollingchannel = self.get_channel(taskid)
         wait = 0
+        c_settings = channel_settings[taskid]
+        roll_cmd = c_settings['prefix'] + roll_prefix
         def msg_check(message):
             return message.author.id == mudae and message.channel.id == taskid
         
@@ -104,7 +186,7 @@ class MyClient(discord.Client):
             while wait == 0:
                 wait_for_mudae = self.loop.create_task(self.wait_for('message',timeout=10.0,check=msg_check))
                 await asyncio.sleep(2)
-                await rollingchannel.send("$" + roll_prefix)
+                await rollingchannel.send(roll_cmd)
                 try:
                     msg = await wait_for_mudae
                     if msg.content.startswith(f"**{self.user.name}"):
@@ -121,7 +203,16 @@ class MyClient(discord.Client):
     
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
-        #self.loop.create_task(self.bg_task(807061315792928948))
+        channel = self.get_channel(807061915515093023)
+        historyc = await discord.utils.find(lambda m: m.author.id == mudae and "togglehentai" in m.content, channel.history(limit=None))
+        print(parse_settings_message(historyc.content))
+        c_settings = parse_settings_message(historyc.content)
+        channel_settings[807061315792928948] = c_settings
+        
+        self.loop.create_task(self.bg_task(807061315792928948))
+        
+        
+        
         
 
     async def on_message(self, message):
@@ -132,9 +223,11 @@ class MyClient(discord.Client):
         #Interact with Mudae only
         if message.author.id == mudae:
             print("Mudae posted")
-            #print(message.guild.id)
+            print(message.channel.id)
 
             if message.embeds != []:
+                snipe_delay = get_snipe_time(message.channel.id,None,message.content,self)
+                recv=time.time()
                 objects = message.embeds[0].to_dict()
                 #Set up Charname
                 if 'author' in objects.keys():
@@ -147,7 +240,7 @@ class MyClient(discord.Client):
                     if ser in objects['description'] and objects['color'] == 16751916:               
                         print(f"Attempting to Claim {objects['author']['name']} from {ser} in ({message.channel.id}):{message.channel.name}")
                         emoji = use_emoji
-                        await asyncio.sleep(5)
+                        snipe(recv,snipe_delay)
                         if message.components == []:
                             if message.reactions != [] and not message.reactions[0].custom_emoji:
                                 emoji = message.reactions[0].emoji
@@ -160,7 +253,7 @@ class MyClient(discord.Client):
                 if charname.lower() in chars:
                     logger.info(f"Character Claim {charname}")
                     emoji = use_emoji
-                    await asyncio.sleep(5)
+                    snipe(recv,snipe_delay)
                     if message.components == []:
                         if message.reactions != [] and not message.reactions[0].custom_emoji:
                             emoji = message.reactions[0].emoji
@@ -173,14 +266,14 @@ class MyClient(discord.Client):
                 if message.components != [] and "kakera" in message.components[0].children[0].emoji.name:
                    
                     if "kakeraP" in message.components[0].children[0].emoji.name:
-                        await asyncio.sleep(5)
+                        snipe(recv,snipe_delay)
                         await message.components[0].children[0].click()
                     
                    
                     cooldown = kakera_wall.get(message.guild.id,0) - time.time()
                     if cooldown <= 1:
-                        logger.info(f" {message.components[0].children[0].emoji.name} found in: {message.guild.id}")
-                        await asyncio.sleep(5)
+                        logger.info(f" {message.components[0].children[0].emoji.name} found in: {message.guild.id} awaiting {snipe_delay}")
+                        snipe(recv,snipe_delay)
                         await message.components[0].children[0].click()
                     else:
                         logger.info(f" Skipped {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
