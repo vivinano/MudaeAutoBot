@@ -78,6 +78,35 @@ stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
+default_settings_if_no_settings = f"""🛠️ __**Server Settings**__ 🛠️
+                 (Server not premium)
+
+                · Prefix: **$** ($prefix)
+                · Lang: **en** ($lang)
+                · Claim reset: every **180** min. ($setclaim)
+                · Exact minute of the reset: xx:**56** ($setinterval)
+                · Reset shifted: by +**0** min. ($shifthour)
+                · Rolls per hour: **10** ($setrolls)
+                · Time before the claim reaction expires: **30** sec. ($settimer)
+                · Spawn rarity multiplicator for already claimed characters: **2** ($setrare)
+                · Server game mode: **1** ($gamemode)
+                · This channel instance: **1** ($channelinstance)
+                · Slash commands: enabled ($toggleslash)
+
+                · Ranking: enabled ($toggleclaimrank/$togglelikerank)
+                · Ranks displayed during rolls: claims and likes ($togglerolls)
+                · Hentai series: enabled ($togglehentai)
+                · Disturbing imagery series: enabled ($toggledisturbing)
+                · Rolls sniping: **2** ($togglesnipe) => **8** sec.
+                · Kakera sniping: **1** ($togglekakerasnipe) => **8** sec.
+                · Limit of characters per harem: **8100** ($haremlimit)
+                · Custom reactions: yes ($claimreact list)
+
+                · Kakera trading: **disabled** ($togglekakeratrade)
+                · Kakera calculation: claims and likes ranks (and number of claimed characters) ($togglekakeraclaim/$togglekakeralike)
+                · Kakera value displayed during rolls: enabled ($togglekakerarolls)
+                · $kakeraloot wishprotect: enabled ($togglewishprotect)"""            
+
 def get_wait(text):
     waits = wait_finder.findall(text)
     if len(waits):
@@ -216,6 +245,7 @@ class MyClient(discord.Client):
         
 
     async def on_message(self, message):
+        recv=time.time()
         #Don't Message Self
         if message.author == self.user:
             return
@@ -226,8 +256,11 @@ class MyClient(discord.Client):
             print(message.channel.id)
 
             if message.embeds != []:
-                snipe_delay = get_snipe_time(message.channel.id,None,message.content,self)
-                recv=time.time()
+                try:
+                    snipe_delay = get_snipe_time(message.channel.id,None,message.content,self)
+                except KeyError:
+                    snipe_delay = get_snipe_time(807061315792928948,None,message.content,self)
+                    
                 objects = message.embeds[0].to_dict()
                 #Set up Charname
                 if 'author' in objects.keys():
