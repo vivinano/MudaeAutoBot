@@ -206,6 +206,7 @@ class MyClient(discord.Client):
     async def bg_task(self,taskid):
         rollingchannel = self.get_channel(taskid)
         wait = 0
+        retries = 0
         c_settings = channel_settings[taskid]
         roll_cmd = c_settings['prefix'] + roll_prefix
         def msg_check(message):
@@ -222,10 +223,15 @@ class MyClient(discord.Client):
                         
                         wait = get_wait(msg.content)
                         print(wait)
+                        retries = 0
                         
                 except asyncio.TimeoutError:
-                    print(f"The Automated rolling on channelid {taskid} is ded. Requires Restart of the program")
-                    return
+                    retries += 1
+                    print(f"Timeout no Response Retrying attempt {retries} max: 5 in 60 sec "
+                    if retries >= 5:
+                        print(f"The Automated rolling on channelid {taskid} is ded. Requires Restart of the program")
+                        return
+                    await asyncio.sleep(60)
             await asyncio.sleep(wait)
             wait = 0
 
@@ -267,7 +273,20 @@ class MyClient(discord.Client):
                     charname = objects['author']['name']
                 else:
                     charname = "jkqemnxcv not found"
-                    
+                
+
+                if str(self.user.id) in message.content or "Wished" in message.content:
+                    print(f"Wished {objects['author']['name']} in {message.channel.id}: {message.channel.name} ")
+                    emoji = use_emoji
+                        snipe(recv,snipe_delay)
+                        if message.components == []:
+                            if message.reactions != [] and not message.reactions[0].custom_emoji:
+                                emoji = message.reactions[0].emoji
+                            await message.add_reaction(emoji)
+                        else:
+                            await message.components[0].children[0].click()
+                           
+                           
                 #Series Sniping
                 for ser in series_list:
                     if ser in objects['description'] and objects['color'] == 16751916:               
