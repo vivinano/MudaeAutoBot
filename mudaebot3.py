@@ -227,7 +227,7 @@ class MyClient(discord.Client):
                         
                 except asyncio.TimeoutError:
                     retries += 1
-                    print(f"Timeout no Response Retrying attempt {retries} max: 5 in 60 sec "
+                    print(f"Timeout no Response Retrying attempt {retries} max: 5 in 60 sec ")
                     if retries >= 5:
                         print(f"The Automated rolling on channelid {taskid} is ded. Requires Restart of the program")
                         return
