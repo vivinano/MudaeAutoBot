@@ -278,10 +278,10 @@ class MyClient(discord.Client):
                 if str(self.user.id) in message.content or "Wished" in message.content:
                     print(f"Wished {objects['author']['name']} in {message.channel.id}: {message.channel.name} ")
                     emoji = use_emoji
-                        snipe(recv,snipe_delay)
-                        if message.components == []:
-                            if message.reactions != [] and not message.reactions[0].custom_emoji:
-                                emoji = message.reactions[0].emoji
+                    snipe(recv,snipe_delay)
+                    if message.components == []:
+                        if message.reactions != [] and not message.reactions[0].custom_emoji:
+                            emoji = message.reactions[0].emoji
                             await message.add_reaction(emoji)
                         else:
                             await message.components[0].children[0].click()
