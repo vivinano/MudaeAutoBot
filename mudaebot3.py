@@ -222,6 +222,7 @@ class MyClient(discord.Client):
                 print(f"Checking if channel is quiet...")
                 await self.wait_for('message',timeout=60.0,check=quiet_channel_check)
                 print(f"Activity Detected in channel {taskid} from users. delaying rolls")
+                continue
             except asyncio.TimeoutError:
                 print(f"No user Activity in channel {taskid} proceeding rolls")
             # Rolling Process     
