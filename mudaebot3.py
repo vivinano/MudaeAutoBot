@@ -212,7 +212,19 @@ class MyClient(discord.Client):
         def msg_check(message):
             return message.author.id == mudae and message.channel.id == taskid
         
+        def quiet_channel_check(message):
+            return message.channel.id == taskid and message.author.bot is False
+            
         while True:
+            
+            # Wait for a quiet Moment
+            try:
+                print(f"Checking if channel is quiet...")
+                await self.wait_for('message',timeout=60.0,check=quiet_channel_check)
+                print(f"Activity Detected in channel {taskid} from users. delaying rolls")
+            except asyncio.TimeoutError:
+                print(f"No user Activity in channel {taskid} proceeding rolls")
+            # Rolling Process     
             while wait == 0:
                 wait_for_mudae = self.loop.create_task(self.wait_for('message',timeout=10.0,check=msg_check))
                 await asyncio.sleep(2)
@@ -315,7 +327,7 @@ class MyClient(discord.Client):
                     
                             
                 #Kakera Sniping            
-                if message.components != [] and "kakera" in message.components[0].children[0].emoji.name:
+                if message.components != [] and message.components[0].children[0].emoji.name.lower() in KakeraVari:
                    
                     if "kakeraP" in message.components[0].children[0].emoji.name:
                         snipe(recv,snipe_delay)
