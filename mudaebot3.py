@@ -328,7 +328,7 @@ class MyClient(discord.Client):
                     
                             
                 #Kakera Sniping            
-                if message.components != [] and message.components[0].children[0].emoji.name.lower() in KakeraVari:
+                if message.components != [] and "kakera" in message.components[0].children[0].emoji.name:
                    
                     if "kakeraP" in message.components[0].children[0].emoji.name:
                         snipe(recv,snipe_delay)
