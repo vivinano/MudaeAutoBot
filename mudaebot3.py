@@ -163,7 +163,9 @@ def get_snipe_time(channel,rolled,message,botter):
         return 0.0
     
     global user
-    is_roller = (rolled == botter.user.id)
+
+    is_roller = (rolled == botter.user)
+    
     if (r < 4 or r == 5) and is_roller:
         # Roller can insta-snipe
         return 0.0
@@ -257,7 +259,7 @@ class MyClient(discord.Client):
         c_settings = parse_settings_message(historyc.content)
         channel_settings[807061315792928948] = c_settings
         
-        self.loop.create_task(self.bg_task(807061315792928948))
+        #self.loop.create_task(self.bg_task(807061315792928948))
         
         
         
@@ -272,13 +274,16 @@ class MyClient(discord.Client):
         #Interact with Mudae only
         if message.author.id == mudae:
             print("Mudae posted")
-            print(message.channel.id)
+            if message.interaction is None:
+                ineractio = None
+            else:
+                ineractio = message.interaction.user
 
             if message.embeds != []:
                 try:
-                    snipe_delay = get_snipe_time(message.channel.id,None,message.content,self)
+                    snipe_delay = get_snipe_time(message.channel.id,ineractio,message.content,self)
                 except KeyError:
-                    snipe_delay = get_snipe_time(807061315792928948,None,message.content,self)
+                    snipe_delay = get_snipe_time(807061315792928948,ineractio,message.content,self)
                     
                 objects = message.embeds[0].to_dict()
                 #Set up Charname
