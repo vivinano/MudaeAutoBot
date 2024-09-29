@@ -192,6 +192,27 @@ def get_snipe_time(channel,rolled,message,botter):
         return 0.0
     
     return d
+
+    wished_for = mention_finder.findall(message)
+    
+    # Wish-based rules
+    if not len(wished_for):
+        # Not a WISHED character
+        if r > 4:
+            # Combined restriction, roller still gets first dibs
+            return 0.0 if is_roller else d
+        return 0.0
+
+    if r > 2 and user['id'] in wished_for:
+        # Wishers can insta-snipe
+        return 0.0
+    
+    if r == 1 and rolled not in wished_for:
+        # Roller (who is not us) did not wish for char, so can insta-snipe
+        return 0.0
+    
+    return d   
+    
     
 def snipe(recv_time,snipe_delay):
     if snipe_delay != 0.0:
