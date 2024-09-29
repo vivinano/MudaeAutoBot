@@ -164,7 +164,8 @@ def get_snipe_time(channel,rolled,message,botter):
     
     global user
 
-    is_roller = (rolled == botter.user)
+    is_roller = (rolled == botter.user.id)
+    print(is_roller)
     
     if (r < 4 or r == 5) and is_roller:
         # Roller can insta-snipe
@@ -222,7 +223,28 @@ def snipe(recv_time,snipe_delay):
             # sleep was negative, so we're overdue!
             return
     time.sleep(.5)
+    
+def is_rolled_char(m):
+    # Check if message has embeds
+    if not m.embeds:
+        return False
 
+    # Convert the first embed to a dictionary
+    embed = m.embeds[0].to_dict()
+
+    # Check if the embed contains the necessary keys
+    if "image" not in embed or "author" not in embed or list(embed.get("author", {}).keys()) != ['name']:
+        # Not a valid roll if no image or author or if author keys don't match
+        return False
+
+    # Check if there's a footer with pagination, which would indicate it's not a roll
+    if "footer" in embed and "text" in embed["footer"]:
+        if pagination_finder.findall(embed["footer"]["text"]):
+            # Pagination found, not a roll
+            return False
+
+    # All checks passed, it seems to be a valid roll
+    return True
 
 class MyClient(discord.Client):
 
@@ -278,7 +300,10 @@ class MyClient(discord.Client):
         historyc = await discord.utils.find(lambda m: m.author.id == mudae and "togglehentai" in m.content, channel.history(limit=None))
         print(parse_settings_message(historyc.content))
         c_settings = parse_settings_message(historyc.content)
+        dc_settings = parse_settings_message(default_settings_if_no_settings)
+        channel_settings[123] = dc_settings
         channel_settings[807061315792928948] = c_settings
+        
         
         #self.loop.create_task(self.bg_task(807061315792928948))
         
@@ -295,17 +320,21 @@ class MyClient(discord.Client):
         #Interact with Mudae only
         if message.author.id == mudae:
             print("Mudae posted")
+            
             if message.interaction is None:
                 ineractio = None
             else:
-                ineractio = message.interaction.user
+                ineractio = message.interaction.user.id
 
             if message.embeds != []:
                 try:
                     snipe_delay = get_snipe_time(message.channel.id,ineractio,message.content,self)
                 except KeyError:
-                    snipe_delay = get_snipe_time(807061315792928948,ineractio,message.content,self)
-                    
+                    snipe_delay = get_snipe_time(123,ineractio,message.content,self)
+                
+                if not is_rolled_char(message):
+                    pass
+                
                 objects = message.embeds[0].to_dict()
                 #Set up Charname
                 if 'author' in objects.keys():
