@@ -351,9 +351,10 @@ class MyClient(discord.Client):
                         if message.reactions != [] and not message.reactions[0].custom_emoji:
                             emoji = message.reactions[0].emoji
                             await message.add_reaction(emoji)
-                        else:
-                            await message.components[0].children[0].click()
-                           
+                            logger.info(f"Reaction added on {charname} ")
+                    else:
+                        await message.components[0].children[0].click()
+                        logger.info(f"Button Clicked on {charname}")
                            
                 #Series Sniping
                 for ser in series_list:
@@ -378,8 +379,8 @@ class MyClient(discord.Client):
                         if message.reactions != [] and not message.reactions[0].custom_emoji:
                             emoji = message.reactions[0].emoji
                             await message.add_reaction(emoji)
-                        else:
-                            await message.components[0].children[0].click()
+                    else:
+                        await message.components[0].children[0].click()
                     
                             
                 #Kakera Sniping            
