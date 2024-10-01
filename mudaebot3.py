@@ -296,6 +296,18 @@ class MyClient(discord.Client):
     
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
+        
+        for xchan in mhids:
+            loochannel = self.get_channel(xchan)
+            print(loochannel)
+            loohistory = await discord.utils.find(lambda m: m.author.id == mudae and "togglehentai" in m.content, loochannel.history(limit=100))
+            print(loohistory)
+            if loohistory != None:
+                looc_settings = parse_settings_message(loohistory.content)
+            else:
+                looc_settings = parse_settings_message(default_settings_if_no_settings)
+            channel_settings[xchan] = looc_settings
+            
         channel = self.get_channel(807061915515093023)
         historyc = await discord.utils.find(lambda m: m.author.id == mudae and "togglehentai" in m.content, channel.history(limit=None))
         print(parse_settings_message(historyc.content))
@@ -303,8 +315,8 @@ class MyClient(discord.Client):
         dc_settings = parse_settings_message(default_settings_if_no_settings)
         channel_settings[123] = dc_settings
         channel_settings[807061315792928948] = c_settings
-        
-        
+            
+        print(channel_settings)    
         #self.loop.create_task(self.bg_task(807061315792928948))
         
         
@@ -316,15 +328,30 @@ class MyClient(discord.Client):
         #Don't Message Self
         if message.author == self.user:
             return
+            
+        #We don't Have settings in the channel_settings so Skip    
+        if int(message.channel.id) not in channel_settings:
+            return
+            
+        c_settings = channel_settings[message.channel.id]
+        
+        if c_settings['pending'] == None and message.author.id != mudae and message.content[0:c_settings['prefix_len']] == c_settings['prefix'] and message.content.split(' ')[0][c_settings['prefix_len']:] in mudae_cmds:
+            c_settings['pending'] == message.author.id
+            return
         
         #Interact with Mudae only
         if message.author.id == mudae:
-            print("Mudae posted")
+            
             
             if message.interaction is None:
-                ineractio = None
+                ineractio = c_settings['pending']
             else:
                 ineractio = message.interaction.user.id
+            c_settings = None
+                
+            msg_buf[message.id] = {'claimed':(int(message.embeds[0].color) if message.embeds else None) not in (16751916,1360437),'rolled':ineractio == int(message.author.id)}
+            
+            print(f"Our user rolled in {message.channel.id}" if ineractio == self.user.id else f"Someone else rolled in {message.channel}")
 
             if message.embeds != []:
                 try:
@@ -335,13 +362,13 @@ class MyClient(discord.Client):
                 if not is_rolled_char(message):
                     pass
                 
+             
                 objects = message.embeds[0].to_dict()
                 #Set up Charname
                 if 'author' in objects.keys():
                     charname = objects['author']['name']
                 else:
                     charname = "jkqemnxcv not found"
-                
 
                 if str(self.user.id) in message.content or "Wished" in message.content:
                     print(f"Wished {objects['author']['name']} in {message.channel.id}: {message.channel.name} ")
