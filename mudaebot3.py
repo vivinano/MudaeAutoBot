@@ -327,7 +327,7 @@ class MyClient(discord.Client):
         recv=time.time()
         #Don't Message Self
         if message.author == self.user:
-            return
+            pass
             
         #We don't Have settings in the channel_settings so Skip    
         if int(message.channel.id) not in channel_settings:
@@ -335,7 +335,7 @@ class MyClient(discord.Client):
             
         c_settings = channel_settings[message.channel.id]
         
-        if c_settings['pending'] == None and message.author.id != mudae and message.content[0:c_settings['prefix_len']] == c_settings['prefix'] and message.content.split(' ')[0][c_settings['prefix_len']:] in mudae_cmds:
+        if c_settings['pending'] is None and message.author.id != mudae and message.content[0:c_settings['prefix_len']] == c_settings['prefix'] and message.content.split(' ')[0][c_settings['prefix_len']:] in mudae_cmds:
             c_settings['pending'] = message.author.id
             return
         
