@@ -336,7 +336,7 @@ class MyClient(discord.Client):
         c_settings = channel_settings[message.channel.id]
         
         if c_settings['pending'] == None and message.author.id != mudae and message.content[0:c_settings['prefix_len']] == c_settings['prefix'] and message.content.split(' ')[0][c_settings['prefix_len']:] in mudae_cmds:
-            c_settings['pending'] == message.author.id
+            c_settings['pending'] = message.author.id
             return
         
         #Interact with Mudae only
@@ -347,7 +347,7 @@ class MyClient(discord.Client):
                 ineractio = c_settings['pending']
             else:
                 ineractio = message.interaction.user.id
-            c_settings = None
+            c_settings['pending'] = None
                 
             msg_buf[message.id] = {'claimed':(int(message.embeds[0].color) if message.embeds else None) not in (16751916,1360437),'rolled':ineractio == int(message.author.id)}
             
