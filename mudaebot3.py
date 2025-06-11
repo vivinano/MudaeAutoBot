@@ -25,15 +25,14 @@ class CacheDict(OrderedDict):
 
 msg_buf = CacheDict(max=50)
 
-jsonf = open("Settings_Mudae.json")
+jsonf = open("Settings_Mudae.json",encoding="utf-8")
 settings = json.load(jsonf)
 jsonf.close()
-
 
 mudae = 432610292342587392
 use_emoji = "❤️"
 
-with open("cmds.txt","r") as f:
+with open("cmds.txt","r",encoding="utf-8") as f:
     mudae_cmds = [line.rstrip() for line in f]
 mhids = [int(mh) for mh in settings["channel_ids"]]
 shids = [int(sh) for sh in settings["slash_ids"]]
@@ -46,6 +45,8 @@ kak_min = settings["min_kak"]
 roll_prefix = settings["roll_this"]
 sniping = settings.get("sniping_enabled",True)
 
+kakdelayjson = settings["kak_delay"]
+claimdelayjson = settings["claim_delay"]
 
 mention_finder = re.compile(r'\<@(?:!)?(\d+)\>')
 pagination_finder = re.compile(r'\d+ / \d+')
@@ -89,23 +90,27 @@ default_settings_if_no_settings = f"""🛠️ __**Server Settings**__ 🛠️
                 · Rolls per hour: **10** ($setrolls)
                 · Time before the claim reaction expires: **30** sec. ($settimer)
                 · Spawn rarity multiplicator for already claimed characters: **2** ($setrare)
-                · Server game mode: **1** ($gamemode)
+                · % kakera bonus: **+0** ($setkakerabonus)
+                · Game mode: **1** ($gamemode)
                 · This channel instance: **1** ($channelinstance)
                 · Slash commands: enabled ($toggleslash)
 
                 · Ranking: enabled ($toggleclaimrank/$togglelikerank)
-                · Ranks displayed during rolls: claims and likes ($togglerolls)
-                · Hentai series: enabled ($togglehentai)
+                · Ranks displayed during rolls: claims only ($togglerolls)
+                · NSFW series: **disabled** ($togglensfw)
                 · Disturbing imagery series: enabled ($toggledisturbing)
+                · Child characters: enabled ($togglechildtag)
                 · Rolls sniping: **2** ($togglesnipe) => **8** sec.
                 · Kakera sniping: **1** ($togglekakerasnipe) => **8** sec.
                 · Limit of characters per harem: **8100** ($haremlimit)
+                · Reacts: ****for all your rolls**** ($togglereact)
                 · Custom reactions: yes ($claimreact list)
+                · Kakera reactions more recognizable: no ($kakerareact switchset)
 
                 · Kakera trading: **disabled** ($togglekakeratrade)
-                · Kakera calculation: claims and likes ranks (and number of claimed characters) ($togglekakeraclaim/$togglekakeralike)
+                · Kakera calculation: claim and like ranks (and number of claimed characters) ($togglekakeraclaim/$togglekakeralike)
                 · Kakera value displayed during rolls: enabled ($togglekakerarolls)
-                · $kakeraloot wishprotect: enabled ($togglewishprotect)"""            
+                · $kakeraloot wishprotect: enabled ($togglewishprotect)"""
 
 def get_wait(text):
     waits = wait_finder.findall(text)
@@ -113,6 +118,7 @@ def get_wait(text):
         hours = int(waits[0][0]) if waits[0][0] != '' else 0
         return (hours*60+int(waits[0][1]))*60
     return 0
+	
 def get_pwait(text):
     waits = poke_finder.findall(text)
     if len(waits):
@@ -212,8 +218,7 @@ def get_snipe_time(channel,rolled,message,botter):
         # Roller (who is not us) did not wish for char, so can insta-snipe
         return 0.0
     
-    return d   
-    
+    return d
     
 def snipe(recv_time,snipe_delay):
     if snipe_delay != 0.0:
@@ -293,14 +298,13 @@ class MyClient(discord.Client):
             await asyncio.sleep(wait)
             wait = 0
 
-    
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
         
         for xchan in mhids:
             loochannel = self.get_channel(xchan)
             print(loochannel)
-            loohistory = await discord.utils.find(lambda m: m.author.id == mudae and "togglehentai" in m.content, loochannel.history(limit=100))
+            loohistory = await discord.utils.find(lambda m: m.author.id == mudae and "togglensfw" in m.content, loochannel.history(limit=100))
             print(loohistory)
             if loohistory != None:
                 looc_settings = parse_settings_message(loohistory.content)
@@ -308,20 +312,16 @@ class MyClient(discord.Client):
                 looc_settings = parse_settings_message(default_settings_if_no_settings)
             channel_settings[xchan] = looc_settings
             
-        channel = self.get_channel(807061915515093023)
-        historyc = await discord.utils.find(lambda m: m.author.id == mudae and "togglehentai" in m.content, channel.history(limit=None))
+        channel = self.get_channel(xchan)
+        historyc = await discord.utils.find(lambda m: m.author.id == mudae and "togglensfw" in m.content, channel.history(limit=None))
         print(parse_settings_message(historyc.content))
         c_settings = parse_settings_message(historyc.content)
         dc_settings = parse_settings_message(default_settings_if_no_settings)
         channel_settings[123] = dc_settings
-        channel_settings[807061315792928948] = c_settings
+        channel_settings[xchan] = c_settings
             
-        print(channel_settings)    
+        print(channel_settings)
         #self.loop.create_task(self.bg_task(807061315792928948))
-        
-        
-        
-        
 
     async def on_message(self, message):
         recv=time.time()
@@ -329,7 +329,7 @@ class MyClient(discord.Client):
         if message.author == self.user:
             pass
             
-        #We don't Have settings in the channel_settings so Skip    
+        #We don't Have settings in the channel_settings so Skip
         if int(message.channel.id) not in channel_settings:
             return
             
@@ -342,7 +342,6 @@ class MyClient(discord.Client):
         #Interact with Mudae only
         if message.author.id == mudae:
             
-            
             if message.interaction is None:
                 ineractio = c_settings['pending']
             else:
@@ -351,9 +350,10 @@ class MyClient(discord.Client):
                 
             msg_buf[message.id] = {'claimed':(int(message.embeds[0].color) if message.embeds else None) not in (16751916,1360437),'rolled':ineractio == int(message.author.id)}
             
-            print(f"Our user rolled in {message.channel.id}" if ineractio == self.user.id else f"Someone else rolled in {message.channel}")
+            print(f"Our user rolled in {message.channel}" if ineractio == self.user.id else f"Someone else rolled in {message.channel}")
 
             if message.embeds != []:
+                #Set up Snipe Delay
                 try:
                     snipe_delay = get_snipe_time(message.channel.id,ineractio,message.content,self)
                 except KeyError:
@@ -362,14 +362,29 @@ class MyClient(discord.Client):
                 if not is_rolled_char(message):
                     pass
                 
+                #Set up Claim Delay
+                if claimdelayjson <= snipe_delay:
+                    claim_delay = snipe_delay
+                else:
+                    claim_delay = claimdelayjson
+                #print(f'Charcter claim delay: {claim_delay} seconds')
+
+                #Set up Kakera Delay
+                if kakdelayjson <= snipe_delay:
+                    kakera_delay = snipe_delay
+                else:
+                    kakera_delay = kakdelayjson
+                #print(f'Kakera claim delay: {kakera_delay} seconds')
              
                 objects = message.embeds[0].to_dict()
+
                 #Set up Charname
                 if 'author' in objects.keys():
                     charname = objects['author']['name']
                 else:
                     charname = "jkqemnxcv not found"
 
+                #Wish sniping
                 if str(self.user.id) in message.content or "Wished" in message.content:
                     print(f"Wished {objects['author']['name']} in {message.channel.id}: {message.channel.name} ")
                     emoji = use_emoji
@@ -385,10 +400,10 @@ class MyClient(discord.Client):
                            
                 #Series Sniping
                 for ser in series_list:
-                    if ser in objects['description'] and objects['color'] == 16751916:               
+                    if ser in objects['description'] and objects['color'] == 16751916:
                         print(f"Attempting to Claim {objects['author']['name']} from {ser} in ({message.channel.id}):{message.channel.name}")
                         emoji = use_emoji
-                        snipe(recv,snipe_delay)
+                        snipe(recv,claim_delay)
                         if message.components == []:
                             if message.reactions != [] and not message.reactions[0].custom_emoji:
                                 emoji = message.reactions[0].emoji
@@ -398,10 +413,11 @@ class MyClient(discord.Client):
                             await message.components[0].children[0].click()
                             break
                             
+                #Character Sniping
                 if charname.lower() in chars:
                     logger.info(f"Character Claim {charname}")
                     emoji = use_emoji
-                    snipe(recv,snipe_delay)
+                    snipe(recv,claim_delay)
                     if message.components == []:
                         if message.reactions != [] and not message.reactions[0].custom_emoji:
                             emoji = message.reactions[0].emoji
@@ -409,19 +425,15 @@ class MyClient(discord.Client):
                     else:
                         await message.components[0].children[0].click()
                     
-                            
-                #Kakera Sniping            
+                #Kakera Sniping
                 if message.components != [] and "kakera" in message.components[0].children[0].emoji.name:
-                   
                     if "kakeraP" in message.components[0].children[0].emoji.name:
-                        snipe(recv,snipe_delay)
+                        snipe(recv,kakera_delay)
                         await message.components[0].children[0].click()
-                    
-                   
                     cooldown = kakera_wall.get(message.guild.id,0) - time.time()
                     if cooldown <= 1:
-                        logger.info(f" {message.components[0].children[0].emoji.name} found in: {message.guild.id} awaiting {snipe_delay}")
-                        snipe(recv,snipe_delay)
+                        logger.info(f" {message.components[0].children[0].emoji.name} found in: {message.guild.id} awaiting {kakera_delay}")
+                        snipe(recv,kakera_delay)
                         await message.components[0].children[0].click()
                     else:
                         logger.info(f" Skipped {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
