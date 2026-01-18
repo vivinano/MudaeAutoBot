@@ -416,13 +416,21 @@ class MyClient(discord.Client):
                     if "kakeraP" in message.components[0].children[0].emoji.name:
                         snipe(recv,snipe_delay)
                         await message.components[0].children[0].click()
+                        
+                    if "kakeraC" in message.components[0].children[0].emoji.name:
+                        snipe(recv,snipe_delay)
+                        await message.components[0].children[0].click()
                     
                    
                     cooldown = kakera_wall.get(message.guild.id,0) - time.time()
                     if cooldown <= 1:
                         logger.info(f" {message.components[0].children[0].emoji.name} found in: {message.guild.id} awaiting {snipe_delay}")
                         snipe(recv,snipe_delay)
-                        await message.components[0].children[0].click()
+                        if message.components[0].children[0].emoji.name.lower() in KakeraVari:
+                            await message.components[0].children[0].click()
+                        else:
+                            logger.info(f" {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
+                            
                     else:
                         logger.info(f" Skipped {message.components[0].children[0].emoji.name} Skipped in: {message.guild.id}")
                     
@@ -450,3 +458,4 @@ class MyClient(discord.Client):
 
 client = MyClient()
 client.run(settings['token'])
+
