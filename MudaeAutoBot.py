@@ -28,7 +28,7 @@ class CacheDict(OrderedDict):
 
 msg_buf = CacheDict(max=50)
 
-jsonf = open("Settings_Mudae.json")
+jsonf = open("Settings_Mudae.json", encoding="utf-8")
 settings = json.load(jsonf)
 jsonf.close()
 
